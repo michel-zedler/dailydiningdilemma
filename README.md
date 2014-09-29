@@ -9,7 +9,7 @@ DDD v2
 - XCode for ios, android sdk for android
 
 ### Steps (for ios, substitute ios with android for android)
-1. install cordova: npm install -g cordova ionic
+1. install cordova (you may need sudo for this): npm install -g cordova ionic
 2. cd ddd-app
 3. ionic platform add ios
 4. ionic build ios
