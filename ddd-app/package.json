@@ -1,7 +1,7 @@
 {
   "name": "ddd-app",
   "version": "1.0.0",
-  "description": "ddd-app: An Ionic project",
+  "description": "ddd-app: the official mobile app for the daily dining dilemma",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^0.7.1",
