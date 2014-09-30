@@ -2,12 +2,114 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<artifactId>server-impl-jee7</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
+	<parent>
+		<groupId>ddd</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.0.1</version>
+		<relativePath>../parent/pom.xml</relativePath>
+	</parent>
+
+	<properties>
+		<hbm2ddl.create>true</hbm2ddl.create>
+		<hbm2ddl.export>false</hbm2ddl.export>
+		<hbm2ddl.format>true</hbm2ddl.format>
+		<hbm2ddl.drop>false</hbm2ddl.drop>
+		<hbm2ddl.update>true</hbm2ddl.update>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>hibernate3-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<components>
+						<component>
+							<name>hbm2ddl</name>
+							<implementation>annotationconfiguration</implementation>
+						</component>
+					</components>
+					<componentProperties>
+						<drop>${hbm2ddl.drop}</drop>
+						<create>${hbm2ddl.create}</create>
+						<export>${hbm2ddl.export}</export>
+						<update>${hbm2ddl.update}</update>
+						<format>${hbm2ddl.format}</format>
+						<propertyfile>config/jdbc.properties</propertyfile>
+						<scan-classes>true</scan-classes>
+						<skip>${maven.test.skip}</skip>
+					</componentProperties>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>5.1.13</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<url>jdbc:mysql://localhost/reporting</url>
+					<user>root</user>
+					<password>root</password>
+					<locations>
+						<location>classpath:migrations/</location>
+					</locations>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>5.1.13</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+
 	<dependencies>
+		<dependency>
+			<groupId>ddd</groupId>
+			<artifactId>rest-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.restfb</groupId>
+			<artifactId>restfb</artifactId>
+			<version>1.6.16</version>
+		</dependency>
+		<dependency>
+			<groupId>it.eckertpartner.core</groupId>
+			<artifactId>javaee-utils</artifactId>
+			<version>1.2-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.7</version>
+		</dependency>
+
+		<!-- Provided -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<version>4.3.5.Final</version>
+			<scope>provided</scope>
+		</dependency>
+
+
+
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
@@ -15,9 +117,5 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-	<parent>
-		<groupId>ddd</groupId>
-		<artifactId>parent</artifactId>
-		<version>1.0</version>
-	</parent>
+
 </project>
