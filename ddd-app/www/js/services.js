@@ -15,10 +15,10 @@ servicesModule.factory('authService', function($firebase, $firebaseSimpleLogin) 
     _authClient.$login(provider).then(function(user) {
       // user.displayName, user.email
       result.user = user;
-      cb(result);
+      cb(result, provider);
     }, function(error) {
       result.err = error;
-      cb(result);
+      cb(result, provider);
     });
   };
 
