@@ -21,6 +21,9 @@ public class UserEntity {
 	@Column(name = "facebook_id", nullable = true, length = 64)
 	private String facebookId;
 
+	@Column(name = "google_id", nullable = true, length = 64)
+	private String googleId;
+
 	@Column(name = "apikey", nullable = true, length = 64)
 	private String apiKey;
 
@@ -56,4 +59,11 @@ public class UserEntity {
 		this.id = id;
 	}
 
+	public String getGoogleId() {
+		return googleId;
+	}
+	
+	public void setGoogleId(String googleId) {
+		this.googleId = googleId;
+	}
 }

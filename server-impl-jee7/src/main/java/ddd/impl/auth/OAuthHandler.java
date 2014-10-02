@@ -1,9 +1,9 @@
 package ddd.impl.auth;
 
-import ddd.impl.entity.UserEntity;
+import ddd.impl.model.UserModel;
 
 public interface OAuthHandler {
 	
-	UserEntity login(String token);
+	UserModel login(String token);
 
 }

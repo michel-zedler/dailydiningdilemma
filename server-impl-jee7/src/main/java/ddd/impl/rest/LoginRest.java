@@ -14,6 +14,7 @@ import ddd.api.model.LoginResult;
 import ddd.api.rest.Login;
 import ddd.impl.auth.FacebookAuthHandler;
 import ddd.impl.entity.UserEntity;
+import ddd.impl.model.UserModel;
 
 @Path("/")
 public class LoginRest implements Login {
@@ -38,7 +39,7 @@ public class LoginRest implements Login {
 
 		LoginResult result = new LoginResult();
 		try {
-			UserEntity entity = facebookAuthHandler.login(token);
+			UserModel entity = facebookAuthHandler.login(token);
 			result.setApiKey(entity.getApiKey());
 			result.setDisplayName(entity.getDisplayName());
 			result.setSuccess(true);

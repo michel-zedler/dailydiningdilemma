@@ -15,20 +15,22 @@ public class UserDao {
 
 	@PersistenceContext
 	private EntityManager entityManager;
-	
+
 	public UserEntity findByApiKey(String apiKey) {
 		return findUserBySingleCriterion(UserEntity_.apiKey, apiKey);
 	}
-	
+
 	public UserEntity findByFacebookId(String facebookId) {
 		return findUserBySingleCriterion(UserEntity_.facebookId, facebookId);
 	}
-	
-	private <E> UserEntity findUserBySingleCriterion(SingularAttribute<UserEntity, E> expression, E value) {
-		CriteriaHelper<UserEntity> criteriaHelper = new CriteriaHelper<UserEntity>(entityManager, UserEntity.class);
+
+	private <E> UserEntity findUserBySingleCriterion(
+			SingularAttribute<UserEntity, E> expression, E value) {
+		CriteriaHelper<UserEntity> criteriaHelper = new CriteriaHelper<UserEntity>(
+				entityManager, UserEntity.class);
 
 		criteriaHelper.addEqual(expression, value);
-		
+
 		return criteriaHelper.getSingleResultOrNull();
 	}
 
@@ -37,8 +39,10 @@ public class UserDao {
 	}
 
 	public void persist(UserEntity user) {
-		entityManager
-		.persist(user);
+		entityManager.persist(user);
 	}
-	
+
+	public UserEntity findByGoogleId(String googleId) {
+		return findUserBySingleCriterion(UserEntity_.googleId, googleId);
+	}
 }
