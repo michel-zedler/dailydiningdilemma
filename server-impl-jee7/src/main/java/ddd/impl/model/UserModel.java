@@ -4,8 +4,6 @@ public class UserModel {
 
 	private Long id;
 	private String displayName;
-	private String facebookId;
-	private String googleId;
 	private String apiKey;
 
 	public Long getId() {
@@ -22,22 +20,6 @@ public class UserModel {
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
-	}
-
-	public String getFacebookId() {
-		return facebookId;
-	}
-
-	public void setFacebookId(String facebookId) {
-		this.facebookId = facebookId;
-	}
-
-	public String getGoogleId() {
-		return googleId;
-	}
-
-	public void setGoogleId(String googleId) {
-		this.googleId = googleId;
 	}
 
 	public String getApiKey() {

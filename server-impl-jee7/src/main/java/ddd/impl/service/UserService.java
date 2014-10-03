@@ -3,8 +3,12 @@ package ddd.impl.service;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
+import ddd.impl.auth.OAuthProfile;
 import ddd.impl.dao.UserDao;
 import ddd.impl.entity.UserEntity;
+import ddd.impl.entity.UserOAuthIdMapping;
 import ddd.impl.model.UserModel;
 
 @Stateless
@@ -13,40 +17,66 @@ public class UserService {
 	@Inject
 	private UserDao userDao;
 
-	public UserModel findByFacebookId(String facebookId) {
-		UserEntity entity = userDao.findByFacebookId(facebookId);
-		return toModel(entity);
-	}
+	public UserModel loginUser(OAuthProfile profile) {
+		UserEntity user = userDao.findByServiceNameAndId(
+				profile.getServiceName(), profile.getServiceId());
 
-	public void save(UserModel model) {
-		if (model.getId() == null) {
-			UserEntity entity = createEntity(model);
-			userDao.persist(entity);
-		} else {
-			UserEntity entity = userDao.findById(model.getId());
-			updateEntity(entity, model);
+		if (user == null) {
+			user = new UserEntity();
+			user.setApiKey(createApiKey());
+			user.setDisplayName(profile.getDisplayName());
+
+			userDao.persist(user);
+
+			addServiceOAuthBindung(user, profile.getServiceName(), profile.getServiceId());
 		}
+
+		if (user.getApiKey() == null) {
+			user.setApiKey(createApiKey());
+		}
+		
+		return toModel(user);
 	}
 
-	public UserModel findByGoogleId(String oauthId) {
-		UserEntity entity = userDao.findByGoogleId(oauthId);
-		return toModel(entity);
+	public void renewApiKey(UserModel userModel) {
+		UserEntity userEntity = userDao.findById(userModel.getId());
+		String apiKey = createApiKey();
+		userEntity.setApiKey(apiKey);
+		userModel.setApiKey(apiKey);
 	}
 
-	private UserEntity createEntity(UserModel model) {
-		UserEntity entity = new UserEntity();
+	public String createApiKey() {
+		return RandomStringUtils.randomAlphanumeric(128);
+	}
+
+	public void update(UserModel model) {
+		UserEntity entity = userDao.findById(model.getId());
 		updateEntity(entity, model);
-		return entity;
 	}
 
-	public void updateEntity(UserEntity entity, UserModel model) {
+	public void addServiceOAuthBindung(UserModel userModel, String serviceName,
+			String serviceId) {
+		UserEntity entity = userDao.findById(userModel.getId());
+		addServiceOAuthBindung(entity, serviceName, serviceId);
+	}
+
+	protected void addServiceOAuthBindung(UserEntity entity,
+			String serviceName, String serviceId) {
+		UserOAuthIdMapping mapping = new UserOAuthIdMapping();
+
+		mapping.setUser(entity);
+		mapping.setServiceName(serviceName);
+		mapping.setSeriveId(serviceId);
+
+		userDao.persist(mapping);
+	}
+
+	private void updateEntity(UserEntity entity, UserModel model) {
 		entity.setApiKey(model.getApiKey());
 		entity.setDisplayName(model.getDisplayName());
-		entity.setFacebookId(model.getFacebookId());
-		entity.setGoogleId(model.getGoogleId());
 	}
 
-	public UserModel toModel(UserEntity entity) {
+	private UserModel toModel(UserEntity entity) {
 		UserModel model = new UserModel();
 
 		model.setId(entity.getId());

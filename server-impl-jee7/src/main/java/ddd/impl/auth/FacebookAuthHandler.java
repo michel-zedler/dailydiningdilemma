@@ -3,10 +3,6 @@ package ddd.impl.auth;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.slf4j.Logger;
-
-import ddd.impl.entity.UserEntity;
 import ddd.impl.facebookclient.FacebookClient;
 import ddd.impl.facebookclient.FacebookMeResponse;
 import ddd.impl.model.UserModel;
@@ -16,9 +12,6 @@ import ddd.impl.service.UserService;
 public class FacebookAuthHandler implements OAuthHandler {
 
 	@Inject
-	private Logger logger;
-
-	@Inject
 	private UserService userService;
 
 	@Inject
@@ -26,27 +19,32 @@ public class FacebookAuthHandler implements OAuthHandler {
 
 	@Override
 	public UserModel login(String token) {
-		FacebookMeResponse user = facebookClient.getMe(token);
-		String facebookId = user.getId();
+		FacebookMeResponse meResponse = facebookClient.getMe(token);
 
-		UserModel model = userService.findByFacebookId(facebookId);
+		OAuthProfile profile = map(meResponse);
 
-		if (model == null) {
-			logger.info(
-					"No user found with facebook-id {}. Creating new user.",
-					facebookId);
-			model = new UserModel();
-			model.setFacebookId(facebookId);
-			model.setDisplayName(user.getName());
-		}
-
-		if (model.getApiKey() == null) {
-			model.setApiKey(RandomStringUtils.randomAlphanumeric(64));
-		}
-
-		userService.save(model);
+		UserModel model = userService.loginUser(profile);
 
 		return model;
+	}
+
+	private OAuthProfile map(FacebookMeResponse meResponse) {
+		OAuthProfile profile = new OAuthProfile();
+		
+		profile.setServiceId(meResponse.getId());
+		profile.setServiceName(getService());
+		
+		profile.setDisplayName(meResponse.getName());
+		profile.setFirstName(meResponse.getFirstName());
+		profile.setLastName(meResponse.getLastName());
+		profile.setEmail(meResponse.getEmail());
+		
+		return profile;
+	}
+
+	@Override
+	public String getService() {
+		return "facebook";
 	}
 
 }

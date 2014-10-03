@@ -6,4 +6,5 @@ public interface OAuthHandler {
 	
 	UserModel login(String token);
 
+	String getService();
 }

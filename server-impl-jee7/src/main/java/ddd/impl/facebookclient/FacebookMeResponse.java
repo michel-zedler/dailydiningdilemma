@@ -3,6 +3,9 @@ package ddd.impl.facebookclient;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown=true)
 @XmlRootElement
 public class FacebookMeResponse {
 
@@ -26,7 +29,14 @@ public class FacebookMeResponse {
 	
 	@XmlAttribute(name="verified")
 	private Boolean verified;
+	
+	@XmlAttribute(name="link")
+	private String link;
+	
+	@XmlAttribute(name="locale")
+	private String locale;
 
+	
 	public String getId() {
 		return id;
 	}
@@ -81,5 +91,13 @@ public class FacebookMeResponse {
 
 	public void setVerified(Boolean verified) {
 		this.verified = verified;
+	}
+
+	public String getLink() {
+		return link;
+	}
+	
+	public void setLink(String link) {
+		this.link = link;
 	}
 }

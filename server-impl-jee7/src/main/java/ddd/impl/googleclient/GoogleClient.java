@@ -1,5 +1,6 @@
 package ddd.impl.googleclient;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -8,6 +9,7 @@ import javax.ws.rs.core.Response;
 
 import ddd.impl.facebookclient.UnauthorizedException;
 
+@ApplicationScoped
 public class GoogleClient {
 
 	public GoogleMeResponse getMe(String token) {
