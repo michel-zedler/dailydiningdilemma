@@ -3,29 +3,46 @@ package ddd.impl.rest;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import javax.ws.rs.FormParam;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.slf4j.Logger;
 
-import ddd.api.model.LoginResult;
-import ddd.api.rest.Login;
+import ddd.api.request.LoginRequest;
+import ddd.api.response.LoginResponse;
+import ddd.api.response.LogoutRequest;
 import ddd.impl.auth.OAuthHandler;
 import ddd.impl.model.UserModel;
+import ddd.impl.service.UserService;
 
 @Path("/")
-public class LoginServiceRest implements Login {
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public class LoginServiceRest {
 
 	@Inject
 	Logger logger;
+
+	@Inject
+	Validator validator;
+
+	@Inject
+	ValidationHelper validationHelper;
+	
+	@Inject
+	UserService userService;
 
 	private Map<String, OAuthHandler> handlerRegister = new HashMap<String, OAuthHandler>();
 
@@ -40,28 +57,27 @@ public class LoginServiceRest implements Login {
 		}
 	}
 
-	@Override
 	@POST
-	@Produces(MediaType.APPLICATION_XML)
 	@Path("/login")
-	public Response login(@FormParam("service") String service,
-			@FormParam("token") String token) {
-		if (token == null || token.equals("")) {
-			return Response.serverError().build();
+	public Response login(LoginRequest loginRequest) {
+		String token = loginRequest.getToken();
+		String service = loginRequest.getService();
+
+		Set<ConstraintViolation<LoginRequest>> violations = validator.validate(loginRequest);
+		if (violations.isEmpty() == false) {
+			return validationHelper.buildValidationFailureResponse(violations);
 		}
 
-		logger.debug(token);
-		
 		OAuthHandler handler = handlerRegister.get(service);
-		
+
 		if (handler == null) {
 			String message = String.format("Service %s not yet supported for oAuthLogin.", service);
 			logger.info(message);
 			return buildLoginFailure(message);
 		}
-		
+
 		try {
-			LoginResult result = new LoginResult();
+			LoginResponse result = new LoginResponse();
 			UserModel entity = handler.login(token);
 			result.setApiKey(entity.getApiKey());
 			result.setDisplayName(entity.getDisplayName());
@@ -74,29 +90,27 @@ public class LoginServiceRest implements Login {
 	}
 
 	private Response buildLoginFailure(String errorMessage) {
-		LoginResult result = new LoginResult();
-		
+		LoginResponse result = new LoginResponse();
+
 		result.setErrorMessage(errorMessage);
 		result.setSuccess(false);
-		
+
 		return buildResponse(result);
 	}
 
-	private Response buildResponse(LoginResult result) {
-		return Response.ok(result).type(MediaType.APPLICATION_JSON_TYPE)
-				.build();
+	private Response buildResponse(LoginResponse result) {
+		return Response.ok(result).type(MediaType.APPLICATION_JSON_TYPE).build();
 	}
 
-	@Override
-	public void logout() {
-		// TODO Auto-generated method stub
 
+	@POST
+	@Path("/logout")
+	public Response logout(LogoutRequest logoutRequest) {
+		try {
+			userService.removeApiKey(logoutRequest.getApiKey());
+		} catch(Exception e) {
+			logger.warn("API Key not found.");
+		}
+		return Response.ok().build();
 	}
-
-	@Override
-	public boolean validate() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 }

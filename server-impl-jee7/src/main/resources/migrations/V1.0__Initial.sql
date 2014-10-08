@@ -5,18 +5,6 @@ create table configuration (
 	primary key (id)
 ) ENGINE=InnoDB;
 
-create table locations (
-	id bigint not null auto_increment,
-	coordinates varchar(255) not null,
-	time_added datetime not null,
- 	description varchar(255),
- 	time_last_usage datetime,
- 	name varchar(255) not null,
- 	phone varchar(255),
- 	url varchar(255),
- 	primary key (id)
-) ENGINE=InnoDB;
-
 create table user_oauth_service (
 	id bigint not null auto_increment,
 	service_id varchar(255),
@@ -25,6 +13,8 @@ create table user_oauth_service (
 	primary key (id),
 	unique (user_id, service_id)
 ) ENGINE=InnoDB;
+
+ALTER TABLE user_oauth_service ADD CONSTRAINT ucon_user_oauth_service_1 UNIQUE (service_id, user_id);
 
 create table users (
 	id bigint not null auto_increment,

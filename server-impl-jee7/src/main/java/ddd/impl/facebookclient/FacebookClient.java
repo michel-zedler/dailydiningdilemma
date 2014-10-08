@@ -7,15 +7,13 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-
 @ApplicationScoped
 public class FacebookClient {
 
 	public FacebookMeResponse getMe(String token) {
 		Client client = ClientBuilder.newBuilder().build();
 
-		WebTarget target = client.target("https://graph.facebook.com").path(
-				"me");
+		WebTarget target = client.target("https://graph.facebook.com").path("me");
 
 		target = target.queryParam("access_token", token);
 		target = target.queryParam("", "");
@@ -31,7 +29,7 @@ public class FacebookClient {
 
 	private RuntimeException buildException(Response response) {
 		int statusCode = response.getStatus();
-		
+
 		if (statusCode == 400) {
 			throw new UnauthorizedException();
 		} else {

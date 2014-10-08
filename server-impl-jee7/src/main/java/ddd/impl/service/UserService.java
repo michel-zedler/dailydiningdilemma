@@ -3,6 +3,7 @@ package ddd.impl.service;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import ddd.impl.auth.OAuthProfile;
@@ -59,6 +60,11 @@ public class UserService {
 		UserEntity entity = userDao.findById(userModel.getId());
 		addServiceOAuthBindung(entity, serviceName, serviceId);
 	}
+	
+	public void removeApiKey(String apiKey) {
+		UserEntity entity = userDao.findByApiKey(apiKey);
+		entity.setApiKey(null);
+	}
 
 	protected void addServiceOAuthBindung(UserEntity entity,
 			String serviceName, String serviceId) {
@@ -84,5 +90,15 @@ public class UserService {
 		model.setDisplayName(entity.getDisplayName());
 
 		return model;
+	}
+
+	public boolean isApiKeyValid(String apiKey) {
+		UserEntity e = userDao.findByApiKey(apiKey);
+		
+		if (e == null) {
+			return false;
+		}
+		
+		return true;
 	}
 }
