@@ -1,6 +1,5 @@
 package ddd.impl.rest;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +12,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -75,13 +75,10 @@ public class DecisionServiceRest {
 	@GET
 	@Path("/find")
 	@RequiresValidUser
-	public Response find(@Context UriInfo uriInfo) {
+	public Response find(@QueryParam("open") Boolean open) {
 		DecisionCriteria criteria = new DecisionCriteria();
 
-		MultivaluedMap<String, String> parameters = uriInfo.getQueryParameters();
-		if (parameters.containsKey("open")) {
-			criteria.setOpen(BooleanUtils.toBoolean(parameters.getFirst("open")));
-		}
+		criteria.setOpen(open);
 
 		List<DecisionModel> list = decisionService.findByCriteria(criteria);
 
@@ -89,7 +86,7 @@ public class DecisionServiceRest {
 
 		return Response.ok().entity(result).build();
 	}
-
+	
 	private List<DecisionDto> map(List<DecisionModel> list) {
 		List<DecisionDto> result = new ArrayList<DecisionDto>();
 

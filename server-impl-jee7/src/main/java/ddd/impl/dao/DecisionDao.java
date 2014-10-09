@@ -24,9 +24,12 @@ public class DecisionDao {
 		
 		Date now = new Date();
 
-		if (decisionCriteria.getOpen() != null) {
+		if (decisionCriteria.getOpen() == Boolean.TRUE) {
 			helper.addLessThanOrEqualTo(Decision_.votingCloseDate, now);
 			helper.addGreaterThanOrEqualTo(Decision_.votingOpenDate, now);
+		} else if (decisionCriteria.getOpen() == Boolean.FALSE) {
+			helper.addGreaterThanOrEqualTo(Decision_.votingCloseDate, now);
+			helper.addLessThanOrEqualTo(Decision_.votingOpenDate, now);
 		}
 		
 		return helper.getResultList();
