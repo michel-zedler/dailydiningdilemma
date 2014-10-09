@@ -1,6 +1,7 @@
 package ddd.impl.dao;
 
 import static ddd.impl.entity.QDecision.decision;
+import static ddd.impl.entity.QOption.option;
 
 import java.util.Date;
 import java.util.List;
@@ -12,10 +13,12 @@ import javax.persistence.PersistenceContext;
 import org.apache.commons.lang3.BooleanUtils;
 
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 
+import ddd.impl.criteria.DecisionCriteria;
 import ddd.impl.entity.Decision;
-import ddd.impl.entity.DecisionCriteria;
+import ddd.impl.entity.QOption;
 
 @ApplicationScoped
 public class DecisionDao {
@@ -24,9 +27,7 @@ public class DecisionDao {
 	private EntityManager entityManager;
 
 	public List<Decision> findByCriteria(DecisionCriteria decisionCriteria) {
-
 		Date now = new Date();
-
 		BooleanBuilder builder = new BooleanBuilder();
 
 		if (BooleanUtils.isTrue(decisionCriteria.getOpen())) {
@@ -45,6 +46,11 @@ public class DecisionDao {
 
 	public void persist(Decision decision) {
 		entityManager.persist(decision);
+	}
+
+	public void deleteAll() {
+		new JPADeleteClause(entityManager, option).execute();
+		new JPADeleteClause(entityManager, decision).execute();
 	}
 
 }

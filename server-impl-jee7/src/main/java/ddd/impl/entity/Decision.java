@@ -18,7 +18,7 @@ public class Decision {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "voting_planned_opening_date", nullable = false)
 	private Date votingOpenDate;
@@ -26,10 +26,17 @@ public class Decision {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "voting_planned_closing_date", nullable = false)
 	private Date votingCloseDate;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "voting_actual_closing_date", nullable = true)
+	private Date actualClosingDate;
 
 	@Column(name = "title", nullable = false)
 	private String title;
 
+	@Column(name = "description", nullable = false)
+	private String description;
+	
 	public Long getId() {	
 		return id;
 	}
@@ -61,5 +68,20 @@ public class Decision {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public Date getActualClosingDate() {
+		return actualClosingDate;
+	}
+	
+	public void setActualClosingDate(Date actualClosingDate) {
+		this.actualClosingDate = actualClosingDate;
+	}
 }

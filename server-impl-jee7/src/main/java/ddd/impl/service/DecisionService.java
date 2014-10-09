@@ -6,9 +6,9 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import ddd.impl.criteria.DecisionCriteria;
 import ddd.impl.dao.DecisionDao;
 import ddd.impl.entity.Decision;
-import ddd.impl.entity.DecisionCriteria;
 import ddd.impl.model.DecisionModel;
 
 @Stateless
@@ -52,5 +52,9 @@ public class DecisionService {
 		decisionDao.persist(decision);
 		
 		model.setId(decision.getId());
+	}
+
+	public void deleteAll() {
+		decisionDao.deleteAll();
 	}
 }

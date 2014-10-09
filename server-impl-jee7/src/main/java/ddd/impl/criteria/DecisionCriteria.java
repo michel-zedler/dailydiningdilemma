@@ -1,4 +1,4 @@
-package ddd.impl.entity;
+package ddd.impl.criteria;
 
 public class DecisionCriteria {
 

@@ -26,10 +26,6 @@ public class CreateDecisionRequest {
 	@Future
 	private Date votingCloseDate;
 
-	public String getDescription() {
-		return description;
-	}
-
 	public String getTitle() {
 		return title;
 	}
@@ -40,10 +36,6 @@ public class CreateDecisionRequest {
 
 	public Date getVotingOpenDate() {
 		return votingOpenDate;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public void setTitle(String name) {

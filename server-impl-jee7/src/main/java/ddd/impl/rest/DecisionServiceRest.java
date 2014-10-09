@@ -13,20 +13,15 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriInfo;
-
-import org.apache.commons.lang3.BooleanUtils;
 
 import ddd.api.model.DecisionDto;
 import ddd.api.request.CreateDecisionRequest;
 import ddd.api.response.CreateDecisionResponse;
 import ddd.impl.annotation.RequiresValidUser;
-import ddd.impl.entity.DecisionCriteria;
+import ddd.impl.criteria.DecisionCriteria;
 import ddd.impl.model.DecisionModel;
 import ddd.impl.service.DecisionService;
 

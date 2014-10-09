@@ -16,7 +16,7 @@ import ddd.impl.annotation.RequiresValidUser;
 import ddd.impl.service.UserService;
 
 @Provider
-@RequiresValidUser
+@RequiresValidUser()
 public class RequiresValidUserInterceptor implements ContainerRequestFilter {
 
 	@Inject

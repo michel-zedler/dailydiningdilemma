@@ -11,5 +11,5 @@ import javax.ws.rs.NameBinding;
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequiresValidUser {
-
+    String[] value() default {};
 }

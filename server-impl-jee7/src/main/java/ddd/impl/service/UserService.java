@@ -3,7 +3,6 @@ package ddd.impl.service;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import ddd.impl.auth.OAuthProfile;
