@@ -1,13 +1,15 @@
 package ddd.impl.dao;
 
-import it.eckertpartner.jeeutils.persistence.CriteriaHelper;
+import static ddd.impl.entity.QConfiguration.configuration;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.mysema.query.jpa.impl.JPAQuery;
+
 import ddd.impl.entity.Configuration;
-import ddd.impl.entity.Configuration_;
+import ddd.impl.entity.QConfiguration;
 
 @ApplicationScoped
 public class ConfigurationDao {
@@ -16,12 +18,11 @@ public class ConfigurationDao {
 	private EntityManager entityManager;
 
 	public Configuration findByName(String name) {
-		CriteriaHelper<Configuration> helper = new CriteriaHelper<Configuration>(entityManager, Configuration.class);
+		JPAQuery query = new JPAQuery(entityManager);
 
-		helper.addEqual(Configuration_.name, name);
-		
-		return helper.getSingleResultOrNull();
+		return query
+				.from(configuration)
+				.where(QConfiguration.configuration.name.eq(name))
+				.singleResult(QConfiguration.configuration);
 	}
-	
-	
 }

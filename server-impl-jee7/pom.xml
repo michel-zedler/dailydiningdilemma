@@ -20,6 +20,7 @@
 		<hbm2ddl.format>true</hbm2ddl.format>
 		<hbm2ddl.drop>false</hbm2ddl.drop>
 		<hbm2ddl.update>true</hbm2ddl.update>
+		<querydsl.version>3.5.0</querydsl.version>
 	</properties>
 
 	<build>
@@ -55,6 +56,22 @@
 				</dependencies>
 			</plugin>
 			<plugin>
+				<groupId>com.mysema.maven</groupId>
+				<artifactId>apt-maven-plugin</artifactId>
+				<version>1.0.9</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/generated-sources/annotations</outputDirectory>
+							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
 				<version>3.0</version>
@@ -84,11 +101,6 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>it.eckertpartner.core</groupId>
-			<artifactId>javaee-utils</artifactId>
-			<version>1.2-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.7</version>
@@ -102,6 +114,11 @@
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
 			<version>3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mysema.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+			<version>${querydsl.version}</version>
 		</dependency>
 
 
@@ -138,7 +155,12 @@
 			<version>4.3.5.Final</version>
 			<scope>provided</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>com.mysema.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+			<version>${querydsl.version}</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>javax</groupId>

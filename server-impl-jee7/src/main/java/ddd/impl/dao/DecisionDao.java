@@ -1,6 +1,6 @@
 package ddd.impl.dao;
 
-import it.eckertpartner.jeeutils.persistence.CriteriaHelper;
+import static ddd.impl.entity.QDecision.decision;
 
 import java.util.Date;
 import java.util.List;
@@ -9,9 +9,13 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.lang3.BooleanUtils;
+
+import com.mysema.query.BooleanBuilder;
+import com.mysema.query.jpa.impl.JPAQuery;
+
 import ddd.impl.entity.Decision;
 import ddd.impl.entity.DecisionCriteria;
-import ddd.impl.entity.Decision_;
 
 @ApplicationScoped
 public class DecisionDao {
@@ -20,24 +24,27 @@ public class DecisionDao {
 	private EntityManager entityManager;
 
 	public List<Decision> findByCriteria(DecisionCriteria decisionCriteria) {
-		CriteriaHelper<Decision> helper = new CriteriaHelper<Decision>(entityManager, Decision.class);
-		
+
 		Date now = new Date();
 
-		if (decisionCriteria.getOpen() == Boolean.TRUE) {
-			helper.addLessThanOrEqualTo(Decision_.votingCloseDate, now);
-			helper.addGreaterThanOrEqualTo(Decision_.votingOpenDate, now);
-		} else if (decisionCriteria.getOpen() == Boolean.FALSE) {
-			helper.addGreaterThanOrEqualTo(Decision_.votingCloseDate, now);
-			helper.addLessThanOrEqualTo(Decision_.votingOpenDate, now);
+		BooleanBuilder builder = new BooleanBuilder();
+
+		if (BooleanUtils.isTrue(decisionCriteria.getOpen())) {
+			builder.and(decision.votingCloseDate.loe(now));
+			builder.and(decision.votingOpenDate.goe(now));
+		} else if (BooleanUtils.isFalse(decisionCriteria.getOpen())) {
+			builder.and(decision.votingCloseDate.gt(now));
+			builder.and(decision.votingOpenDate.lt(now));
 		}
-		
-		return helper.getResultList();
+
+		JPAQuery query = new JPAQuery(entityManager);
+		return query.from(decision)
+				.where(builder)
+				.list(decision);
 	}
 
 	public void persist(Decision decision) {
 		entityManager.persist(decision);
 	}
-	
-	
+
 }

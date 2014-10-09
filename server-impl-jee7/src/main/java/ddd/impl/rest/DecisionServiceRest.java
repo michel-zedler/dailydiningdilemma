@@ -45,7 +45,7 @@ public class DecisionServiceRest {
 	private ValidationHelper validationHelper;
 
 	@POST
-	@Path("/create")
+	@Path("")
 	@RequiresValidUser
 	public Response createDecision(CreateDecisionRequest createDecisionRequest) {
 		Set<ConstraintViolation<CreateDecisionRequest>> violations = validator.validate(createDecisionRequest);
@@ -73,7 +73,7 @@ public class DecisionServiceRest {
 	}
 
 	@GET
-	@Path("/find")
+	@Path("")
 	@RequiresValidUser
 	public Response find(@QueryParam("open") Boolean open) {
 		DecisionCriteria criteria = new DecisionCriteria();
