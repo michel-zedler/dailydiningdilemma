@@ -76,7 +76,7 @@
 				<artifactId>flyway-maven-plugin</artifactId>
 				<version>3.0</version>
 				<configuration>
-					<url>jdbc:mysql://localhost/reporting</url>
+					<url>jdbc:mysql://localhost/dailydining</url>
 					<user>root</user>
 					<password>root</password>
 					<locations>
