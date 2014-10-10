@@ -3,8 +3,9 @@
 
   ddd.controller('LoginCtrl', function ($scope, $location, AuthService, $ionicBackdrop) {
 
-    var handleLoginResult = function (result, err) {
+    var handleLoginResult = function (err) {
       $ionicBackdrop.release();
+
       if (err) {
         alert('Login failed: ' + err);
       } else {
