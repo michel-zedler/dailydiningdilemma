@@ -15,7 +15,8 @@ DDD v2
 3. cordova plugin add org.apache.cordova.console
 4. cordova plugin add com.ionic.keyboard
 5. cd ddd-app
-6. ionic platform add ios
-7. ionic build ios
-8. ionic emulate ios
+6. gulp profile-mock or gulp profile-production 
+7. ionic platform add ios
+8. ionic build ios
+9. ionic emulate ios
 
