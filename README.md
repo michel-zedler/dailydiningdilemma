@@ -7,11 +7,15 @@ DDD v2
 ### Requirements:
 - [nodejs](http://nodejs.org/)
 - XCode for ios, android sdk for android
+- Facebook developer account for facebook login
 
 ### Steps (for ios, substitute ios with android for android)
 1. install cordova (you may need sudo for this): npm install -g cordova ionic
-2. cd ddd-app
-3. ionic platform add ios
-4. ionic build ios
-5. ionic emulate ios
+2. cordova plugin add org.apache.cordova.device
+3. cordova plugin add org.apache.cordova.console
+4. cordova plugin add com.ionic.keyboard
+5. cd ddd-app
+6. ionic platform add ios
+7. ionic build ios
+8. ionic emulate ios
 
