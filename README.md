@@ -25,5 +25,5 @@ DDD v2
 In order to use the app in a browser you need a running webserver like [mongoose](http://cesanta.com/mongoose.shtml).
 After you created the index.html (see gulp profile-mock or gulp-profile-production) you can access the app via:
 http://127.0.0.1:8080/dailydiningdilemma/ddd-app/www/
-It is very important to use localhost otherwise the login will not work in production mode (origin for callback for oauth must be localhost)
+It is very important to use localhost otherwise the login will not work in production mode (origin of callback for oauth must be localhost)
 
