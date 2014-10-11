@@ -21,6 +21,9 @@ public class UserEntity {
 	@Column(name = "apikey", nullable = true, length = 128)
 	private String apiKey;
 
+	@Column(name = "roles", nullable = true, length = 128)
+	private String roles;
+
 	public String getApiKey() {
 		return apiKey;
 	}
@@ -44,5 +47,12 @@ public class UserEntity {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
+	public String getRoles() {
+		return roles;
+	}
+	
+	public void setRoles(String roles) {
+		this.roles = roles;
+	}
 }

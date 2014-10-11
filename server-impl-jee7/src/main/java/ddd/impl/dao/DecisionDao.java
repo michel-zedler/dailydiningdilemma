@@ -18,7 +18,6 @@ import com.mysema.query.jpa.impl.JPAQuery;
 
 import ddd.impl.criteria.DecisionCriteria;
 import ddd.impl.entity.Decision;
-import ddd.impl.entity.QOption;
 
 @ApplicationScoped
 public class DecisionDao {

@@ -5,6 +5,7 @@ public class UserModel {
 	private Long id;
 	private String displayName;
 	private String apiKey;
+	private String roles;
 
 	public Long getId() {
 		return id;
@@ -28,6 +29,14 @@ public class UserModel {
 
 	public void setApiKey(String apiKey) {
 		this.apiKey = apiKey;
+	}
+	
+	public String getRoles() {
+		return roles;
+	}
+	
+	public void setRoles(String roles) {
+		this.roles = roles;
 	}
 
 }

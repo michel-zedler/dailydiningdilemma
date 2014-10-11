@@ -1,5 +1,7 @@
 package ddd.impl.service;
 
+import java.util.Set;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -87,10 +89,21 @@ public class UserService {
 		model.setId(entity.getId());
 		model.setApiKey(entity.getApiKey());
 		model.setDisplayName(entity.getDisplayName());
-
+		model.setRoles(entity.getRoles());
+		
 		return model;
 	}
 
+	public UserModel findByApiKey(String apiKey) {
+		UserEntity entity = userDao.findByApiKey(apiKey);
+		
+		if (entity == null) {
+			return null;
+		}
+		
+		return toModel(entity);
+	}
+	
 	public boolean isApiKeyValid(String apiKey) {
 		UserEntity e = userDao.findByApiKey(apiKey);
 		

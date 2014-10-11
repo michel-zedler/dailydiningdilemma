@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -20,7 +21,7 @@ import javax.ws.rs.core.Response.Status;
 import ddd.api.model.DecisionDto;
 import ddd.api.request.CreateDecisionRequest;
 import ddd.api.response.CreateDecisionResponse;
-import ddd.impl.annotation.RequiresValidUser;
+import ddd.impl.constants.Roles;
 import ddd.impl.criteria.DecisionCriteria;
 import ddd.impl.model.DecisionModel;
 import ddd.impl.service.DecisionService;
@@ -28,6 +29,7 @@ import ddd.impl.service.DecisionService;
 @Path("/decisions")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@RolesAllowed(Roles.USER)
 public class DecisionServiceRest {
 
 	@Inject
@@ -41,7 +43,6 @@ public class DecisionServiceRest {
 
 	@POST
 	@Path("")
-	@RequiresValidUser
 	public Response createDecision(CreateDecisionRequest createDecisionRequest) {
 		Set<ConstraintViolation<CreateDecisionRequest>> violations = validator.validate(createDecisionRequest);
 
@@ -69,7 +70,6 @@ public class DecisionServiceRest {
 
 	@GET
 	@Path("")
-	@RequiresValidUser
 	public Response find(@QueryParam("open") Boolean open) {
 		DecisionCriteria criteria = new DecisionCriteria();
 
