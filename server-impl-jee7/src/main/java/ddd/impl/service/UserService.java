@@ -39,10 +39,10 @@ public class UserService {
 		deviceEntity.setUuid(deviceInfo.getUuid());
 		deviceEntity.setPlatform(deviceInfo.getPlatform());
 		deviceEntity.setModel(deviceInfo.getModel());
-		
+
 		userDao.persist(deviceEntity);
 
-		return toModel(user, deviceEntity);
+		return toModel(user, deviceEntity.getApiKey());
 	}
 
 	public String createApiKey() {
@@ -54,7 +54,7 @@ public class UserService {
 		UserEntity entity = userDao.findById(userModel.getId());
 		addServiceOAuthBindung(entity, serviceName, serviceId);
 	}
-	
+
 	public void removeApiKey(String apiKey) {
 		userDao.deleteApiKey(apiKey);
 	}
@@ -70,34 +70,34 @@ public class UserService {
 		userDao.persist(mapping);
 	}
 
-	private UserModel toModel(UserEntity entity, DeviceEntity deviceEntity) {
+	private UserModel toModel(UserEntity entity, String apiKey) {
 		UserModel model = new UserModel();
 
 		model.setId(entity.getId());
-		model.setApiKey(deviceEntity.getApiKey());
 		model.setDisplayName(entity.getDisplayName());
 		model.setRoles(entity.getRoles());
-		
+		model.setApiKey(apiKey);
+
 		return model;
 	}
 
 	public UserModel findByApiKey(String apiKey) {
 		UserEntity entity = userDao.findByApiKey(apiKey);
-		
+
 		if (entity == null) {
 			return null;
 		}
-		
+
 		return toModel(entity, null);
 	}
-	
+
 	public boolean isApiKeyValid(String apiKey) {
 		UserEntity e = userDao.findByApiKey(apiKey);
-		
+
 		if (e == null) {
 			return false;
 		}
-		
+
 		return true;
 	}
 }
