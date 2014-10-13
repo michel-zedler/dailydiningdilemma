@@ -84,6 +84,7 @@ public class LoginServiceRest {
 			return buildResponse(result);
 		} catch (Exception e) {
 			String message = "Error. See Server logs.";
+			logger.warn("Error", e);
 			return buildLoginFailure(message);
 		}
 	}
