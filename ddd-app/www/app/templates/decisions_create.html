@@ -23,16 +23,14 @@
                 <label class="item item-input">
                     <textarea placeholder="Description" ng-model="decision.description" required></textarea>
                 </label>
-                <label class="item item-input">
+                <label class="item item-input" ng-click="openStartDatePicker()">
                     <span class="input-label">Start date</span>
+                    <input type="text" ng-model="decision.votingOpenDate">
+                    <!-- <span class="input-label">Start date</span>
                     <datetimepicker data-ng-model="decision.votingOpenDate"></datetimepicker>
-                    <!-- <input type="date" ng-model="decision.votingOpenDate" required> -->
+                    <input type="date" ng-model="decision.votingOpenDate" required> -->
                 </label>
-                <label class="item item-input">
-                    <span class="input-label">End date</span>
-                    <datetimepicker data-ng-model="decision.votingCloseDate"></datetimepicker>
-                    <!-- <input type="date" ng-model="decision.votingCloseDate" required> -->
-                </label>
+
 
             </div>
 
