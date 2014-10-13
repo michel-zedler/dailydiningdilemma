@@ -2,9 +2,10 @@
   "use strict";
 
   ddd.factory('DecisionService', function () {
-    var now = new Date();
-    var opening = new Date().setHours(now.getHours() - 1);
-    var closing = new Date().setHours(now.getHours() + 1);
+    var opening = new Date();
+    opening.setHours(opening.getHours() - 1);
+    var closing = new Date();
+    closing.setHours(closing.getHours() + 1);
 
     var decisions = [
       {
