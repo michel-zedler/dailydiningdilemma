@@ -16,6 +16,12 @@
 
         <a class="button icon-right ion-chevron-right button-calm" ng-href="#/app/decisions-create">Create Decision</a>
 
+        <ul class="list">
+            <li class="item" ng-repeat="decision in decisions">
+                {{decision.title}}
+            </li>
+        </ul>
+
     </ion-content>
 
 </ion-view>

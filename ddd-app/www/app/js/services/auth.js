@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  ddd.factory('AuthService', function($firebase, $firebaseSimpleLogin, $http, GlobalDataService) {
+  ddd.factory('AuthService', function($firebase, $firebaseSimpleLogin, $http, GlobalDataService, Restangular) {
 
     var _authClient = $firebaseSimpleLogin(new Firebase("https://ddd-app.firebaseio.com"));
 
@@ -20,6 +20,12 @@
               cb(data.errorMessage);
             } else {
               GlobalDataService.user.sessionKey = data.apiKey;
+
+              //delete $http.defaults.headers.common['X-Requested-With'];
+              $http.defaults.headers.common.apikey = data.apiKey;
+
+
+              //Restangular.setDefaultHeaders({ apikey: data.apiKey });
 
               GlobalDataService.user.id = user.id;
               GlobalDataService.user.name = user.displayName;
