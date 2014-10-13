@@ -1,6 +1,8 @@
-var ddd = angular.module('ddd', ['ionic', 'firebase']);
+var ddd = angular.module('ddd', ['ionic', 'firebase', 'restangular']);
 
-ddd.run(function ($rootScope, $state, $ionicPlatform, $window, GlobalDataService) {
+ddd.run(function ($rootScope, $state, $ionicPlatform, $window, GlobalDataService, Restangular) {
+
+    Restangular.setBaseUrl("https://tools.eckert-partner.it/dailydining-int/api/rest/");
 
     $ionicPlatform.ready(function () {
       if (window.StatusBar) {

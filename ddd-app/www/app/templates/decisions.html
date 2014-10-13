@@ -4,17 +4,40 @@
         <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
     </ion-nav-buttons>
 
+    <ion-nav-buttons side="right">
+        <a class="button button-icon icon ion-plus" ng-href="#/app/decisions-create"></a>
+    </ion-nav-buttons>
+
     <ion-content has-header="true" padding="true">
 
         <div class="list card">
             <div class="item">
                 <h2>Welcome {{user.name}}!</h2>
+
                 <p>mail: {{user.email}}</p>
+
                 <p>key: {{user.key}}</p>
             </div>
         </div>
 
-        <a class="button icon-right ion-chevron-right button-calm" ng-href="#/app/decisions-create">Create Decision</a>
+        <div class="card" ng-repeat="decision in decisions" ng-hide="!decisions.length">
+            <div class="item item-divider">
+                {{ decision.title }}
+            </div>
+            <div class="item item-text-wrap">
+                {{ decision.description }}
+            </div>
+            <div class="item item-divider">
+                Start: {{ decision.votingOpenDate.toLocaleString() }}, Closing: {{
+                decision.votingEndDate.toLocaleString() }}
+            </div>
+        </div>
+
+        <div class="card" ng-show="!decisions.length">
+            <div class="item item-text-wrap">
+                No decisions so far, pro tip: create a new one! :)
+            </div>
+        </div>
 
     </ion-content>
 

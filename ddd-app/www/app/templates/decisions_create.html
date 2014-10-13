@@ -6,14 +6,26 @@
 
     <ion-content has-header="true" padding="true">
 
-        <div class="list">
-            <label class="item item-input">
-                <input type="text" placeholder="Title">
-            </label>
-            <label class="item item-input">
-                <textarea placeholder="Description" ng-model="decision.description"></textarea>
-            </label>
-        </div>
+        <form name="decisionForm" novalidate>
+
+            <div class="list">
+                <label class="item item-input">
+                    <input type="text" placeholder="Title" ng-model="decision.title" required>
+                </label>
+                <label class="item item-input">
+                    <textarea placeholder="Description" ng-model="decision.description" required></textarea>
+                </label>
+            </div>
+
+            <button class="button button-full button-positive" ng-click="submit()" ng-disabled="decisionForm.$invalid">
+                Create
+            </button>
+
+            <span ng-show="bookForm.title.$invalid && bookForm.title.$dirty">
+                Bitte gebene Sie einen Titel ein.
+            </span>
+
+        </form>
 
     </ion-content>
 
