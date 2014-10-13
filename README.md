@@ -16,10 +16,11 @@ DDD v2
 3. cordova plugin add org.apache.cordova.device
 4. cordova plugin add org.apache.cordova.console
 5. cordova plugin add com.ionic.keyboard
-6. gulp profile-mock or gulp profile-production 
-7. ionic platform add ios
-8. ionic build ios
-9. ionic emulate ios
+6. npm install
+7. gulp profile-mock or gulp profile-production 
+8. ionic platform add ios
+9. ionic build ios
+10. ionic emulate ios
 
 ## App Development
 In order to use the app in a browser you need a running webserver like [mongoose](http://cesanta.com/mongoose.shtml).
