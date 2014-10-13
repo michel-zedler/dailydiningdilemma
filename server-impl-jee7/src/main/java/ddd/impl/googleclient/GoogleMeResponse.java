@@ -3,7 +3,10 @@ package ddd.impl.googleclient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @XmlRootElement
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GoogleMeResponse {
 
 	@XmlElement(name = "id")

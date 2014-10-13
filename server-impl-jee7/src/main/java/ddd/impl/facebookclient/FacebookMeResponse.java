@@ -5,8 +5,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(ignoreUnknown=true)
 @XmlRootElement
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class FacebookMeResponse {
 
 	@XmlAttribute(name="id")
