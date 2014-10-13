@@ -6,21 +6,33 @@ DDD v2
 
 ### Requirements:
 - [nodejs](http://nodejs.org/)
-- gulp, install nodejs first: npm install gulp -g (sudo for mac and linux users)
+- git
+- gulp
 - XCode for ios, android sdk for android
 - Facebook developer account for facebook login
 
-### Steps for running the app within an emulator (for ios, substitute ios with android for android)
-1. install cordova (you may need sudo for this): npm install -g cordova ionic
-2. cd ddd-app
-3. cordova plugin add org.apache.cordova.device
-4. cordova plugin add org.apache.cordova.console
-5. cordova plugin add com.ionic.keyboard
-6. npm install
-7. gulp profile-mock or gulp profile-production 
-8. ionic platform add ios
-9. ionic build ios
-10. ionic emulate ios
+### General setup
+
+0. install nodejs
+1. install git
+2. in git bash: npm install -g gulp 
+3. install cordova (you may need sudo for this): npm install -g cordova ionic
+4. cd ddd-app
+5. cordova plugin add org.apache.cordova.device
+6. cordova plugin add org.apache.cordova.console
+7. cordova plugin add com.ionic.keyboard
+8. npm install
+9. gulp profile-mock or gulp profile-production 
+
+### Steps for running the app within an ios emulator (mac-os only)
+10. ionic platform add ios
+11. ionic build ios
+12. ionic emulate ios
+
+### Steps for running the app within an android emulator
+10. ionic platform add android
+11. ionic build android
+12. ionic emulate android
 
 ## App Development
 In order to use the app in a browser you need a running webserver like [mongoose](http://cesanta.com/mongoose.shtml).
