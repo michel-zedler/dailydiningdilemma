@@ -11,7 +11,12 @@
 
         var data = {
           'service': provider,
-          'token': user.accessToken
+          'token': user.accessToken,
+          "deviceInfo": {
+            "uuid": "uuid",
+            "model": "model",
+            "platform": "browser"
+          }
         };
 
         $http({method: 'POST', url: 'https://tools.eckert-partner.it/dailydining-int/api/rest/login', data: data}).
