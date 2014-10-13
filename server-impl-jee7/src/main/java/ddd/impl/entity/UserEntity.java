@@ -18,15 +18,8 @@ public class UserEntity {
 	@Column(name = "displayName", nullable = false, length = 64)
 	private String displayName;
 
-	@Column(name = "apikey", nullable = true, length = 128)
-	private String apiKey;
-
 	@Column(name = "roles", nullable = true, length = 128)
 	private String roles;
-
-	public String getApiKey() {
-		return apiKey;
-	}
 
 	public String getDisplayName() {
 		return displayName;
@@ -34,10 +27,6 @@ public class UserEntity {
 
 	public Long getId() {
 		return id;
-	}
-
-	public void setApiKey(String apiKey) {
-		this.apiKey = apiKey;
 	}
 
 	public void setDisplayName(String displayName) {

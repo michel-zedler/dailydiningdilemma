@@ -3,6 +3,7 @@ package ddd.impl.auth;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import ddd.api.model.DeviceInfo;
 import ddd.impl.googleclient.GoogleClient;
 import ddd.impl.googleclient.GoogleMeResponse;
 import ddd.impl.model.UserModel;
@@ -18,12 +19,12 @@ public class GoogleAuthHandler implements OAuthHandler {
 	private GoogleClient googleClient;
 
 	@Override
-	public UserModel login(String token) {
+	public UserModel login(String token, DeviceInfo deviceInfo) {
 		GoogleMeResponse meResponse = googleClient.getMe(token);
 		
 		OAuthProfile profile = map(meResponse);
 		
-		UserModel model = userService.loginUser(profile);
+		UserModel model = userService.loginUser(profile, deviceInfo);
 		
 		return model;
 	}

@@ -1,5 +1,6 @@
 package ddd.api.request;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -14,6 +15,8 @@ public class LoginRequest {
 	@NotNull
 	private String service;
 
+	@NotNull
+	@Valid
 	private DeviceInfo deviceInfo;
 
 	public String getService() {

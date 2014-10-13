@@ -3,6 +3,7 @@ package ddd.impl.auth;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import ddd.api.model.DeviceInfo;
 import ddd.impl.facebookclient.FacebookClient;
 import ddd.impl.facebookclient.FacebookMeResponse;
 import ddd.impl.model.UserModel;
@@ -18,12 +19,12 @@ public class FacebookAuthHandler implements OAuthHandler {
 	private FacebookClient facebookClient;
 
 	@Override
-	public UserModel login(String token) {
+	public UserModel login(String token, DeviceInfo deviceInfo) {
 		FacebookMeResponse meResponse = facebookClient.getMe(token);
 
 		OAuthProfile profile = map(meResponse);
 
-		UserModel model = userService.loginUser(profile);
+		UserModel model = userService.loginUser(profile, deviceInfo);
 
 		return model;
 	}

@@ -1,14 +1,14 @@
 package ddd.impl.service;
 
-import java.util.Set;
-
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import ddd.api.model.DeviceInfo;
 import ddd.impl.auth.OAuthProfile;
 import ddd.impl.dao.UserDao;
+import ddd.impl.entity.DeviceEntity;
 import ddd.impl.entity.UserEntity;
 import ddd.impl.entity.UserOAuthIdMapping;
 import ddd.impl.model.UserModel;
@@ -19,41 +19,34 @@ public class UserService {
 	@Inject
 	private UserDao userDao;
 
-	public UserModel loginUser(OAuthProfile profile) {
+	public UserModel loginUser(OAuthProfile profile, DeviceInfo deviceInfo) {
 		UserEntity user = userDao.findByServiceNameAndId(
 				profile.getServiceName(), profile.getServiceId());
 
 		if (user == null) {
 			user = new UserEntity();
-			user.setApiKey(createApiKey());
 			user.setDisplayName(profile.getDisplayName());
-
 			userDao.persist(user);
 
 			addServiceOAuthBindung(user, profile.getServiceName(), profile.getServiceId());
 		}
 
-		if (user.getApiKey() == null) {
-			user.setApiKey(createApiKey());
-		}
-		
-		return toModel(user);
-	}
+		userDao.deleteExistingDeviceEntity(user, deviceInfo.getModel(), deviceInfo.getPlatform(), deviceInfo.getUuid());
 
-	public void renewApiKey(UserModel userModel) {
-		UserEntity userEntity = userDao.findById(userModel.getId());
-		String apiKey = createApiKey();
-		userEntity.setApiKey(apiKey);
-		userModel.setApiKey(apiKey);
+		DeviceEntity deviceEntity = new DeviceEntity();
+		deviceEntity.setApiKey(createApiKey());
+		deviceEntity.setUser(user);
+		deviceEntity.setUuid(deviceInfo.getUuid());
+		deviceEntity.setPlatform(deviceInfo.getPlatform());
+		deviceEntity.setModel(deviceInfo.getModel());
+		
+		userDao.persist(deviceEntity);
+
+		return toModel(user, deviceEntity);
 	}
 
 	public String createApiKey() {
 		return RandomStringUtils.randomAlphanumeric(128);
-	}
-
-	public void update(UserModel model) {
-		UserEntity entity = userDao.findById(model.getId());
-		updateEntity(entity, model);
 	}
 
 	public void addServiceOAuthBindung(UserModel userModel, String serviceName,
@@ -63,8 +56,7 @@ public class UserService {
 	}
 	
 	public void removeApiKey(String apiKey) {
-		UserEntity entity = userDao.findByApiKey(apiKey);
-		entity.setApiKey(null);
+		userDao.deleteApiKey(apiKey);
 	}
 
 	protected void addServiceOAuthBindung(UserEntity entity,
@@ -78,16 +70,11 @@ public class UserService {
 		userDao.persist(mapping);
 	}
 
-	private void updateEntity(UserEntity entity, UserModel model) {
-		entity.setApiKey(model.getApiKey());
-		entity.setDisplayName(model.getDisplayName());
-	}
-
-	private UserModel toModel(UserEntity entity) {
+	private UserModel toModel(UserEntity entity, DeviceEntity deviceEntity) {
 		UserModel model = new UserModel();
 
 		model.setId(entity.getId());
-		model.setApiKey(entity.getApiKey());
+		model.setApiKey(deviceEntity.getApiKey());
 		model.setDisplayName(entity.getDisplayName());
 		model.setRoles(entity.getRoles());
 		
@@ -101,7 +88,7 @@ public class UserService {
 			return null;
 		}
 		
-		return toModel(entity);
+		return toModel(entity, null);
 	}
 	
 	public boolean isApiKeyValid(String apiKey) {

@@ -77,7 +77,7 @@ public class LoginServiceRest {
 
 		try {
 			LoginResponse result = new LoginResponse();
-			UserModel entity = handler.login(token);
+			UserModel entity = handler.login(token, loginRequest.getDeviceInfo());
 			result.setApiKey(entity.getApiKey());
 			result.setDisplayName(entity.getDisplayName());
 			result.setSuccess(true);

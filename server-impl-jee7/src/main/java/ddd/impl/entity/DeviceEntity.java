@@ -17,10 +17,13 @@ public class DeviceEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(optional=false)
-	@JoinColumn(name="user_id")
+	@Column(name = "apikey", nullable = true, length = 128)
+	private String apiKey;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "user_id")
 	private UserEntity user;
-	
+
 	@Column(name = "uuid", nullable = false)
 	private String uuid;
 
@@ -29,6 +32,14 @@ public class DeviceEntity {
 
 	@Column(name = "model", nullable = false)
 	private String model;
+
+	public UserEntity getUser() {
+		return user;
+	}
+
+	public void setUser(UserEntity user) {
+		this.user = user;
+	}
 
 	public Long getId() {
 		return id;
@@ -61,4 +72,13 @@ public class DeviceEntity {
 	public void setModel(String model) {
 		this.model = model;
 	}
+
+	public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
+
 }
