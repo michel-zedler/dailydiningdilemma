@@ -2,9 +2,16 @@
   "use strict";
 
   ddd.factory('DecisionService', function (Restangular, GlobalDataService) {
+
+    var decisions = {};
+
     return {
       all: function() {
-        return Restangular.all("decisions").getList();
+        decisions = Restangular.all("decisions").getList();
+        return decisions;
+      },
+      new: function(decision) {
+        decisions.post(decision);
       }
     };
   });
