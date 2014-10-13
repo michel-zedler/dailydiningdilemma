@@ -12,7 +12,8 @@
     "angular-resource": "~1.2.26",
     "firebase-simple-login": "~1.6.0",
     "angularfire": "~0.8.2",
-    "restangular": "~1.4.0"
+    "restangular": "~1.4.0",
+    "angular-bootstrap-datetimepicker": "0.3.0"
   },
   "resolutions": {
     "angular-ui-router": "0.2.10",

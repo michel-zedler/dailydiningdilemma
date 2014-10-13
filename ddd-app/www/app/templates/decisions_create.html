@@ -8,6 +8,14 @@
 
         <form name="decisionForm" novalidate>
 
+            <span ng-show="decisionForm.title.$invalid && decisionForm.title.$dirty">
+                Please enter a title
+            </span>
+
+            <span ng-show="decisionForm.description.$invalid && decisionForm.description.$dirty">
+                Please enter a description
+            </span>
+
             <div class="list">
                 <label class="item item-input">
                     <input type="text" placeholder="Title" ng-model="decision.title" required>
@@ -15,15 +23,32 @@
                 <label class="item item-input">
                     <textarea placeholder="Description" ng-model="decision.description" required></textarea>
                 </label>
+                <label class="item item-input">
+                    <span class="input-label">Start date</span>
+                    <input type="date" ng-model="decision.votingOpenDate" required>
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">End date</span>
+                    <input type="date" ng-model="decision.votingCloseDate" required>
+                </label>
+
             </div>
+
+            <!--
+
+            {
+  "title": "jjdsd",
+  "description": "supergeil",
+  "votingCloseDate": "2015-08-08T16:00:00Z",
+  "votingOpenDate": "2014-10-09T15:00:00Z"
+}
+
+            -->
+
 
             <button class="button button-full button-positive" ng-click="submit()" ng-disabled="decisionForm.$invalid">
                 Create
             </button>
-
-            <span ng-show="bookForm.title.$invalid && bookForm.title.$dirty">
-                Bitte gebene Sie einen Titel ein.
-            </span>
 
         </form>
 
