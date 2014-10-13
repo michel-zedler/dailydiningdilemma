@@ -12,10 +12,10 @@ DDD v2
 
 ### Steps for running the app within an emulator (for ios, substitute ios with android for android)
 1. install cordova (you may need sudo for this): npm install -g cordova ionic
-2. cordova plugin add org.apache.cordova.device
-3. cordova plugin add org.apache.cordova.console
-4. cordova plugin add com.ionic.keyboard
-5. cd ddd-app
+2. cd ddd-app
+3. cordova plugin add org.apache.cordova.device
+4. cordova plugin add org.apache.cordova.console
+5. cordova plugin add com.ionic.keyboard
 6. gulp profile-mock or gulp profile-production 
 7. ionic platform add ios
 8. ionic build ios
