@@ -20,10 +20,6 @@ public class CreateDecisionRequest {
 
 	@NotNull
 	@Future
-	private Date votingOpenDate;
-
-	@NotNull
-	@Future
 	private Date votingCloseDate;
 
 	public String getTitle() {
@@ -34,20 +30,12 @@ public class CreateDecisionRequest {
 		return votingCloseDate;
 	}
 
-	public Date getVotingOpenDate() {
-		return votingOpenDate;
-	}
-
 	public void setTitle(String name) {
 		this.title = name;
 	}
 
 	public void setVotingCloseDate(Date votingCloseDate) {
 		this.votingCloseDate = votingCloseDate;
-	}
-
-	public void setVotingOpenDate(Date votingOpenDate) {
-		this.votingOpenDate = votingOpenDate;
 	}
 
 	public String getDescription() {
