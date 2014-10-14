@@ -65,7 +65,6 @@ public class DecisionServiceRest {
 		} catch (Exception e) {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
-
 	}
 
 	@GET

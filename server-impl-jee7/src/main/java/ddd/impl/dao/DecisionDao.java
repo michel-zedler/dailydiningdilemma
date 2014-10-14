@@ -52,4 +52,9 @@ public class DecisionDao {
 		new JPADeleteClause(entityManager, decision).execute();
 	}
 
+	public Decision findById(Long decisionId) {
+		return entityManager.find(Decision.class, decisionId);
+		
+	}
+
 }
