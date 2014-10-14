@@ -8,11 +8,28 @@
 
         <form name="optionsForm" novalidate>
 
-        </form>
+            <div class="list">
+                <div class="item item item-button-right">
+                    Two options required
+                    <div class="buttons">
+                        <button class="button button-positive" ng-click="addOption()">
+                            <i class="icon ion-plus-circled"></i>
+                        </button>
+                        <button class="button button-positive" ng-click="finish()" ng-disabled="optionsForm.$invalid || options.length < 2">
+                            <i class="icon ion-checkmark-round"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-        <a class="button button-positive" ng-href="#/app/decisions">
-            back to overview
-        </a>
+            <ion-list can-swipe="true" ng-show="options.length">
+                <ion-item ng-repeat="option in options">
+                    <input type="text" placeholder="enter a title" ng-model="option.title" required>
+                    <ion-option-button class="button-assertive" ng-click="options.splice($index, 1)">Delete</ion-option-button>
+                </ion-item>
+            </ion-list>
+
+        </form>
 
     </ion-content>
 

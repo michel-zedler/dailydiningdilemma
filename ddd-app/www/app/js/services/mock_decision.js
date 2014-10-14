@@ -22,6 +22,16 @@
       }
     ];
 
+    var findDecisionById = function(id) {
+      var currentDecision = {};
+      decisions.forEach(function(decision) {
+        if (decision.id === id) {
+          currentDecision = decision;
+        }
+      });
+      return currentDecision;
+    }
+
     return {
       all: function(cb) {
         cb(angular.copy(decisions));
@@ -32,6 +42,13 @@
         decision.votingCloseDate = moment(decision.votingCloseDate);
         decisions.push(decision);
         cb(decision.id);
+      },
+      byId: function(id, cb) {
+        cb(findDecisionById(id));
+      },
+      update: function(decision, cb) {
+        angular.extend(findDecisionById(decision.id), decision);
+        cb();
       }
     };
   });
