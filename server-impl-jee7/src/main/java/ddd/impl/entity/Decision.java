@@ -20,15 +20,11 @@ public class Decision {
 	private Long id;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "voting_planned_opening_date", nullable = false)
-	private Date votingOpenDate;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "voting_planned_closing_date", nullable = false)
+	@Column(name = "planned_closing_date", nullable = false)
 	private Date votingCloseDate;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "voting_actual_closing_date", nullable = true)
+	@Column(name = "actual_closing_date", nullable = true)
 	private Date actualClosingDate;
 
 	@Column(name = "title", nullable = false)
@@ -43,14 +39,6 @@ public class Decision {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Date getVotingOpenDate() {
-		return votingOpenDate;
-	}
-
-	public void setVotingOpenDate(Date votingOpenDate) {
-		this.votingOpenDate = votingOpenDate;
 	}
 
 	public Date getVotingCloseDate() {

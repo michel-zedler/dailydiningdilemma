@@ -55,7 +55,6 @@ public class DecisionServiceRest {
 		DecisionModel model = new DecisionModel();
 		model.setTitle(createDecisionRequest.getTitle());
 		model.setDescription(createDecisionRequest.getDescription());
-		model.setVotingOpenDate(createDecisionRequest.getVotingOpenDate());
 		model.setVotingCloseDate(createDecisionRequest.getVotingCloseDate());
 
 		try {
@@ -92,7 +91,6 @@ public class DecisionServiceRest {
 			dto.setId(m.getId());
 			dto.setTitle(m.getTitle());
 			dto.setDescription(m.getDescription());
-			dto.setVotingOpenDate(m.getVotingOpenDate());
 			dto.setVotingCloseDate(m.getVotingCloseDate());
 			dto.setActualCloseDate(m.getActualCloseDate());
 			
@@ -105,15 +103,11 @@ public class DecisionServiceRest {
 	}
 	
 	private boolean determineIsOpen(DecisionModel model) {
-		if (model.getActualCloseDate() != null) {
-			return false;
+		if (model.getActualCloseDate() == null) {
+			return true;
 		}
 		
-		if (new DateTime(model.getVotingOpenDate()).isAfterNow()) {
-			return false;
-		}
-		
-		return true;
+		return false;
 	}
 
 }

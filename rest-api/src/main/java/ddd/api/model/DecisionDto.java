@@ -5,8 +5,6 @@ import java.util.Date;
 public class DecisionDto {
 	private Long id;
 
-	private Date votingOpenDate;
-
 	private Date votingCloseDate;
 	
 	private Date actualCloseDate;
@@ -23,14 +21,6 @@ public class DecisionDto {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Date getVotingOpenDate() {
-		return votingOpenDate;
-	}
-
-	public void setVotingOpenDate(Date votingOpenDate) {
-		this.votingOpenDate = votingOpenDate;
 	}
 
 	public Date getVotingCloseDate() {

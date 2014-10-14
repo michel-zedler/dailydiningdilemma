@@ -6,7 +6,6 @@ public class DecisionModel {
 
 	private Long id;
 
-	private Date votingOpenDate;
 
 	private Date votingCloseDate;
 
@@ -22,14 +21,6 @@ public class DecisionModel {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Date getVotingOpenDate() {
-		return votingOpenDate;
-	}
-
-	public void setVotingOpenDate(Date votingOpenDate) {
-		this.votingOpenDate = votingOpenDate;
 	}
 
 	public Date getVotingCloseDate() {

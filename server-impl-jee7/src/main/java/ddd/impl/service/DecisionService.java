@@ -37,7 +37,6 @@ public class DecisionService {
 		model.setId(entity.getId());
 		model.setTitle(entity.getTitle());
 		model.setDescription(entity.getDescription());
-		model.setVotingOpenDate(entity.getVotingOpenDate());
 		model.setVotingCloseDate(entity.getVotingCloseDate());
 		model.setActualCloseDate(entity.getActualClosingDate());
 		
@@ -49,7 +48,6 @@ public class DecisionService {
 		
 		decision.setTitle(model.getTitle());
 		decision.setDescription(model.getDescription());
-		decision.setVotingOpenDate(model.getVotingOpenDate());
 		decision.setVotingCloseDate(model.getVotingCloseDate());
 		
 		decisionDao.persist(decision);

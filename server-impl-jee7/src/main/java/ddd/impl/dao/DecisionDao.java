@@ -31,10 +31,8 @@ public class DecisionDao {
 
 		if (BooleanUtils.isTrue(decisionCriteria.getOpen())) {
 			builder.and(decision.actualClosingDate.isNull());
-			builder.and(decision.votingOpenDate.loe(now));
 		} else if (BooleanUtils.isFalse(decisionCriteria.getOpen())) {
 			builder.and(decision.actualClosingDate.isNotNull());
-			builder.or(decision.votingOpenDate.gt(now));
 		}
 		
 		JPAQuery query = new JPAQuery(entityManager);
