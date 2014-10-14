@@ -1,38 +1,28 @@
 (function () {
   "use strict";
 
-  ddd.controller('DecisionCreateCtrl', function ($scope, $ionicPopup, DecisionService) {
+  ddd.controller('DecisionCreateCtrl', function ($scope, $location, $ionicBackdrop, DecisionService) {
     $scope.decision = {};
 
-    var createDecision = function () {
+    $scope.createDecision = function () {
+      $ionicBackdrop.retain();
+      var decision = angular.copy($scope.decision);
 
-    };
+      var end = moment(decision.votingCloseDate).add(moment.duration(decision.votingCloseTime));
+      decision.votingCloseDate = end.format();
 
-    var openDatePicker = function (mode) {
-      $scope.tmp = {};
-      $scope.tmp.date = $scope.decision.votingOpenDate;
+      delete decision.votingCloseTime;
 
-      var popup = $ionicPopup.show({
-        template: '<datetimepicker ng-model="decision.votingOpenDate"></datetimepicker>',
-        title: "Start date",
-        scope: $scope,
-        buttons: [
-          { text: 'Cancel' },
-          {
-            text: '<b>Save</b>',
-            type: 'button-positive',
-            onTap: function (e) {
-              $scope.decision.votingOpenDate = $scope.tmp.date;
-            }
-          }
-        ]
+      DecisionService.new(decision, function(err) {
+        $ionicBackdrop.release();
+        if (err) {
+          alert('failed to create decision: ' + err);
+        } else {
+          $location.path('/app/options-create')
+        }
       });
     };
 
-    return {
-      submit: createDecision,
-      openStartDatePicker: openDatePicker('start')
-    }
   });
 
 

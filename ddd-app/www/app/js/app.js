@@ -1,4 +1,4 @@
-var ddd = angular.module('ddd', ['ionic', 'firebase', 'restangular', 'nvd3ChartDirectives', 'ui.bootstrap.datetimepicker']);
+var ddd = angular.module('ddd', ['ionic', 'firebase', 'restangular', 'nvd3ChartDirectives']);
 
 ddd.run(function ($rootScope, $state, $ionicPlatform, $window, GlobalDataService, Restangular) {
 
@@ -72,6 +72,16 @@ ddd.config(function ($stateProvider, $urlRouterProvider) {
         'menuContent': {
           templateUrl: "app/templates/decisions_create.html",
           controller: "DecisionCreateCtrl"
+        }
+      }
+    })
+
+    .state('app.options-create', {
+      url: "/options-create",
+      views: {
+        'menuContent': {
+          templateUrl: "app/templates/options_create.html",
+          controller: "OptionsCreateCtrl"
         }
       }
     });

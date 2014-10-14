@@ -17,36 +17,34 @@
             </span>
 
             <div class="list">
-                <label class="item item-input">
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Title</span>
                     <input type="text" placeholder="Title" ng-model="decision.title" required>
                 </label>
-                <label class="item item-input">
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Description</span>
                     <textarea placeholder="Description" ng-model="decision.description" required></textarea>
                 </label>
-                <label class="item item-input" ng-click="openStartDatePicker()">
-                    <span class="input-label">Start date</span>
-                    <input type="text" ng-model="decision.votingOpenDate">
-                    <!-- <span class="input-label">Start date</span>
-                    <datetimepicker data-ng-model="decision.votingOpenDate"></datetimepicker>
-                    <input type="date" ng-model="decision.votingOpenDate" required> -->
-                </label>
 
+                <div class="row">
+                    <div class="col">
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">End date</span>
+                            <input type="date" ng-model="decision.votingCloseDate" required>
+                        </label>
+                    </div>
+                    <div class="col">
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">End time</span>
+                            <input type="time" ng-model="decision.votingCloseTime" required>
+                        </label>
+                    </div>
+                </div>
 
             </div>
 
-            <!--
-
-            {
-  "title": "jjdsd",
-  "description": "supergeil",
-  "votingCloseDate": "2015-08-08T16:00:00Z",
-  "votingOpenDate": "2014-10-09T15:00:00Z"
-}
-
-            -->
-
-
-            <button class="button button-full button-positive" ng-click="submit()" ng-disabled="decisionForm.$invalid">
+            <button class="button button-full button-positive" ng-click="createDecision()"
+                    ng-disabled="decisionForm.$invalid">
                 Create
             </button>
 
