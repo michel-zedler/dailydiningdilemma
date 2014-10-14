@@ -9,6 +9,10 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+	
+	<scm>
+		<connection>scm:git:https://github.com/nilseckert/dailydiningdilemma.git</connection>
+	</scm>
 
 	<modules>
 		<module>../rest-api</module>
@@ -16,6 +20,84 @@
 	</modules>
 
 	<build>
+		<resources>
+			<resource>
+				<filtering>true</filtering>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**.properties</include>
+				</includes>
+			</resource>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>**.properties</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<filtering>true</filtering>
+				<directory>src/test/resources</directory>
+				<includes>
+					<include>**.properties</include>
+				</includes>
+			</testResource>
+			<testResource>
+				<filtering>false</filtering>
+				<directory>src/test/resources</directory>
+				<excludes>
+					<exclude>**.properties</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.3</version>
+				<executions>
+					<execution>
+						<id>generate-datetime</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+						<configuration>
+							<format>{0,date,dd.MM.yyyy HH:mm:ss}</format>
+							<items>
+								<item>timestamp</item>
+							</items>
+							<buildNumberPropertyName>buildDateTime</buildNumberPropertyName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>generate-timestamp</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+						<configuration>
+							<timestampPropertyName>buildTimestamp</timestampPropertyName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>generate-buildnumber</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+						<configuration>
+							<!-- <revisionOnScmFailure>UNKNOWN</revisionOnScmFailure> -->
+							<useLastCommittedRevision>true</useLastCommittedRevision>
+							<buildNumberPropertyName>buildRevision</buildNumberPropertyName>
+							<shortRevisionLength>8</shortRevisionLength>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 		<pluginManagement>
 			<plugins>
 				<plugin>
