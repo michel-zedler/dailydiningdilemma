@@ -52,6 +52,7 @@ public class DecisionServiceRest {
 
 		DecisionModel model = new DecisionModel();
 		model.setTitle(createDecisionRequest.getTitle());
+		model.setDescription(createDecisionRequest.getDescription());
 		model.setVotingOpenDate(createDecisionRequest.getVotingOpenDate());
 		model.setVotingCloseDate(createDecisionRequest.getVotingCloseDate());
 
@@ -88,6 +89,7 @@ public class DecisionServiceRest {
 			DecisionDto dto = new DecisionDto();
 			dto.setId(m.getId());
 			dto.setTitle(m.getTitle());
+			dto.setDescription(m.getDescription());
 			dto.setVotingOpenDate(m.getVotingOpenDate());
 			dto.setVotingCloseDate(m.getVotingCloseDate());
 

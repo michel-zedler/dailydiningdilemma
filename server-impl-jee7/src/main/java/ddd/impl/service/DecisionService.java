@@ -36,6 +36,7 @@ public class DecisionService {
 		
 		model.setId(entity.getId());
 		model.setTitle(entity.getTitle());
+		model.setDescription(entity.getDescription());
 		model.setVotingOpenDate(entity.getVotingOpenDate());
 		model.setVotingCloseDate(entity.getVotingCloseDate());
 		
@@ -46,6 +47,7 @@ public class DecisionService {
 		Decision decision = new Decision();
 		
 		decision.setTitle(model.getTitle());
+		decision.setDescription(model.getDescription());
 		decision.setVotingOpenDate(model.getVotingOpenDate());
 		decision.setVotingCloseDate(model.getVotingCloseDate());
 		
