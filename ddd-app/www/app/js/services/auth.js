@@ -26,9 +26,6 @@
             } else {
               GlobalDataService.user.sessionKey = data.apiKey;
 
-              //delete $http.defaults.headers.common['X-Requested-With'];
-              //$http.defaults.headers.common.apikey = data.apiKey;
-
               Restangular.setDefaultHeaders({ apikey: data.apiKey });
 
               GlobalDataService.user.id = user.id;

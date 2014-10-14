@@ -2,31 +2,36 @@
   "use strict";
 
   ddd.factory('DecisionService', function () {
-    var opening = new Date();
-    opening.setHours(opening.getHours() - 1);
-    var closing = new Date();
-    closing.setHours(closing.getHours() + 1);
+    var closing = moment();
+    closing.add(1, 'hours');
 
     var decisions = [
       {
         id: 1,
         title: 'Mittagessen',
         description: 'testessen nr. 1',
-        votingOpenDate: opening,
-        votingEndDate: closing
+        votingCloseDate: closing,
+        isClosed: false
       },
       {
         id: 2,
         title: 'Abendessen',
         description: 'das abendessen...',
-        votingOpenDate: opening,
-        votingEndDate: closing
+        votingCloseDate: closing,
+        isClosed: false
       }
     ];
 
     return {
-      all: function() {
-        return decisions;
+      all: function(cb) {
+        cb(angular.copy(decisions));
+      },
+      new: function(decision, cb) {
+        decision.id = decisions.length + 1;
+        decision.isClosed = false;
+        decision.votingCloseDate = moment(decision.votingCloseDate);
+        decisions.push(decision);
+        cb();
       }
     };
   });

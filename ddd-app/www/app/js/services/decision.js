@@ -1,17 +1,27 @@
 (function () {
   "use strict";
 
-  ddd.factory('DecisionService', function (Restangular, GlobalDataService) {
+  ddd.factory('DecisionService', function (Restangular) {
 
-    var decisions = {};
+    var _decisions = Restangular.all("decisions");
 
     return {
-      all: function() {
-        decisions = Restangular.all("decisions").getList();
-        return decisions;
+      all: function(cb) {
+        _decisions.getList().then(function(allDecisions) {
+          allDecisions.forEach(function(tmpDecision) {
+            tmpDecision.votingCloseDate = moment(tmpDecision.votingCloseDate);
+          });
+          cb(angular.copy(allDecisions));
+        });
       },
-      new: function(decision) {
-        decisions.post(decision);
+      new: function(decision, cb) {
+        var json = JSON.stringify(decision);
+        _decisions.post(json).then(function() {
+          cb();
+        }, function(res) {
+          console.error('storage failed', res);
+          cb('could not store the decision, check client logs');
+        });
       }
     };
   });
