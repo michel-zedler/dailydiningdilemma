@@ -8,6 +8,10 @@ public class DecisionDto {
 	private Date votingOpenDate;
 
 	private Date votingCloseDate;
+	
+	private Date actualCloseDate;
+	
+	private Boolean isOpen;
 
 	private String title;
 
@@ -51,5 +55,21 @@ public class DecisionDto {
 	
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public Date getActualCloseDate() {
+		return actualCloseDate;
+	}
+	
+	public void setActualCloseDate(Date actualCloseDate) {
+		this.actualCloseDate = actualCloseDate;
+	}
+	
+	public Boolean getIsOpen() {
+		return isOpen;
+	}
+	
+	public void setIsOpen(Boolean isOpen) {
+		this.isOpen = isOpen;
 	}
 }

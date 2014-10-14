@@ -13,6 +13,8 @@ public class DecisionModel {
 	private String title;
 	
 	private String description;
+	
+	private Date actualCloseDate;
 
 	public Long getId() {
 		return id;
@@ -52,5 +54,13 @@ public class DecisionModel {
 	
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public Date getActualCloseDate() {
+		return actualCloseDate;
+	}
+	
+	public void setActualCloseDate(Date actualCloseDate) {
+		this.actualCloseDate = actualCloseDate;
 	}
 }

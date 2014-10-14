@@ -39,6 +39,7 @@ public class DecisionService {
 		model.setDescription(entity.getDescription());
 		model.setVotingOpenDate(entity.getVotingOpenDate());
 		model.setVotingCloseDate(entity.getVotingCloseDate());
+		model.setActualCloseDate(entity.getActualClosingDate());
 		
 		return model;
 	}

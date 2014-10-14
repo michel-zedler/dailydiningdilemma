@@ -30,17 +30,24 @@ public class DecisionDao {
 		BooleanBuilder builder = new BooleanBuilder();
 
 		if (BooleanUtils.isTrue(decisionCriteria.getOpen())) {
-			builder.and(decision.votingCloseDate.loe(now));
-			builder.and(decision.votingOpenDate.goe(now));
+			builder.and(decision.actualClosingDate.isNull());
+			builder.and(decision.votingOpenDate.loe(now));
 		} else if (BooleanUtils.isFalse(decisionCriteria.getOpen())) {
-			builder.and(decision.votingCloseDate.gt(now));
-			builder.and(decision.votingOpenDate.lt(now));
+			builder.and(decision.actualClosingDate.isNotNull());
+			builder.or(decision.votingOpenDate.gt(now));
+		}
+		
+		JPAQuery query = new JPAQuery(entityManager);
+		query.from(decision);
+		query.where(builder);
+
+		if (BooleanUtils.isFalse(decisionCriteria.getOpen())) {
+			query.orderBy(decision.votingCloseDate.desc());
+		} else {
+			query.orderBy(decision.votingCloseDate.asc());
 		}
 
-		JPAQuery query = new JPAQuery(entityManager);
-		return query.from(decision)
-				.where(builder)
-				.list(decision);
+		return query.list(decision);
 	}
 
 	public void persist(Decision decision) {
@@ -54,7 +61,7 @@ public class DecisionDao {
 
 	public Decision findById(Long decisionId) {
 		return entityManager.find(Decision.class, decisionId);
-		
+
 	}
 
 }

@@ -18,6 +18,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.joda.time.DateTime;
+
 import ddd.api.model.DecisionDto;
 import ddd.api.request.CreateDecisionRequest;
 import ddd.api.response.CreateDecisionResponse;
@@ -92,11 +94,26 @@ public class DecisionServiceRest {
 			dto.setDescription(m.getDescription());
 			dto.setVotingOpenDate(m.getVotingOpenDate());
 			dto.setVotingCloseDate(m.getVotingCloseDate());
-
+			dto.setActualCloseDate(m.getActualCloseDate());
+			
+			dto.setIsOpen(determineIsOpen(m));
+			
 			result.add(dto);
 		}
 
 		return result;
+	}
+	
+	private boolean determineIsOpen(DecisionModel model) {
+		if (model.getActualCloseDate() != null) {
+			return false;
+		}
+		
+		if (new DateTime(model.getVotingOpenDate()).isAfterNow()) {
+			return false;
+		}
+		
+		return true;
 	}
 
 }
