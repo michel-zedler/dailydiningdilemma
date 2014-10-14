@@ -1,4 +1,4 @@
-var ddd = angular.module('ddd', ['ionic', 'firebase', 'restangular', 'nvd3ChartDirectives', 'ui.bootstrap.datetimepicker']);
+var ddd = angular.module('ddd', ['ionic', 'firebase', 'restangular', 'nvd3ChartDirectives']);
 
 ddd.run(function ($rootScope, $state, $ionicPlatform, $window, GlobalDataService, Restangular) {
 
