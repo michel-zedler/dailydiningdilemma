@@ -16,11 +16,11 @@
       },
       new: function(decision, cb) {
         var json = JSON.stringify(decision);
-        _decisions.post(json).then(function() {
-          cb();
+        _decisions.post(json).then(function(decisionData) {
+          cb(decisionData.id);
         }, function(res) {
           console.error('storage failed', res);
-          cb('could not store the decision, check client logs');
+          cb(undefined, 'could not store the decision, check client logs');
         });
       }
     };

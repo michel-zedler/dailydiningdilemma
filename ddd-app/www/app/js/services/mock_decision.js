@@ -31,7 +31,7 @@
         decision.isClosed = false;
         decision.votingCloseDate = moment(decision.votingCloseDate);
         decisions.push(decision);
-        cb();
+        cb(decision.id);
       }
     };
   });

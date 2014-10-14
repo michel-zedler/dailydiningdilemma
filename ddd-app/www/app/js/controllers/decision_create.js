@@ -13,12 +13,12 @@
 
       delete decision.votingCloseTime;
 
-      DecisionService.new(decision, function(err) {
+      DecisionService.new(decision, function(decisionId, err) {
         $ionicBackdrop.release();
         if (err) {
           alert('failed to create decision: ' + err);
         } else {
-          $location.path('/app/options-create')
+          $location.path('/app/options-create/' + decisionId);
         }
       });
     };

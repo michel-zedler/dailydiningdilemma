@@ -77,7 +77,7 @@ ddd.config(function ($stateProvider, $urlRouterProvider) {
     })
 
     .state('app.options-create', {
-      url: "/options-create",
+      url: "/options-create/:decisionId",
       views: {
         'menuContent': {
           templateUrl: "app/templates/options_create.html",
