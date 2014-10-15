@@ -15,6 +15,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 import ddd.impl.criteria.DecisionCriteria;
 import ddd.impl.entity.Decision;
@@ -26,7 +27,6 @@ public class DecisionDao {
 	private EntityManager entityManager;
 
 	public List<Decision> findByCriteria(DecisionCriteria decisionCriteria) {
-		Date now = new Date();
 		BooleanBuilder builder = new BooleanBuilder();
 
 		if (BooleanUtils.isTrue(decisionCriteria.getOpen())) {
@@ -60,6 +60,13 @@ public class DecisionDao {
 	public Decision findById(Long decisionId) {
 		return entityManager.find(Decision.class, decisionId);
 
+	}
+
+	public void closeElapsedDecisions() {
+		new JPAUpdateClause(entityManager, decision)
+				.where(decision.votingCloseDate.before(new Date()))
+				.set(decision.actualClosingDate, new Date()).execute();
+		
 	}
 
 }
