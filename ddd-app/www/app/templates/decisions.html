@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <div class="card" ng-repeat="decision in decisions" ng-hide="!decisions.length">
+        <div class="card" ng-repeat="decision in decisions" ng-hide="!decisions.length" ng-click="detailsFor(decision.id)">
             <div class="item item-divider">
                 {{ decision.title }}
             </div>

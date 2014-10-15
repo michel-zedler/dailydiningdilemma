@@ -84,6 +84,16 @@ ddd.config(function ($stateProvider, $urlRouterProvider) {
           controller: "OptionsCreateCtrl"
         }
       }
+    })
+
+    .state('app.decision-details', {
+      url: "/decision-details/:decisionId",
+      views: {
+        'menuContent': {
+          templateUrl: "app/templates/decision_details.html",
+          controller: "DecisionDetailsCtrl"
+        }
+      }
     });
 
   // fallback route

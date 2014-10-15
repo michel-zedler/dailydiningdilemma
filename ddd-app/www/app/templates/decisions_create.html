@@ -44,9 +44,13 @@
             </div>
 
             <button class="button button-full button-positive" ng-click="createDecision()"
-                    ng-disabled="decisionForm.$invalid">
+                    ng-disabled="decisionForm.$invalid || !isEndDateValid()">
                 Create
             </button>
+
+            <span ng-hide="isEndDateValid()">
+                The end date must lie at least two minutes in the future
+            </span>
 
         </form>
 

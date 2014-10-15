@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  ddd.controller('DecisionListCtrl', function ($scope, $ionicBackdrop, GlobalDataService, DecisionService) {
+  ddd.controller('DecisionListCtrl', function ($scope, $location, $ionicBackdrop, GlobalDataService, DecisionService) {
     $scope.user = { name: GlobalDataService.user.name, email: GlobalDataService.user.email, key: GlobalDataService.user.sessionKey };
     $scope.decisions = [];
 
@@ -36,6 +36,10 @@
       $ionicBackdrop.release();
       $scope.decisions = decisions;
     });
+
+    $scope.detailsFor = function(decisionId) {
+      $location.path('/app/decision-details/' + decisionId);
+    };
 
     $scope.exampleData = [
       { key: "Theaterhaus", y: 25 },

@@ -7,18 +7,34 @@
 
     var decisions = [
       {
-        id: 1,
+        id: "1",
         title: 'Mittagessen',
         description: 'testessen nr. 1',
         votingCloseDate: closing,
-        isClosed: false
+        isClosed: false,
+        options: [
+          {
+            title: 'location 1'
+          },
+          {
+            title: 'location 2'
+          }
+        ]
       },
       {
-        id: 2,
+        id: "2",
         title: 'Abendessen',
         description: 'das abendessen...',
         votingCloseDate: closing,
-        isClosed: false
+        isClosed: false,
+        options: [
+          {
+            title: 'location 1'
+          },
+          {
+            title: 'location 2'
+          }
+        ]
       }
     ];
 
@@ -34,10 +50,11 @@
 
     return {
       all: function(cb) {
-        cb(angular.copy(decisions));
+        cb(angular.copy(decisions).reverse());
       },
-      new: function(decision, cb) {
-        decision.id = decisions.length + 1;
+      store: function(decision, cb) {
+        var newId = decisions.length + 1;
+        decision.id = newId.toString();
         decision.isClosed = false;
         decision.votingCloseDate = moment(decision.votingCloseDate);
         decisions.push(decision);
