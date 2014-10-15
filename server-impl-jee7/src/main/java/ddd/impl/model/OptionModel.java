@@ -8,6 +8,7 @@ public class OptionModel {
 	private String description;
 	private String phoneNumber;
 	private String coordinates;
+	private Long id;
 	
 	public String getName() {
 		return name;
@@ -39,6 +40,14 @@ public class OptionModel {
 	public void setCoordinates(String coordinates) {
 		this.coordinates = coordinates;
 	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	
 	
 
 }

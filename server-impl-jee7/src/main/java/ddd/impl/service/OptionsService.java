@@ -56,6 +56,7 @@ public class OptionsService {
 			optionModel.setName(option.getName());
 			optionModel.setPhoneNumber(option.getPhoneNumber());
 			optionModel.setUrl(option.getUrl());
+			optionModel.setId(option.getId());
 			optionModels.add(optionModel);
 		}
 		return optionModels;
