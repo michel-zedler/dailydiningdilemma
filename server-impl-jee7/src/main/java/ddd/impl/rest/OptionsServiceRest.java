@@ -1,5 +1,7 @@
 package ddd.impl.rest;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.security.RolesAllowed;
@@ -7,13 +9,17 @@ import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import ddd.api.request.CreateOptionRequest;
+import ddd.api.request.CreateOptionsForDecisionRequest;
 import ddd.impl.constants.Roles;
 import ddd.impl.model.OptionModel;
 import ddd.impl.service.OptionsService;
@@ -34,23 +40,44 @@ public class OptionsServiceRest {
 	private ValidationHelper validationHelper;
 	
 	@POST
-	public Response addOptionsToDecision(CreateOptionRequest createOptionRequest) {
-		Set<ConstraintViolation<CreateOptionRequest>> violations = validator.validate(createOptionRequest);
+	public Response addOptionsToDecision(CreateOptionsForDecisionRequest createOptionsForDecisionRequest) {
+		Set<ConstraintViolation<CreateOptionsForDecisionRequest>> violations = validator.validate(createOptionsForDecisionRequest);
 		
 		if (violations.isEmpty() == false) {
 			return validationHelper.buildValidationFailureResponse(violations);
 		}
 		
-		OptionModel optionModel = new OptionModel();
-		optionModel.setName(createOptionRequest.getName());
-		optionModel.setCoordinates(createOptionRequest.getCoordinates());
-		optionModel.setDescription(createOptionRequest.getDescription());
-		optionModel.setPhoneNumber(createOptionRequest.getPhoneNumber());
-		optionModel.setUrl(createOptionRequest.getUrl());
+		List<OptionModel> optionModels = new ArrayList<OptionModel>();
 		
-		optionsService.saveOptionForDecision(createOptionRequest.getDecisionId(), optionModel);
+		for (CreateOptionRequest option : createOptionsForDecisionRequest.getOptions()) {
+			OptionModel optionModel = new OptionModel();
+			optionModel.setName(option.getName());
+			optionModel.setCoordinates(option.getCoordinates());
+			optionModel.setDescription(option.getDescription());
+			optionModel.setPhoneNumber(option.getPhoneNumber());
+			optionModel.setUrl(option.getUrl());	
+			optionModels.add(optionModel);
+		}
+		
+		
+		optionsService.saveOptionForDecision(createOptionsForDecisionRequest.getDecisionId(), optionModels);
 		
 		return Response.ok().build();
+	}	
+	
+	@DELETE
+	@Path("/{optionId}")
+	public Response deleteOption(@PathParam(value="optionId") Long id) {
+		optionsService.deleteOption(id);
+		return Response.ok().build();
 	}
+	
+	@GET
+	@Path("/{decisionId}")
+	public Response getOptionsForDecision(@PathParam(value="decisionId") Long decisionId) {
+		List<OptionModel> options = optionsService.getOptionsforDecision(decisionId);
+		return Response.ok(options).build();
+	}
+	
 
 }
