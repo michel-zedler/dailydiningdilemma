@@ -29,7 +29,7 @@ public class Option {
 	@Column(name="phone", nullable = true)
 	private String phoneNumber;
 	
-	@Column(name="coordinates", nullable = false)
+	@Column(name="coordinates", nullable = true)
 	private String coordinates;
 	
 	@Column(name="time_added", nullable=false)

@@ -12,10 +12,8 @@ public class CreateOptionRequest {
 	@NotNull
 	private String name;
 	private String url;
-	@NotNull
 	private String description;
 	private String phoneNumber;
-	@NotNull
 	private String coordinates;
 	
 	public String getName() {
