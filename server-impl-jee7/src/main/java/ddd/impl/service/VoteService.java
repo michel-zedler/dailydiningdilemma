@@ -26,11 +26,10 @@ public class VoteService {
 	@Inject
 	private VoteDao voteDao;
 
-	public void addVotesForUser(Long userId, Long decisionId,
+	public void addVotesForUser(String apikey, Long decisionId,
 			List<VoteDto> votes) {
-		removeVotesForDecision(userId, decisionId);
-		
-		UserEntity user = userdao.findById(userId);
+		UserEntity user = userdao.findByApiKey(apikey);
+		removeVotesForDecision(user.getId(), decisionId);		
 		
 		for (VoteDto voteDto : votes) {
 			Vote vote = new Vote();

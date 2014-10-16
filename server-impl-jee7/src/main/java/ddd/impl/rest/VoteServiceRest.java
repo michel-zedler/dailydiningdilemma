@@ -6,6 +6,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -22,9 +24,13 @@ public class VoteServiceRest {
 	@Inject
 	private VoteService voteService;
 	
+	@Context
+	private HttpHeaders httpHeaders;
+		
 	@POST
 	public Response addVotesForUser(CreateVoteRequest createVoteRequest) {		
-		voteService.addVotesForUser(createVoteRequest.getUserId(),createVoteRequest.getDecisionId(),createVoteRequest.getVotes());
+		String apikey = httpHeaders.getHeaderString("apiKey");		
+		voteService.addVotesForUser(apikey,createVoteRequest.getDecisionId(),createVoteRequest.getVotes());
 		return Response.ok().build();
 	}
 	
