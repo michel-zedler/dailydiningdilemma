@@ -24,7 +24,7 @@
 
             <ion-list can-swipe="true" ng-show="options.length">
                 <ion-item ng-repeat="option in options">
-                    <input type="text" placeholder="enter a title" ng-model="option.title" required>
+                    <input type="text" placeholder="enter a title" ng-model="option.name" required>
                     <ion-option-button class="button-assertive" ng-click="options.splice($index, 1)">Delete</ion-option-button>
                 </ion-item>
             </ion-list>

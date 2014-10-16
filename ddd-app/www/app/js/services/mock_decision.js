@@ -14,10 +14,10 @@
         isClosed: false,
         options: [
           {
-            title: 'location 1'
+            name: 'location 1'
           },
           {
-            title: 'location 2'
+            name: 'location 2'
           }
         ]
       },
@@ -29,10 +29,10 @@
         isClosed: false,
         options: [
           {
-            title: 'location 1'
+            name: 'location 1'
           },
           {
-            title: 'location 2'
+            name: 'location 2'
           }
         ]
       }

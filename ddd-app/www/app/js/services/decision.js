@@ -21,7 +21,7 @@
         });
       },
       store: function(decision, cb) {
-        var json = JSON.stringify(decision);
+        var json = angular.toJson(decision);
         _decisions.post(json).then(function(decisionData) {
           cb(decisionData.id);
         }, function(res) {

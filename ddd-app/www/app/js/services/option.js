@@ -7,11 +7,10 @@
 
     return {
       store: function(options, decisionId, cb) {
-        var _options = {
+        var json = angular.toJson({
           decisionId: decisionId,
           options: options
-        };
-        var json = JSON.stringify(_options);
+        });
         _options.post(json).then(function() {
           cb();
         }, function(res) {

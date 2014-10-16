@@ -6,7 +6,7 @@
     $scope.decisionId = $stateParams.decisionId;
 
     $scope.addOption = function() {
-      $scope.options.unshift({ title: ''});
+      $scope.options.unshift({ name: ''});
     };
 
     $scope.finish = function() {
