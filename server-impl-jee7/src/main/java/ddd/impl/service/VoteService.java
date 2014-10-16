@@ -1,5 +1,6 @@
 package ddd.impl.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,9 +44,29 @@ public class VoteService {
 		
 	}
 
-	public void removeVotesForDecision(Long userId, Long decisionId) {
+	private void removeVotesForDecision(Long userId, Long decisionId) {
 		List<DecisionOptionMapping> decisionOptionMappings = decisionOptionMappingDao.findDecisionOptionMapping(decisionId);
 		voteDao.removeVotesForUser(userId,decisionOptionMappings);
+	}
+	
+	public void removeVotesForDecision(String apikey, Long decisionId) {
+		UserEntity user = userdao.findByApiKey(apikey);
+		removeVotesForDecision(user.getId(), decisionId);		
+	}
+
+	public List<VoteDto> getVotesForDecision(String apikey, Long decisionId) {
+		List<VoteDto> voteDtos = new ArrayList<VoteDto>();
+		UserEntity user = userdao.findByApiKey(apikey);
+		List<DecisionOptionMapping> decisionOptionMappings = decisionOptionMappingDao.findDecisionOptionMapping(decisionId);
+		List<Vote> votes = voteDao.getVotesForDecisionFromUser(user.getId(), decisionOptionMappings);
+		for (Vote vote: votes) {
+			VoteDto voteDto = new VoteDto();
+			voteDto.setOptionId(vote.getDecisionOptionMapping().getOption().getId());
+			voteDto.setValue(vote.getValue());
+			voteDtos.add(voteDto);			
+		}
+		
+		return voteDtos;
 	}
 
 }

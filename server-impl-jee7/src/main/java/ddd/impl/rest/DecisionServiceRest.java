@@ -12,6 +12,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -79,6 +80,14 @@ public class DecisionServiceRest {
 		List<DecisionDto> result = map(list);
 
 		return Response.ok().entity(result).build();
+	}
+	
+	@GET
+	@Path("/{decisionId}")
+	public Response findDecisionById(@PathParam("decisionId") Long decisionId) {
+		DecisionModel decisionModel = decisionService.findById(decisionId);
+
+		return Response.ok(decisionModel).build();
 	}
 	
 	private List<DecisionDto> map(List<DecisionModel> list) {
