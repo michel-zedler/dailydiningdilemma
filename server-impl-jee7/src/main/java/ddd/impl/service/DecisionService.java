@@ -58,4 +58,9 @@ public class DecisionService {
 	public void deleteAll() {
 		decisionDao.deleteAll();
 	}
+
+	public DecisionModel findById(Long decisionId) {
+		Decision decision = decisionDao.findById(decisionId);
+		return toModel(decision);
+	}
 }

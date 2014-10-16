@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.mysema.query.jpa.impl.JPADeleteClause;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 import ddd.impl.entity.DecisionOptionMapping;
 import ddd.impl.entity.Vote;
@@ -26,6 +27,14 @@ public class VoteDao {
 	public void removeVotesForUser(Long userId, List<DecisionOptionMapping> decisionOptionMappings) {
 		new JPADeleteClause(entityManager, vote).where(vote.user.id.eq(userId)
 				.and(vote.decisionOptionMapping.in(decisionOptionMappings))).execute();
+	}
+
+	public List<Vote> getVotesForDecisionFromUser(Long userId, List<DecisionOptionMapping> decisionOptionMappings) {
+		return new JPAQuery(entityManager)
+				.from(vote)
+				.where(vote.user.id.eq(userId).and(
+						vote.decisionOptionMapping.in(decisionOptionMappings)))
+				.list(vote);
 	}
 
 }
