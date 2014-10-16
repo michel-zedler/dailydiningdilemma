@@ -2,6 +2,8 @@ package ddd.impl.dao;
 
 import static ddd.impl.entity.QDecision.decision;
 import static ddd.impl.entity.QOption.option;
+import static ddd.impl.entity.QDecisionOptionMapping.decisionOptionMapping;
+import static ddd.impl.entity.QVote.vote;
 
 import java.util.Date;
 import java.util.List;
@@ -53,6 +55,8 @@ public class DecisionDao {
 	}
 
 	public void deleteAll() {
+		new JPADeleteClause(entityManager, vote).execute();
+		new JPADeleteClause(entityManager, decisionOptionMapping).execute();
 		new JPADeleteClause(entityManager, option).execute();
 		new JPADeleteClause(entityManager, decision).execute();
 	}
