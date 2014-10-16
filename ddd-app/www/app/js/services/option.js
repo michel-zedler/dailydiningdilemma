@@ -19,7 +19,7 @@
         });
       },
       byDecisionId: function(decisionId, cb) {
-        _options.getList({ query: decisionId }).then(function(options) {
+        _options.getList({ decisionId: decisionId }).then(function(options) {
           cb(options);
         });
       }

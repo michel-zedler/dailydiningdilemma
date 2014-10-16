@@ -6,7 +6,7 @@
     var _decisions = Restangular.all("decisions");
 
     var findDecisionById = function(id, cb) {
-      _decisions.one(id).then(function (decision) {
+      _decisions.one(id).get().then(function (decision) {
         cb(decision);
       });
     }
