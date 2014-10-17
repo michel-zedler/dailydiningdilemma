@@ -23,7 +23,7 @@
             <div class="card">
                 <div class="item">
                     <nvd3-pie-chart
-                            data="pieData"
+                            data="pieSegments"
                             id="examplePieId"
                             width="300"
                             height="300"
@@ -35,7 +35,7 @@
                         <svg></svg>
                     </nvd3-pie-chart>
                 </div>
-                <div class="item range range-vote-{{vote.cssSuffix}}" ng-repeat="vote in votes" >
+                <div class="item range range-vote-{{vote.index}}" ng-repeat="vote in votes" >
                     <span style="width:24%;">{{vote.key}}</span>
                     <input type="range" name="volume" ng-model="vote.val" min="0" max="100" ng-change="updateVote(vote.key)" style="width:70%">
                     <span style="width:6%; text-align:center;" ng-click="maximizePointsForOption(vote.key)">{{vote.val}}</span>

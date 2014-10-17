@@ -16,18 +16,17 @@
 
 
     var TOTAL = 100;
+    $scope.votes = []; //keeping votes separate from pieSegments to enable live updates
 
-    $scope.pieData = [
+    $scope.pieSegments = [
       { key: "Theaterhaus", y: 0, color: '#1f77b4' },
       { key: "Illuminati", y: 0, color: '#aec7e8' },
       { key: "Spice Of India", y: 0, color: '#ff7f0e' },
       { key: "NGA", y: 0, color: '#ffbb78' },
       { key: "Some", y: 0, color: '#2ca02c' },
       { key: "More", y: 0, color: '#98df8a' },
-      { key: "Rages", y: 0, color: '#d62728' },
+      { key: "Rages", y: 0, color: '#d62728' }
     ];
-
-    $scope.votes = new Array(); //keeping votes separate from pieData to enable direct binding
 
     $scope.xFunction = function(){
       return function(d) {
@@ -43,82 +42,80 @@
     
     $scope.colorFunction = function() {
       return function(d, i) {
-        //d is not the pieData entry, but some d3/svg stuff
-        //i is an index
-        return $scope.pieData[i].color;
+        //d is not the pieSegments entry, but some d3/svg stuff; i is the index
+        return $scope.pieSegments[i].color;
       };
     }
 
     $scope.pointsSpentOnOtherOptions = function(key) {
-      var spentOnOthers = 0;
-      for (var i = 0; i < $scope.votes.length; i++) {
-        if ($scope.votes[i].key != key) {
-          spentOnOthers += parseInt($scope.votes[i].val);
+      var result = 0;
+      $scope.votes.forEach(function(vote) {
+        if (vote.key != key) {
+          result += parseInt(vote.val);
         }
-      }
-      return spentOnOthers;
+      });
+      return result;
     }
 
     $scope.maximizePointsForOption = function(key) {
-      var spentOnOthers = $scope.pointsSpentOnOtherOptions(key);
-      for (var i = 0; i < $scope.votes.length; i++) {
-        if ($scope.pieData[i].key == key) {
-          $scope.votes[i].val = TOTAL - spentOnOthers;
+      var pointsSpentOnOthers = $scope.pointsSpentOnOtherOptions(key);
+      $scope.votes.forEach(function(vote) {
+        if (vote.key == key) {
+          vote.val = TOTAL - pointsSpentOnOthers;
         }
-      }
+      });
       $scope.updateVote(key);
     }
 
     $scope.updateVote = function(key) {
-      /*for (var i = 0; i < $scope.initialData.length; i++) {
-       $scope.exampleData[i].y = $scope.initialData[i].y;
-       } */
-      var spent = 0;
-      var spentOnOthers = $scope.pointsSpentOnOtherOptions(key);
 
-      for (var i = 0; i < $scope.votes.length; i++) {
-        $scope.votes[i].max = TOTAL - spent;
-        var current = Math.min(parseInt($scope.votes[i].max), parseInt($scope.votes[i].val));
-        if ($scope.pieData[i].key == key) {
-          current = Math.min(current, TOTAL - spentOnOthers);
+      //update current and max points of each vote
+      var pointsSpentInTotal = 0;
+      var pointsSpentOnOthers = $scope.pointsSpentOnOtherOptions(key);
+
+      $scope.votes.forEach(function(vote) {
+        if (vote.key == key) {
+          var max = TOTAL - pointsSpentOnOthers;
+          vote.val = Math.min(max, parseInt(vote.val));
+          $scope.pieSegments[vote.index].y = vote.val;
         }
-        $scope.votes[i].val = current;
-        $scope.pieData[i].y = current;
+        pointsSpentInTotal += vote.val;
+      });
 
-        spent += current;
-      }
+      //update vacant points segment
+      $scope.pieSegments[$scope.pieSegments.length-1].y = TOTAL - pointsSpentInTotal;
 
-      $scope.pieData[$scope.pieData.length-1].y = TOTAL - spent;
-
+      //update donut label
       d3.select('svg').select('#donutLabel').remove();
       var color = d3.scale.linear()
           .domain([0, 90, 100])
           .range(["#eee", "#777", "#000"]);
       d3.select('svg').append("text")
           .attr("id", "donutLabel")
-          .attr("style", function(d){return 'text-anchor: middle; font-size: 30px; font-weight: bold; fill: ' + color(spent) + ";";})
+          .attr("style", function(d){return 'text-anchor: middle; font-size: 30px; font-weight: bold; fill: ' + color(pointsSpentInTotal) + ";";})
           .attr("dx", function(d){return 150;})
           .attr("dy", function(d){return 160;})
-          .text(function(d){return spent;});
+          .text(function(d){return pointsSpentInTotal;});
 
-      //deep copy values to get new object reference
-      $scope.pieData = angular.copy($scope.pieData);
+      //deep copy to get new object reference -> trigger angular watch expression -> update pie chart svg
+      $scope.pieSegments = angular.copy($scope.pieSegments);
     }
 
     $scope.init = function() {
-
-      for (var i = 0; i < $scope.pieData.length; i++) {
-        var option = {
-          cssSuffix : i,
-          key : $scope.pieData[i].key,
-          color : $scope.pieData[i].color,
-          val : 0
-        };
-        $scope.votes.push(option);
-      }
+      var i = 0;
+      $scope.pieSegments.forEach(function(item) {
+          var vote = {
+            index : i++,
+            key : item.key,
+            color : item.color,
+            val : 0
+          };
+          $scope.votes.push(vote);
+        }
+      );
 
       var vacantPoints = { key: "", y: TOTAL, color: '#ffffff' };
-      $scope.pieData.push(vacantPoints);
+      $scope.pieSegments.push(vacantPoints);
 
       d3.select('svg').select('#pieCenterLabel').remove();
       d3.select('svg').append("text")
@@ -128,15 +125,11 @@
           .attr("dy", function(d){return 160;})
           .text(function(d){return "Vote!";});
 
-      for (var i = 0; i < $scope.votes.length; i++) {
-        injectStyles('.range.range-vote-'+$scope.votes[i].cssSuffix+' input::-webkit-slider-thumb:before { background: '+$scope.votes[i].color+'; }');
-      }
+      $scope.votes.forEach(function(vote) {
+          injectStyles('.range.range-vote-'+vote.index+' input::-webkit-slider-thumb:before { background: '+vote.color+'; }');
+        }
+      );
 
-      /*var pieChartSVG = jQuery("svg").first();
-       pieChartSVG.css("position", "fixed");
-       pieChartSVG.css("top", "100px");
-       pieChartSVG.css("left", "100px");
-       pieChartSVG.css("z-index", "-1");*/
     }
 
     function injectStyles(rule) {
