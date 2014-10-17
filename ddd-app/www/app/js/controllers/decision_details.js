@@ -30,7 +30,7 @@
 
     $scope.xFunction = function(){
       return function(d) {
-        return d.key;
+        return ''; //do not label donut segments
       };
     };
 
@@ -101,6 +101,16 @@
       $scope.pieSegments = angular.copy($scope.pieSegments);
     }
 
+    $scope.setVoteActive = function(key) {
+      $scope.votes.forEach(function(vote) {
+        if (vote.key == key) {
+          vote.active = !vote.active;
+        } else {
+          vote.active = false;
+        }
+      });
+    }
+
     var injectStyles = function(rule) {
       d3.select("body").append("style").text(rule);
     };
@@ -112,7 +122,8 @@
             index : i++,
             key : item.key,
             color : item.color,
-            val : 0
+            val : 0,
+            active: false
           };
           $scope.votes.push(vote);
         }
