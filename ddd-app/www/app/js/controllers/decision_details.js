@@ -32,20 +32,20 @@
       return function(d) {
         return d.key;
       };
-    }
+    };
 
     $scope.yFunction = function(){
       return function(d){
         return d.y;
       };
-    }
+    };
     
     $scope.colorFunction = function() {
       return function(d, i) {
         //d is not the pieSegments entry, but some d3/svg stuff; i is the index
         return $scope.pieSegments[i].color;
       };
-    }
+    };
 
     $scope.pointsSpentOnOtherOptions = function(key) {
       var result = 0;
@@ -55,7 +55,7 @@
         }
       });
       return result;
-    }
+    };
 
     $scope.maximizePointsForOption = function(key) {
       var pointsSpentOnOthers = $scope.pointsSpentOnOtherOptions(key);
@@ -65,7 +65,7 @@
         }
       });
       $scope.updateVote(key);
-    }
+    };
 
     $scope.updateVote = function(key) {
 
@@ -101,7 +101,11 @@
       $scope.pieSegments = angular.copy($scope.pieSegments);
     }
 
-    $scope.init = function() {
+    var injectStyles = function(rule) {
+      d3.select("body").append("style").text(rule);
+    };
+
+    var init = function() {
       var i = 0;
       $scope.pieSegments.forEach(function(item) {
           var vote = {
@@ -130,13 +134,9 @@
         }
       );
 
-    }
+    };
 
-    function injectStyles(rule) {
-      d3.select("body").append("style").text(rule);
-    }
-
-    $scope.init();
+    init();
 
   });
 
