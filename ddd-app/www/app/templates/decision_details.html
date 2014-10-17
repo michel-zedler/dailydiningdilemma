@@ -20,11 +20,27 @@
                 </div>
             </div>
 
-            <ul class="list">
-                <li class="item" ng-repeat="option in options">
-                    {{ option.name }}
-                </li>
-            </ul>
+            <div class="card">
+                <div class="item">
+                    <nvd3-pie-chart
+                            data="pieData"
+                            id="examplePieId"
+                            width="300"
+                            height="300"
+                            x="xFunction()"
+                            y="yFunction()"
+                            color="colorFunction()"
+                            donut="true"
+                            showLabels="true">
+                        <svg></svg>
+                    </nvd3-pie-chart>
+                </div>
+                <div class="item range range-vote-{{vote.cssSuffix}}" ng-repeat="vote in votes" >
+                    <span style="width:24%;">{{vote.key}}</span>
+                    <input type="range" name="volume" ng-model="vote.val" min="0" max="100" ng-change="updateVote(vote.key)" style="width:70%">
+                    <span style="width:6%; text-align:center;" ng-click="maximizePointsForOption(vote.key)">{{vote.val}}</span>
+                </div>
+            </div>
 
         </form>
 

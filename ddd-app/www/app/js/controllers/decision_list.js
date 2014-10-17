@@ -40,24 +40,6 @@
     $scope.detailsFor = function(decisionId) {
       $location.path('/app/decision-details/' + decisionId);
     };
-
-    $scope.exampleData = [
-      { key: "Theaterhaus", y: 25 },
-      { key: "Illuminati", y: 25 },
-      { key: "NGA", y: 10 },
-      { key: "Spice Of India", y: 40 }
-
-    ];
-    $scope.xFunction = function () {
-      return function (d) {
-        return d.key;
-      };
-    }
-    $scope.yFunction = function () {
-      return function (d) {
-        return d.y;
-      };
-    }
   });
 
 })();
