@@ -21,14 +21,21 @@
         </div>
 
         <div class="card" ng-repeat="decision in decisions" ng-hide="!decisions.length" ng-click="detailsFor(decision.id)">
-            <div class="item item-divider">
+            <div class="item item-divider item-icon-left">
                 {{ decision.title }}
+                <i class="icon ion-pie-graph"></i>
             </div>
-            <div class="item item-text-wrap">
+            <div class="item item-text-wrap item-icon-left">
+                <i class="icon ion-information"></i>
                 {{ decision.description }}
             </div>
-            <div class="item item-divider">
+            <div class="item item-icon-left">
+                <i class="icon ion-clock"></i>
                 {{ decision.dateText }}
+            </div>
+            <div class="item item-text-wrap item-icon-left">
+                <i class="icon ion-person-stalker"></i>
+                x participants
             </div>
         </div>
 

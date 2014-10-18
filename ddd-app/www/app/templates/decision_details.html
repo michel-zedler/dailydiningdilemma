@@ -4,48 +4,49 @@
         <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
     </ion-nav-buttons>
 
+    <ion-nav-buttons side="right">
+        <a class="button button-icon icon ion-close-round" ng-href="#/app/decisions"></a>
+    </ion-nav-buttons>
+
     <ion-content has-header="true" padding="true">
 
         <form name="decisionForm" novalidate>
 
-            <div class="card">
-                <div class="item item-divider">
-                    {{ decision.title }}
-                </div>
-                <div class="item item-text-wrap">
-                    {{ decision.description }}
-                </div>
-                <div class="item item-divider">
-                    {{ decision.dateText }}
-                </div>
-            </div>
+                <div class="list">
 
-            <div class="card">
-                <div class="item">
-                    <nvd3-pie-chart
-                            data="pieSegments"
-                            id="examplePieId"
-                            width="300"
-                            height="300"
-                            x="xFunction()"
-                            y="yFunction()"
-                            color="colorFunction()"
-                            donut="true"
-                            showLabels="false"
-                            margin="{left:0,top:0,bottom:0,right:0}">
-                        <svg></svg>
-                    </nvd3-pie-chart>
-                </div>
-                <div ng-repeat="vote in votes" >
-                    <div class="item item-divider" ng-click="setVoteActive(vote.key)">
-                        <span>{{vote.key}}</span>
-                        <span class="badge badge-positive" style="background-color:{{vote.color}}" ng-click="maximizePointsForOption(vote.key)">{{vote.val}}</span>
+                    <div class="item">
+                        <nvd3-pie-chart
+                                data="pieSegments"
+                                id="examplePieId"
+                                width="300"
+                                height="300"
+                                x="xFunction()"
+                                y="yFunction()"
+                                color="colorFunction()"
+                                donut="true"
+                                showLabels="false"
+                                margin="{left:0,top:0,bottom:0,right:0}">
+                            <svg></svg>
+                        </nvd3-pie-chart>
                     </div>
-                    <div class="item range range-vote-{{vote.index}}" collapse="!vote.active">
-                        <input type="range" name="points" ng-model="vote.val" min="0" max="100" ng-change="updateVote(vote.key)" style="width:100%" ng-show="vote.active">
+                    <div ng-repeat="vote in votes">
+                        <div class="item item-divider" ng-click="setVoteActive(vote.key)">
+                            <span>{{vote.key}}</span>
+                            <span class="badge badge-positive" style="background-color:{{vote.color}}" ng-click="maximizePointsForOption(vote.key)">{{vote.val}}</span>
+                        </div>
+                        <div class="item range range-vote-{{vote.index}}" collapse="!vote.active">
+                            <input type="range" name="points" ng-model="vote.val" min="0" max="100" ng-change="updateVote(vote.key)" style="width:100%" ng-show="vote.active">
+                        </div>
                     </div>
+                    <a class="item item-icon-right" href="#">
+                        <i class="icon ion-plus"></i>
+                        Add an option
+                    </a>
+                    <a class="item item-icon-right" href="#">
+                        <i class="icon ion-speakerphone"></i>
+                        Submit your vote
+                    </a>
                 </div>
-            </div>
 
         </form>
 
