@@ -16,17 +16,18 @@
 
 
     var TOTAL = 100;
+    var COLORS = [ '#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728'];
+
     $scope.votes = []; //keeping votes separate from pieSegments to enable live updates
 
-    $scope.pieSegments = [
-      { key: "Theaterhaus", y: 0, color: '#1f77b4' },
-      { key: "Illuminati", y: 0, color: '#aec7e8' },
-      { key: "Spice Of India", y: 0, color: '#ff7f0e' },
-      { key: "NGA", y: 0, color: '#ffbb78' },
-      { key: "Some", y: 0, color: '#2ca02c' },
-      { key: "More", y: 0, color: '#98df8a' },
-      { key: "Rages", y: 0, color: '#d62728' }
-    ];
+    $scope.pieSegments = [];
+    $scope.options.forEach(function(option, index) {
+      $scope.pieSegments.push({
+        key: option.name,
+        y: 0,
+        color: COLORS[index]
+      });
+    });
 
     $scope.xFunction = function(){
       return function(d) {
@@ -65,6 +66,14 @@
         }
       });
       $scope.updateVote(key);
+    };
+
+    $scope.allPointsSpent = function() {
+      var sum = 0;
+      $scope.votes.forEach(function(vote) {
+        sum += vote.val;
+      });
+      return sum === 100;
     };
 
     $scope.updateVote = function(key) {

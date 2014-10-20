@@ -38,11 +38,11 @@
                         <input type="range" name="points" ng-model="vote.val" min="0" max="100" ng-change="updateVote(vote.key)" style="width:100%" ng-show="vote.active">
                     </div>
                 </div>
-                <a class="item item-icon-right" href="#">
+                <a class="item item-icon-right" href="#" ng-hide="options.length > 6">
                     <i class="icon ion-plus"></i>
                     Add an option
                 </a>
-                <a class="item item-icon-right" href="#">
+                <a class="item item-icon-right" ng-href="{{allPointsSpent() ? '#' : ''}}">
                     <i class="icon ion-speakerphone"></i>
                     Submit your vote
                 </a>

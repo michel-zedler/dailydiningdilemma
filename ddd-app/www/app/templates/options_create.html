@@ -12,7 +12,7 @@
                 <div class="item item item-button-right">
                     Two options required
                     <div class="buttons">
-                        <button class="button button-positive" ng-click="addOption()">
+                        <button class="button button-positive" ng-click="addOption()" ng-disabled="options.length > 6">
                             <i class="icon ion-plus-circled"></i>
                         </button>
                         <button class="button button-positive" ng-click="finish()" ng-disabled="optionsForm.$invalid || options.length < 2">
