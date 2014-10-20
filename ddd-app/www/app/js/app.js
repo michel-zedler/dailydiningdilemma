@@ -94,6 +94,16 @@ ddd.config(function ($stateProvider, $urlRouterProvider) {
           controller: "DecisionDetailsCtrl"
         }
       }
+    })
+
+    .state('app.vote', {
+      url: "/vote/:decisionId",
+      views: {
+        'menuContent': {
+          templateUrl: "app/templates/vote.html",
+          controller: "VoteCtrl"
+        }
+      }
     });
 
   // fallback route
