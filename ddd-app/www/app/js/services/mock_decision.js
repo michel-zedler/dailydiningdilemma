@@ -3,7 +3,7 @@
 
   ddd.factory('DecisionService', function () {
     var closing = moment();
-    closing.add(1, 'hours');
+    closing.add(1, 'minute');
 
     var decisions = [
       {

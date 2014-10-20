@@ -9,7 +9,7 @@
       _decisions.one(id).get().then(function (decision) {
         cb(decision);
       });
-    }
+    };
 
     return {
       all: function(cb) {
@@ -42,6 +42,5 @@
       }
     };
   });
-
 
 })();
