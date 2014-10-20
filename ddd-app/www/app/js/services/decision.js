@@ -7,6 +7,7 @@
 
     var findDecisionById = function(id, cb) {
       _decisions.one(id).get().then(function (decision) {
+        decision.votingCloseDate = moment(decision.votingCloseDate);
         cb(decision);
       });
     };

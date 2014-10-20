@@ -9,19 +9,23 @@
     DecisionService.byId($scope.decisionId, function(decision) {
       DecisionHelperService.updateCountdownLabel(decision);
       $scope.decision = decision;
+      updateCountdownLabelEverySecond();
     });
 
     OptionService.byDecisionId($scope.decisionId, function(options) {
       $scope.options = options;
     });
 
-    $scope.voteFor = function(decisionId) {
-      $location.path('/app/vote/' + decisionId);
+    $scope.voteFor = function() {
+      $interval.cancel(updateCountdownLabelEverySecond);
+      $location.path('/app/vote/' + $scope.decisionId);
     };
 
-    var updateCountdownLabelEverySecond = $interval(function() {
-      DecisionHelperService.updateCountdownLabel($scope.decision);
-    }, 1000);
+    var updateCountdownLabelEverySecond = function() {
+      $interval(function() {
+        DecisionHelperService.updateCountdownLabel($scope.decision);
+      }, 1000);
+    };
 
   });
 

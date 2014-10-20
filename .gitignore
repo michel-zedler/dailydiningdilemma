@@ -2,6 +2,7 @@
 .classpath
 .project
 target
+.metadata
 
 .DS_Store
 ddd-app/www/index.html

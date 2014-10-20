@@ -1,33 +1,27 @@
 (function () {
   "use strict";
 
-  ddd.controller('VoteCtrl', function ($scope, $stateParams, DecisionService, OptionService) {
-    $scope.decision = {};
-    $scope.options = [];
-    $scope.decisionId = $stateParams.decisionId;
-
-    DecisionService.byId($scope.decisionId, function(decision) {
-      $scope.decision = decision;
-    });
-
-    OptionService.byDecisionId($scope.decisionId, function(options) {
-      $scope.options = options;
-    });
-
-
+  ddd.controller('VoteCtrl', function ($scope, $stateParams, $location, $ionicBackdrop, DecisionService, OptionService, VoteService) {
     var TOTAL = 100;
     var COLORS = [ '#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728'];
 
+    $scope.decision = {};
+    $scope.options = [];
     $scope.votes = []; //keeping votes separate from pieSegments to enable live updates
-
     $scope.pieSegments = [];
-    $scope.options.forEach(function(option, index) {
-      $scope.pieSegments.push({
-        key: option.name,
-        y: 0,
-        color: COLORS[index]
+
+    $scope.decisionId = $stateParams.decisionId;
+
+    $scope.submitVote = function() {
+      if (!$scope.allPointsSpent()) {
+        return;
+      }
+      $ionicBackdrop.retain();
+      VoteService.store($scope.votes, $scope.decisionId, function() {
+        $ionicBackdrop.release();
+        $location.path('/app/decision-details/' + $scope.decisionId);
       });
-    });
+    };
 
     $scope.xFunction = function(){
       return function(d) {
@@ -52,7 +46,7 @@
       var result = 0;
       $scope.votes.forEach(function(vote) {
         if (vote.key != key) {
-          result += parseInt(vote.val);
+          result += parseInt(vote.value);
         }
       });
       return result;
@@ -62,7 +56,7 @@
       var pointsSpentOnOthers = $scope.pointsSpentOnOtherOptions(key);
       $scope.votes.forEach(function(vote) {
         if (vote.key == key) {
-          vote.val = TOTAL - pointsSpentOnOthers;
+          vote.value = TOTAL - pointsSpentOnOthers;
         }
       });
       $scope.updateVote(key);
@@ -71,7 +65,7 @@
     $scope.allPointsSpent = function() {
       var sum = 0;
       $scope.votes.forEach(function(vote) {
-        sum += vote.val;
+        sum += vote.value;
       });
       return sum === 100;
     };
@@ -85,10 +79,10 @@
       $scope.votes.forEach(function(vote) {
         if (vote.key == key) {
           var max = TOTAL - pointsSpentOnOthers;
-          vote.val = Math.min(max, parseInt(vote.val));
-          $scope.pieSegments[vote.index].y = vote.val;
+          vote.value = Math.min(max, parseInt(vote.value));
+          $scope.pieSegments[vote.index].y = vote.value;
         }
-        pointsSpentInTotal += vote.val;
+        pointsSpentInTotal += vote.value;
       });
 
       //update vacant points segment
@@ -120,22 +114,24 @@
       });
     }
 
+
     var injectStyles = function(rule) {
       d3.select("body").append("style").text(rule);
     };
 
-    var init = function() {
+    var initChart = function() {
       var i = 0;
       $scope.pieSegments.forEach(function(item) {
-            var vote = {
-              index : i++,
-              key : item.key,
-              color : item.color,
-              val : 0,
-              active: false
-            };
-            $scope.votes.push(vote);
-          }
+          var vote = {
+            index : i++,
+            key : item.key,
+            color : item.color,
+            optionId : item.optionId,
+            value : 0,
+            active: false
+          };
+          $scope.votes.push(vote);
+        }
       );
 
       var vacantPoints = { key: "", y: TOTAL, color: '#ffffff' };
@@ -143,20 +139,45 @@
 
       d3.select('svg').select('#pieCenterLabel').remove();
       d3.select('svg').append("text")
-          .attr("id", "donutLabel")
-          .attr("style", function(d){return 'text-anchor: middle; font-size: 30px; font-weight: bold;'})
-          .attr("dx", function(d){return 150;})
-          .attr("dy", function(d){return 160;})
-          .text(function(d){return "Vote!";});
+        .attr("id", "donutLabel")
+        .attr("style", function(d){return 'text-anchor: middle; font-size: 30px; font-weight: bold;'})
+        .attr("dx", function(d){return 150;})
+        .attr("dy", function(d){return 160;})
+        .text(function(d){return "Vote!";});
 
       $scope.votes.forEach(function(vote) {
-            injectStyles('.range.range-vote-'+vote.index+' input::-webkit-slider-thumb:before { background: '+vote.color+'; }');
-          }
+          injectStyles('.range.range-vote-'+vote.index+' input::-webkit-slider-thumb:before { background: '+vote.color+'; }');
+        }
       );
 
     };
 
-    init();
+    (function() {
+      $ionicBackdrop.retain();
+
+      DecisionService.byId($scope.decisionId, function(decision) {
+        $scope.decision = decision;
+
+        OptionService.byDecisionId($scope.decisionId, function(options) {
+          $scope.options = options;
+
+          $scope.options.forEach(function(option, index) {
+            $scope.pieSegments.push({
+              key: option.name,
+              optionId: option.id,
+              y: 0,
+              color: COLORS[index]
+            });
+          });
+
+          initChart();
+
+          $ionicBackdrop.release();
+
+        });
+      });
+    })();
+
 
   });
 

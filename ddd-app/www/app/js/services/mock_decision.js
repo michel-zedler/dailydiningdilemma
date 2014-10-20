@@ -14,9 +14,11 @@
         isClosed: false,
         options: [
           {
+            id: 1,
             name: 'location 1'
           },
           {
+            id: 2,
             name: 'location 2'
           }
         ]
@@ -29,9 +31,11 @@
         isClosed: false,
         options: [
           {
+            id: 21,
             name: 'location 1'
           },
           {
+            id: 22,
             name: 'location 2'
           }
         ]
