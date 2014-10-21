@@ -6,9 +6,9 @@
     var _votes = Restangular.all('votes');
 
     return {
-      store: function(votes, decisionId, cb) {
+      store: function(votes, votingId, cb) {
         var data = {
-          decisionId: decisionId,
+          votingId: votingId,
           votes: []
         };
 
@@ -23,7 +23,7 @@
           cb();
         }, function(res) {
           console.error('storage failed', res);
-          cb(undefined, 'could not store the decision, check client logs');
+          cb(undefined, 'could not store the voting, check client logs');
         });
       }
     }

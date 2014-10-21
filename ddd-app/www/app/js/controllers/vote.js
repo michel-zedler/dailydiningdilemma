@@ -1,25 +1,25 @@
 (function () {
   "use strict";
 
-  ddd.controller('VoteCtrl', function ($scope, $stateParams, $location, $ionicBackdrop, DecisionService, OptionService, VoteService) {
+  ddd.controller('VoteCtrl', function ($scope, $stateParams, $location, $ionicBackdrop, VotingService, OptionService, VoteService) {
     var TOTAL = 100;
     var COLORS = [ '#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728'];
 
-    $scope.decision = {};
+    $scope.voting = {};
     $scope.options = [];
     $scope.votes = []; //keeping votes separate from pieSegments to enable live updates
     $scope.pieSegments = [];
 
-    $scope.decisionId = $stateParams.decisionId;
+    $scope.votingId = $stateParams.votingId;
 
     $scope.submitVote = function() {
       if (!$scope.allPointsSpent()) {
         return;
       }
       $ionicBackdrop.retain();
-      VoteService.store($scope.votes, $scope.decisionId, function() {
+      VoteService.store($scope.votes, $scope.votingId, function() {
         $ionicBackdrop.release();
-        $location.path('/app/decision-details/' + $scope.decisionId);
+        $location.path('/app/voting-details/' + $scope.votingId);
       });
     };
 
@@ -155,10 +155,10 @@
     (function() {
       $ionicBackdrop.retain();
 
-      DecisionService.byId($scope.decisionId, function(decision) {
-        $scope.decision = decision;
+      VotingService.byId($scope.votingId, function(voting) {
+        $scope.voting = voting;
 
-        OptionService.byDecisionId($scope.decisionId, function(options) {
+        OptionService.byVotingId($scope.votingId, function(options) {
           $scope.options = options;
 
           $scope.options.forEach(function(option, index) {

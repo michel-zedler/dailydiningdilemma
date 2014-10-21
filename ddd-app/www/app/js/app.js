@@ -56,28 +56,28 @@ ddd.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
 
-    .state('app.decisions', {
-      url: "/decisions",
+    .state('app.votings', {
+      url: "/votings",
       views: {
         'menuContent': {
-          templateUrl: "app/templates/decisions.html",
-          controller: "DecisionListCtrl"
+          templateUrl: "app/templates/votings.html",
+          controller: "VotingListCtrl"
         }
       }
     })
 
-    .state('app.decisions-create', {
-      url: "/decisions-create",
+    .state('app.voting-create', {
+      url: "/voting-create",
       views: {
         'menuContent': {
-          templateUrl: "app/templates/decisions_create.html",
-          controller: "DecisionCreateCtrl"
+          templateUrl: "app/templates/voting_create.html",
+          controller: "VotingCreateCtrl"
         }
       }
     })
 
     .state('app.options-create', {
-      url: "/options-create/:decisionId",
+      url: "/options-create/:votingId",
       views: {
         'menuContent': {
           templateUrl: "app/templates/options_create.html",
@@ -86,18 +86,18 @@ ddd.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
 
-    .state('app.decision-details', {
-      url: "/decision-details/:decisionId",
+    .state('app.voting-details', {
+      url: "/voting-details/:votingId",
       views: {
         'menuContent': {
-          templateUrl: "app/templates/decision_details.html",
-          controller: "DecisionDetailsCtrl"
+          templateUrl: "app/templates/voting_details.html",
+          controller: "VotingDetailsCtrl"
         }
       }
     })
 
     .state('app.vote', {
-      url: "/vote/:decisionId",
+      url: "/vote/:votingId",
       views: {
         'menuContent': {
           templateUrl: "app/templates/vote.html",
@@ -107,7 +107,7 @@ ddd.config(function ($stateProvider, $urlRouterProvider) {
     });
 
   // fallback route
-  $urlRouterProvider.otherwise('/app/decisions');
+  $urlRouterProvider.otherwise('/app/votings');
 
 });
 

@@ -3,15 +3,15 @@
 
   ddd.controller('OptionsCreateCtrl', function ($scope, $location, $stateParams, OptionService) {
     $scope.options = [];
-    $scope.decisionId = $stateParams.decisionId;
+    $scope.votingId = $stateParams.votingId;
 
     $scope.addOption = function() {
       $scope.options.unshift({ name: ''});
     };
 
     $scope.finish = function() {
-      OptionService.store($scope.options, $scope.decisionId, function() {
-        $location.path('/app/decisions');
+      OptionService.store($scope.options, $scope.votingId, function() {
+        $location.path('/app/votings');
       });
     };
 
