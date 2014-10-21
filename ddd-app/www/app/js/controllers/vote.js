@@ -77,7 +77,7 @@
       var pointsSpentOnOthers = $scope.pointsSpentOnOtherOptions(key);
 
       $scope.votes.forEach(function(vote) {
-        if (vote.key == key) {
+        if (vote.key === key) {
           var max = TOTAL - pointsSpentOnOthers;
           vote.value = Math.min(max, parseInt(vote.value));
           $scope.pieSegments[vote.index].y = vote.value;
@@ -127,7 +127,7 @@
             key : item.key,
             color : item.color,
             optionId : item.optionId,
-            value : 0,
+            value : item.y,
             active: false
           };
           $scope.votes.push(vote);
@@ -161,18 +161,36 @@
         OptionService.byVotingId($scope.votingId, function(options) {
           $scope.options = options;
 
-          $scope.options.forEach(function(option, index) {
-            $scope.pieSegments.push({
-              key: option.name,
-              optionId: option.id,
-              y: 0,
-              color: COLORS[index]
+          VoteService.latest($scope.votingId, function(vote) {
+            var alreadyVoted = false;
+
+            $scope.options.forEach(function(option, index) {
+              var yValue = 0;
+              for (var i=0; i < vote.length; i++) {
+                if (vote[i].optionId === option.id) {
+                  yValue = vote[i].value;
+                  alreadyVoted = true;
+                  break;
+                }
+              }
+              $scope.pieSegments.push({
+                key: option.name,
+                optionId: option.id,
+                y: yValue,
+                color: COLORS[index]
+              });
             });
-          });
 
-          initChart();
+            initChart();
 
-          $ionicBackdrop.release();
+            if (alreadyVoted) {
+              $scope.votes.forEach(function(_vote) {
+                $scope.updateVote(_vote.key);
+              });
+            }
+
+            $ionicBackdrop.release();
+          })
 
         });
       });

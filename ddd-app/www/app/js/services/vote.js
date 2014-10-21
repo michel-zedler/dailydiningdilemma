@@ -26,6 +26,12 @@
           console.error('storage failed', res);
           cb(undefined, 'could not store the voting, check client logs');
         });
+      },
+      latest: function(votingId, cb) {
+        // TODO: decisionId should be votingId
+        _votes.getList({ decisionId: votingId }).then(function(votes) {
+          cb(votes);
+        });
       }
     }
   });
