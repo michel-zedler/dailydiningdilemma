@@ -6,6 +6,12 @@
     $scope.options = [];
     $scope.votingId = $stateParams.votingId;
 
+    var updateCountdownLabelEverySecond = function() {
+      $interval(function() {
+        VotingHelperService.updateCountdownLabel($scope.voting);
+      }, 1000);
+    };
+
     VotingService.byId($scope.votingId, function(voting) {
       VotingHelperService.updateCountdownLabel(voting);
       $scope.voting = voting;
@@ -19,12 +25,6 @@
     $scope.voteFor = function() {
       $interval.cancel(updateCountdownLabelEverySecond);
       $location.path('/app/vote/' + $scope.votingId);
-    };
-
-    var updateCountdownLabelEverySecond = function() {
-      $interval(function() {
-        VotingHelperService.updateCountdownLabel($scope.voting);
-      }, 1000);
     };
 
   });
