@@ -1,42 +1,43 @@
 (function () {
   "use strict";
 
-  ddd.factory('DecisionService', function (Restangular) {
+  ddd.factory('VotingService', function (Restangular) {
 
-    var _decisions = Restangular.all("decisions");
+    // TODO: should be votings
+    var _votings = Restangular.all("decisions");
 
-    var findDecisionById = function(id, cb) {
-      _decisions.one(id).get().then(function (decision) {
-        decision.votingCloseDate = moment(decision.votingCloseDate);
-        cb(decision);
+    var findVotingById = function(id, cb) {
+      _votings.one(id).get().then(function (voting) {
+        voting.votingCloseDate = moment(voting.votingCloseDate);
+        cb(voting);
       });
     };
 
     return {
       all: function(cb) {
-        _decisions.getList().then(function(allDecisions) {
-          allDecisions.forEach(function(tmpDecision) {
-            tmpDecision.votingCloseDate = moment(tmpDecision.votingCloseDate);
+        _votings.getList().then(function(allvotings) {
+          allvotings.forEach(function(tmpvoting) {
+            tmpvoting.votingCloseDate = moment(tmpvoting.votingCloseDate);
           });
-          cb(angular.copy(allDecisions));
+          cb(angular.copy(allvotings));
         });
       },
-      store: function(decision, cb) {
-        var json = angular.toJson(decision);
-        _decisions.post(json).then(function(decisionData) {
-          cb(decisionData.id);
+      store: function(voting, cb) {
+        var json = angular.toJson(voting);
+        _votings.post(json).then(function(votingData) {
+          cb(votingData.id);
         }, function(res) {
           console.error('storage failed', res);
-          cb(undefined, 'could not store the decision, check client logs');
+          cb(undefined, 'could not store the voting, check client logs');
         });
       },
       byId: function(id, cb) {
-        findDecisionById(id, cb);
+        findVotingById(id, cb);
       },
-      update: function(decision, cb) {
-        findDecisionById(decision.id, function(_decision) {
-          angular.extend(_decision, decision);
-          _decision.put().then(function() {
+      update: function(voting, cb) {
+        findVotingById(voting.id, function(_voting) {
+          angular.extend(_voting, voting);
+          _voting.put().then(function() {
             cb();
           });
         });

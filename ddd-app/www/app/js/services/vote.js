@@ -8,7 +8,8 @@
     return {
       store: function(votes, votingId, cb) {
         var data = {
-          votingId: votingId,
+          // TODO: should be called votingId
+          decisionId: votingId,
           votes: []
         };
 

@@ -8,7 +8,8 @@
     return {
       store: function(options, votingId, cb) {
         var json = angular.toJson({
-          votingId: votingId,
+          // TODO: should be votingId
+          decisionId: votingId,
           options: options
         });
         _options.post(json).then(function() {
@@ -19,7 +20,8 @@
         });
       },
       byVotingId: function(votingId, cb) {
-        _options.getList({ votingId: votingId }).then(function(options) {
+        // TODO: parameter should be called votingId
+        _options.getList({ decisionId: votingId }).then(function(options) {
           cb(options);
         });
       }

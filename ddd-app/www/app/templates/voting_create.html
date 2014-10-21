@@ -1,55 +1,47 @@
-<ion-view title="Create new decision">
+<ion-view title="Create new voting">
 
     <ion-nav-buttons side="left">
         <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
     </ion-nav-buttons>
 
     <ion-nav-buttons side="right">
-        <a class="button button-icon icon ion-close-round" ng-href="#/app/decisions"></a>
+        <a class="button button-icon icon ion-close-round" ng-href="#/app/votings"></a>
     </ion-nav-buttons>
 
 
     <ion-content has-header="true" padding="true">
 
-        <form name="decisionForm" novalidate>
-
-            <span ng-show="decisionForm.title.$invalid && decisionForm.title.$dirty">
-                Please enter a title
-            </span>
-
-            <span ng-show="decisionForm.description.$invalid && decisionForm.description.$dirty">
-                Please enter a description
-            </span>
+        <form name="votingForm" novalidate>
 
             <div class="list">
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Title</span>
-                    <input type="text" placeholder="Title" ng-model="decision.title" required>
+                    <input type="text" placeholder="Title" ng-model="voting.title" required>
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Description</span>
-                    <textarea placeholder="Description" ng-model="decision.description" required></textarea>
+                    <textarea placeholder="Description" ng-model="voting.description" required></textarea>
                 </label>
 
                 <div class="row">
                     <div class="col">
                         <label class="item item-input item-stacked-label">
                             <span class="input-label">End date</span>
-                            <input type="date" ng-model="decision.votingCloseDate" required>
+                            <input type="date" ng-model="voting.votingCloseDate" required>
                         </label>
                     </div>
                     <div class="col">
                         <label class="item item-input item-stacked-label">
                             <span class="input-label">End time</span>
-                            <input type="time" ng-model="decision.votingCloseTime" required>
+                            <input type="time" ng-model="voting.votingCloseTime" required>
                         </label>
                     </div>
                 </div>
 
             </div>
 
-            <button class="button button-full button-positive" ng-click="createDecision()"
-                    ng-disabled="decisionForm.$invalid || !isEndDateValid()">
+            <button class="button button-full button-positive" ng-click="createVoting()"
+                    ng-disabled="votingForm.$invalid || !isEndDateValid()">
                 Create
             </button>
 

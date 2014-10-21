@@ -1,11 +1,11 @@
 (function () {
   "use strict";
 
-  ddd.factory('DecisionService', function () {
+  ddd.factory('VotingService', function () {
     var closing = moment();
     closing.add(1, 'minute');
 
-    var decisions = [
+    var votings = [
       {
         id: "1",
         title: 'Mittagessen',
@@ -42,33 +42,33 @@
       }
     ];
 
-    var findDecisionById = function(id) {
-      var currentDecision = {};
-      decisions.forEach(function(decision) {
-        if (decision.id === id) {
-          currentDecision = decision;
+    var findVotingById = function(id) {
+      var currentVoting = {};
+      votings.forEach(function(voting) {
+        if (voting.id === id) {
+          currentVoting = voting;
         }
       });
-      return currentDecision;
+      return currentVoting;
     }
 
     return {
       all: function(cb) {
-        cb(angular.copy(decisions).reverse());
+        cb(angular.copy(votings).reverse());
       },
-      store: function(decision, cb) {
-        var newId = decisions.length + 1;
-        decision.id = newId.toString();
-        decision.isClosed = false;
-        decision.votingCloseDate = moment(decision.votingCloseDate);
-        decisions.push(decision);
-        cb(decision.id);
+      store: function(voting, cb) {
+        var newId = votings.length + 1;
+        voting.id = newId.toString();
+        voting.isClosed = false;
+        voting.votingCloseDate = moment(voting.votingCloseDate);
+        votings.push(voting);
+        cb(voting.id);
       },
       byId: function(id, cb) {
-        cb(findDecisionById(id));
+        cb(findVotingById(id));
       },
-      update: function(decision, cb) {
-        angular.extend(findDecisionById(decision.id), decision);
+      update: function(voting, cb) {
+        angular.extend(findVotingById(voting.id), voting);
         cb();
       }
     };

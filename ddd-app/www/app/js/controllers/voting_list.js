@@ -1,28 +1,27 @@
 (function () {
   "use strict";
 
-  ddd.controller('DecisionListCtrl', function ($scope, $interval, $location, $ionicBackdrop, GlobalDataService, DecisionService, DecisionHelperService) {
+  ddd.controller('VotingListCtrl', function ($scope, $interval, $location, $ionicBackdrop, GlobalDataService, VotingService, VotingHelperService) {
     $scope.user = { name: GlobalDataService.user.name, email: GlobalDataService.user.email, key: GlobalDataService.user.sessionKey };
-    $scope.decisions = [];
+    $scope.votings = [];
 
     $ionicBackdrop.retain();
-    DecisionService.all(function (decisions) {
-      decisions.forEach(function (decision) {
-        console.log(DecisionService);
-        DecisionHelperService.updateCountdownLabel(decision);
+    VotingService.all(function (votings) {
+      votings.forEach(function (voting) {
+        VotingHelperService.updateCountdownLabel(voting);
       });
       $ionicBackdrop.release();
-      $scope.decisions = decisions;
+      $scope.votings = votings;
     });
 
     var updateCountdownLabelEverySecond = $interval(function() {
-      $scope.decisions.forEach(function (decision) {
-        DecisionHelperService.updateCountdownLabel(decision)
+      $scope.votings.forEach(function (voting) {
+        VotingHelperService.updateCountdownLabel(voting)
       });
     }, 1000);
 
-    $scope.detailsFor = function(decisionId) {
-      $location.path('/app/decision-details/' + decisionId);
+    $scope.detailsFor = function(votingId) {
+      $location.path('/app/voting-details/' + votingId);
     };
   });
 
