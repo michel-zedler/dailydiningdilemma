@@ -43,6 +43,7 @@ public class OptionDao {
 		List<Option> options = new JPAQuery(entityManager)
 				.from(decisionOptionMapping)
 				.where(decisionOptionMapping.decision.id.eq(decisionId))
+				.orderBy(decisionOptionMapping.id.asc())
 				.list(decisionOptionMapping.option);
 		return options;
 	}

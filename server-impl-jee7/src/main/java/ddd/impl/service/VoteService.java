@@ -54,7 +54,7 @@ public class VoteService {
 		removeVotesForDecision(user.getId(), decisionId);		
 	}
 
-	public List<VoteDto> getVotesForDecision(String apikey, Long decisionId) {
+	public List<VoteDto> getVotesForUserByDecisionId(String apikey, Long decisionId) {
 		List<VoteDto> voteDtos = new ArrayList<VoteDto>();
 		UserEntity user = userdao.findByApiKey(apikey);
 		List<DecisionOptionMapping> decisionOptionMappings = decisionOptionMappingDao.findDecisionOptionMapping(decisionId);
