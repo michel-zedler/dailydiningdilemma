@@ -6,20 +6,22 @@
     var _options = Restangular.all('options');
 
     return {
-      store: function(options, decisionId, cb) {
+      store: function(options, votingId, cb) {
         var json = angular.toJson({
-          decisionId: decisionId,
+          // TODO: should be votingId
+          decisionId: votingId,
           options: options
         });
         _options.post(json).then(function() {
           cb();
         }, function(res) {
           console.error('storage failed', res);
-          cb(undefined, 'could not store the decision, check client logs');
+          cb(undefined, 'could not store the voting, check client logs');
         });
       },
-      byDecisionId: function(decisionId, cb) {
-        _options.getList({ decisionId: decisionId }).then(function(options) {
+      byVotingId: function(votingId, cb) {
+        // TODO: parameter should be called votingId
+        _options.getList({ decisionId: votingId }).then(function(options) {
           cb(options);
         });
       }

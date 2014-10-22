@@ -9,7 +9,7 @@
       if (err) {
         alert('Login failed: ' + err);
       } else {
-        $location.path('/app/decisions');
+        $location.path('/app/votings');
       }
     };
 

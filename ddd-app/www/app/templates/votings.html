@@ -1,11 +1,11 @@
-<ion-view title="Current Decisions">
+<ion-view title="Current Votings">
 
     <ion-nav-buttons side="left">
         <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
     </ion-nav-buttons>
 
     <ion-nav-buttons side="right">
-        <a class="button button-icon icon ion-plus" ng-href="#/app/decisions-create"></a>
+        <a class="button button-icon icon ion-plus" ng-href="#/app/voting-create"></a>
     </ion-nav-buttons>
 
     <ion-content has-header="true" padding="true">
@@ -20,28 +20,28 @@
             </div>
         </div>
 
-        <div class="card" ng-repeat="decision in decisions" ng-hide="!decisions.length" ng-click="detailsFor(decision.id)">
+        <div class="card" ng-repeat="voting in votings" ng-hide="!votings.length" ng-click="detailsFor(voting.id)">
             <div class="item item-divider item-icon-left">
-                {{ decision.title }}
+                {{ voting.title }}
                 <i class="icon ion-pie-graph"></i>
             </div>
             <div class="item item-text-wrap item-icon-left">
                 <i class="icon ion-information"></i>
-                {{ decision.description }}
+                {{ voting.description }}
             </div>
             <div class="item item-icon-left">
                 <i class="icon ion-clock"></i>
-                {{ decision.countdownLabel }}
+                {{ voting.countdownLabel }}
             </div>
             <div class="item item-text-wrap item-icon-left">
                 <i class="icon ion-person-stalker"></i>
-                {{ decision.participants }} participants
+                {{ voting.participants }} participants
             </div>
         </div>
 
-        <div class="card" ng-show="!decisions.length">
+        <div class="card" ng-show="!votings.length">
             <div class="item item-text-wrap">
-                No decisions so far, pro tip: create a new one! :)
+                No votings so far, pro tip: create a new one! :)
             </div>
         </div>
 

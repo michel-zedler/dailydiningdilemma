@@ -6,9 +6,10 @@
     var _votes = Restangular.all('votes');
 
     return {
-      store: function(votes, decisionId, cb) {
+      store: function(votes, votingId, cb) {
         var data = {
-          decisionId: decisionId,
+          // TODO: should be called votingId
+          decisionId: votingId,
           votes: []
         };
 
@@ -23,7 +24,13 @@
           cb();
         }, function(res) {
           console.error('storage failed', res);
-          cb(undefined, 'could not store the decision, check client logs');
+          cb(undefined, 'could not store the voting, check client logs');
+        });
+      },
+      latest: function(votingId, cb) {
+        // TODO: decisionId should be votingId
+        _votes.getList({ decisionId: votingId }).then(function(votes) {
+          cb(votes);
         });
       }
     }

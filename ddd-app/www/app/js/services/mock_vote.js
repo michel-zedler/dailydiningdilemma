@@ -4,7 +4,7 @@
   ddd.factory('VoteService', function() {
 
     return {
-      store: function(votes, decisionId, cb) {
+      store: function(votes, votingId, cb) {
         cb();
       }
     }

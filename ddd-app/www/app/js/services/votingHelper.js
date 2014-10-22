@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  ddd.factory('DecisionHelperService', function () {
+  ddd.factory('VotingHelperService', function () {
 
     var formatTimeDifference = function(closeDate) {
       var now = moment();
@@ -9,8 +9,8 @@
     };
 
     return {
-      updateCountdownLabel: function (decision) {
-        decision.countdownLabel = formatTimeDifference(decision.votingCloseDate);
+      updateCountdownLabel: function (voting) {
+        voting.countdownLabel = formatTimeDifference(voting.votingCloseDate);
       }
     };
   });
