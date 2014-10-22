@@ -3,8 +3,7 @@
 
   ddd.factory('VotingService', function (Restangular) {
 
-    // TODO: should be votings
-    var _votings = Restangular.all("decisions");
+    var _votings = Restangular.all("votings");
 
     var findVotingById = function(id, cb) {
       _votings.one(id).get().then(function (voting) {

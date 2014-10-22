@@ -8,8 +8,7 @@
     return {
       store: function(votes, votingId, cb) {
         var data = {
-          // TODO: should be called votingId
-          decisionId: votingId,
+          votingId: votingId,
           votes: []
         };
 
@@ -28,8 +27,7 @@
         });
       },
       latest: function(votingId, cb) {
-        // TODO: decisionId should be votingId
-        _votes.getList({ decisionId: votingId }).then(function(votes) {
+        _votes.getList({ votingId: votingId }).then(function(votes) {
           cb(votes);
         });
       }
