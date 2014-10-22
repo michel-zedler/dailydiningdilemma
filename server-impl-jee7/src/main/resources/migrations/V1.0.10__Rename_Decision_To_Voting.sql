@@ -1,3 +1,3 @@
-RENAME TABLE DECISIONS TO VOTINGS, DECISION_OPTION_MAPPING TO VOTING_OPTION_MAPPING;
-ALTER TABLE VOTING_OPTION_MAPPING CHANGE decision_id voting_id bigint;
-ALTER TABLE VOTES CHANGE decision_option_id voting_option_id bigint;
+RENAME TABLE decisions TO votings, decision_option_mapping TO voting_option_mapping;
+ALTER TABLE voting_option_mapping CHANGE decision_id voting_id bigint;
+ALTER TABLE votes CHANGE decision_option_id voting_option_id bigint;
