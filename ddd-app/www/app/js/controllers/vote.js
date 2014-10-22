@@ -11,19 +11,19 @@
     $scope.vote = [];
     $scope.pieSegments = [];
 
-    $scope.xFunction = function(){
+    $scope.pieSegmentLabel = function(){
       return function(d) {
-        return ''; //do not label donut segments
+        return ''; //you may add labels here
       };
     };
 
-    $scope.yFunction = function(){
+    $scope.pieSegmentValue = function(){
       return function(d){
         return d.y;
       };
     };
 
-    $scope.colorFunction = function() {
+    $scope.pieSegmentColor = function() {
       return function(d, index) {
         //note that d is not the pieSegments entry, but some d3/svg object
         return $scope.pieSegments[index].color;
