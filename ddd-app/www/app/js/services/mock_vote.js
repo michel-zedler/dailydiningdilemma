@@ -8,7 +8,7 @@
         cb();
       },
       latest: function(votingId, cb) {
-        cb([]);
+        cb({votes: []});
       }
     }
   });

@@ -27,8 +27,8 @@
         });
       },
       latest: function(votingId, cb) {
-        _votes.getList({ votingId: votingId }).then(function(votes) {
-          cb(votes);
+        _votes.customGET("", {"votingId": votingId}).then(function (latestVote) {
+          cb(latestVote);
         });
       }
     }

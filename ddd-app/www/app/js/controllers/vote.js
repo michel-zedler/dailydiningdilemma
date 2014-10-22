@@ -2,26 +2,14 @@
   "use strict";
 
   ddd.controller('VoteCtrl', function ($scope, $stateParams, $location, $ionicBackdrop, VotingService, OptionService, VoteService) {
+
     var TOTAL = 100;
     var COLORS = [ '#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728'];
 
-    $scope.voting = {};
-    $scope.options = [];
-    $scope.votes = []; //keeping votes separate from pieSegments to enable live updates
-    $scope.pieSegments = [];
-
     $scope.votingId = $stateParams.votingId;
-
-    $scope.submitVote = function() {
-      if (!$scope.allPointsSpent()) {
-        return;
-      }
-      $ionicBackdrop.retain();
-      VoteService.store($scope.votes, $scope.votingId, function() {
-        $ionicBackdrop.release();
-        $location.path('/app/voting-details/' + $scope.votingId);
-      });
-    };
+    $scope.voting = {};
+    $scope.vote = [];
+    $scope.pieSegments = [];
 
     $scope.xFunction = function(){
       return function(d) {
@@ -36,53 +24,53 @@
     };
 
     $scope.colorFunction = function() {
-      return function(d, i) {
-        //d is not the pieSegments entry, but some d3/svg stuff; i is the index
-        return $scope.pieSegments[i].color;
+      return function(d, index) {
+        //note that d is not the pieSegments entry, but some d3/svg object
+        return $scope.pieSegments[index].color;
       };
     };
 
-    $scope.pointsSpentOnOtherOptions = function(key) {
+    $scope.pointsSpentOnOtherOptions = function(optionId) {
       var result = 0;
-      $scope.votes.forEach(function(vote) {
-        if (vote.key != key) {
-          result += parseInt(vote.value);
+      $scope.vote.forEach(function(vote) {
+        if (vote.option.id !== optionId) {
+          result += parseInt(vote.points);
         }
       });
       return result;
     };
 
-    $scope.maximizePointsForOption = function(key) {
-      var pointsSpentOnOthers = $scope.pointsSpentOnOtherOptions(key);
-      $scope.votes.forEach(function(vote) {
-        if (vote.key == key) {
-          vote.value = TOTAL - pointsSpentOnOthers;
+    $scope.maximizePointsForOption = function(optionId) {
+      var pointsSpentOnOthers = $scope.pointsSpentOnOtherOptions(optionId);
+      $scope.vote.forEach(function(vote) {
+        if (vote.option.id === optionId) {
+          vote.points = TOTAL - pointsSpentOnOthers;
         }
       });
-      $scope.updateVote(key);
+      $scope.updateVote(optionId);
     };
 
     $scope.allPointsSpent = function() {
-      var sum = 0;
-      $scope.votes.forEach(function(vote) {
-        sum += vote.value;
+      var pointsSpent = 0;
+      $scope.vote.forEach(function(vote) {
+        pointsSpent += vote.points;
       });
-      return sum === 100;
+      return pointsSpent === TOTAL;
     };
 
-    $scope.updateVote = function(key) {
+    $scope.updateVote = function(optionId) {
 
       //update current and max points of each vote
       var pointsSpentInTotal = 0;
-      var pointsSpentOnOthers = $scope.pointsSpentOnOtherOptions(key);
+      var pointsSpentOnOthers = $scope.pointsSpentOnOtherOptions(optionId);
 
-      $scope.votes.forEach(function(vote) {
-        if (vote.key === key) {
+      $scope.vote.forEach(function(vote, index) {
+        if (vote.option.id === optionId) {
           var max = TOTAL - pointsSpentOnOthers;
-          vote.value = Math.min(max, parseInt(vote.value));
-          $scope.pieSegments[vote.index].y = vote.value;
+          vote.points = Math.min(max, parseInt(vote.points));
+          $scope.pieSegments[index].y = vote.points;
         }
-        pointsSpentInTotal += vote.value;
+        pointsSpentInTotal += vote.points;
       });
 
       //update vacant points segment
@@ -104,9 +92,9 @@
       $scope.pieSegments = angular.copy($scope.pieSegments);
     }
 
-    $scope.setVoteActive = function(key) {
-      $scope.votes.forEach(function(vote) {
-        if (vote.key == key) {
+    $scope.setVoteActive = function(optionId) {
+      $scope.vote.forEach(function(vote) {
+        if (vote.option.id === optionId) {
           vote.active = !vote.active;
         } else {
           vote.active = false;
@@ -114,28 +102,50 @@
       });
     }
 
+    $scope.submitVote = function() {
+      if (!$scope.allPointsSpent()) {
+        return;
+      }
+      $ionicBackdrop.retain();
+      VoteService.store($scope.vote, $scope.votingId, function() {
+        $ionicBackdrop.release();
+        $location.path('/app/voting-details/' + $scope.votingId);
+      });
+    };
+
+    var optionColor = function(index) {
+      return COLORS[index];
+    }
 
     var injectStyles = function(rule) {
       d3.select("body").append("style").text(rule);
     };
 
-    var initChart = function() {
-      var i = 0;
-      $scope.pieSegments.forEach(function(item) {
-          var vote = {
-            index : i++,
-            key : item.key,
-            color : item.color,
-            optionId : item.optionId,
-            value : item.y,
-            active: false
-          };
-          $scope.votes.push(vote);
-        }
-      );
+    var initVote = function(options) {
+      options.forEach(function(option, index) {
+        var vote = {
+          option: option,
+          points : 0,
+          active: false
+        };
+        $scope.vote.push(vote);
+      });
+    }
 
-      var vacantPoints = { key: "", y: TOTAL, color: '#ffffff' };
-      $scope.pieSegments.push(vacantPoints);
+    var initChart = function() {
+      var pointsSpent = 0;
+      $scope.vote.forEach(function(vote,index) {
+        var optionSegment = {
+          optionName: vote.option.name,
+          y: vote.points,
+          color: optionColor(index)
+        };
+        $scope.pieSegments.push(optionSegment);
+        pointsSpent += vote.points;
+      });
+
+      var vacantSegment = { optionName: "", y: TOTAL - pointsSpent, color: '#ffffff' };
+      $scope.pieSegments.push(vacantSegment);
 
       d3.select('svg').select('#pieCenterLabel').remove();
       d3.select('svg').append("text")
@@ -145,8 +155,8 @@
         .attr("dy", function(d){return 160;})
         .text(function(d){return "Vote!";});
 
-      $scope.votes.forEach(function(vote) {
-          injectStyles('.range.range-vote-'+vote.index+' input::-webkit-slider-thumb:before { background: '+vote.color+'; }');
+      $scope.vote.forEach(function(vote, index) {
+          injectStyles('.range.range-vote-'+vote.option.id+' input::-webkit-slider-thumb:before { background: '+optionColor(index)+'; }');
         }
       );
 
@@ -159,35 +169,19 @@
         $scope.voting = voting;
 
         OptionService.byVotingId($scope.votingId, function(options) {
-          $scope.options = options;
 
-          VoteService.latest($scope.votingId, function(vote) {
-            var alreadyVoted = false;
+          initVote(options);
 
-            $scope.options.forEach(function(option, index) {
-              var yValue = 0;
-              for (var i=0; i < vote.length; i++) {
-                if (vote[i].optionId === option.id) {
-                  yValue = vote[i].value;
-                  alreadyVoted = true;
-                  break;
+          VoteService.latest($scope.votingId, function(latestVote) {
+            latestVote.votes.forEach(function(latestVoteItem) {
+              $scope.vote.forEach(function(vote) {
+                if (latestVoteItem.optionId === vote.option.id) {
+                  vote.points = latestVoteItem.value;
                 }
-              }
-              $scope.pieSegments.push({
-                key: option.name,
-                optionId: option.id,
-                y: yValue,
-                color: COLORS[index]
               });
             });
 
             initChart();
-
-            if (alreadyVoted) {
-              $scope.votes.forEach(function(_vote) {
-                $scope.updateVote(_vote.key);
-              });
-            }
 
             $ionicBackdrop.release();
           })

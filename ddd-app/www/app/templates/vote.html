@@ -30,16 +30,16 @@
                         <svg></svg>
                     </nvd3-pie-chart>
                 </div>
-                <div ng-repeat="vote in votes">
-                    <div class="item item-divider" ng-click="setVoteActive(vote.key)">
-                        <span>{{vote.key}}</span>
-                        <span class="badge badge-positive" style="background-color:{{vote.color}}" ng-click="maximizePointsForOption(vote.key)">{{vote.value}}</span>
+                <div ng-repeat="v in vote">
+                    <div class="item item-divider" ng-click="setVoteActive(v.option.id)">
+                        <span>{{v.option.name}}</span>
+                        <span class="badge badge-positive" ng-click="maximizePointsForOption(v.option.id)">{{v.points}}</span><!--style="background-color:{{v.color}}"-->
                     </div>
-                    <div class="item range range-vote-{{vote.index}}" collapse="!vote.active">
-                        <input type="range" name="points" ng-model="vote.value" min="0" max="100" ng-change="updateVote(vote.key)" style="width:100%" ng-show="vote.active">
+                    <div class="item range range-vote-{{v.option.id}}" collapse="!v.active">
+                        <input type="range" name="points" ng-model="v.points" min="0" max="100" ng-change="updateVote(v.option.id)" style="width:100%" ng-show="v.active">
                     </div>
                 </div>
-                <a class="item item-icon-right" href="#" ng-hide="options.length > 6">
+                <a class="item item-icon-right" href="#" ng-hide="vote.length > 6">
                     <i class="icon ion-plus"></i>
                     Add an option
                 </a>
