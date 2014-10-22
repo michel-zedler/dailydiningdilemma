@@ -32,7 +32,19 @@
                     x participants
                 </div>
                 <div class="item">
-
+                    <nvd3-pie-chart
+                            data="pieSegments"
+                            id="statusPie"
+                            width="300"
+                            height="300"
+                            x="pieSegmentLabel()"
+                            y="pieSegmentValue()"
+                            color="pieSegmentColor()"
+                            noData=""
+                            showLabels="false"
+                            margin="{left:0,top:0,bottom:0,right:0}">
+                        <svg></svg>
+                    </nvd3-pie-chart>
                 </div>
 
             </div>

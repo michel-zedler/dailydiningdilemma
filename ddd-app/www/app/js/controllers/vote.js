@@ -1,10 +1,9 @@
 (function () {
   "use strict";
 
-  ddd.controller('VoteCtrl', function ($scope, $stateParams, $location, $ionicBackdrop, VotingService, OptionService, VoteService) {
+  ddd.controller('VoteCtrl', function ($scope, $stateParams, $location, $ionicBackdrop, VotingService, OptionService, VoteService, VotingHelperService) {
 
     var TOTAL = 100;
-    var COLORS = [ '#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728'];
 
     $scope.votingId = $stateParams.votingId;
     $scope.voting = {};
@@ -19,7 +18,7 @@
 
     $scope.pieSegmentValue = function(){
       return function(d){
-        return d.y;
+        return d.value;
       };
     };
 
@@ -68,13 +67,13 @@
         if (vote.option.id === optionId) {
           var max = TOTAL - pointsSpentOnOthers;
           vote.points = Math.min(max, parseInt(vote.points));
-          $scope.pieSegments[index].y = vote.points;
+          $scope.pieSegments[index].value = vote.points;
         }
         pointsSpentInTotal += vote.points;
       });
 
       //update vacant points segment
-      $scope.pieSegments[$scope.pieSegments.length-1].y = TOTAL - pointsSpentInTotal;
+      $scope.pieSegments[$scope.pieSegments.length-1].value = TOTAL - pointsSpentInTotal;
 
       //update donut label
       d3.select('svg').select('#donutLabel').remove();
@@ -113,10 +112,6 @@
       });
     };
 
-    var optionColor = function(index) {
-      return COLORS[index];
-    }
-
     var injectStyles = function(rule) {
       d3.select("body").append("style").text(rule);
     };
@@ -137,14 +132,14 @@
       $scope.vote.forEach(function(vote,index) {
         var optionSegment = {
           optionName: vote.option.name,
-          y: vote.points,
-          color: optionColor(index)
+          value: vote.points,
+          color: VotingHelperService.optionColor(index)
         };
         $scope.pieSegments.push(optionSegment);
         pointsSpent += vote.points;
       });
 
-      var vacantSegment = { optionName: "", y: TOTAL - pointsSpent, color: '#ffffff' };
+      var vacantSegment = { optionName: "", value: TOTAL - pointsSpent, color: '#ffffff' };
       $scope.pieSegments.push(vacantSegment);
 
       d3.select('svg').select('#pieCenterLabel').remove();
@@ -156,7 +151,7 @@
         .text(function(d){return "Vote!";});
 
       $scope.vote.forEach(function(vote, index) {
-          injectStyles('.range.range-vote-'+vote.option.id+' input::-webkit-slider-thumb:before { background: '+optionColor(index)+'; }');
+          injectStyles('.range.range-vote-'+vote.option.id+' input::-webkit-slider-thumb:before { background: '+VotingHelperService.optionColor(index)+'; }');
         }
       );
 
