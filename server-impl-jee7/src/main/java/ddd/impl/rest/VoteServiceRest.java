@@ -12,14 +12,15 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 
 import ddd.api.model.VoteDto;
 import ddd.api.request.CreateVoteRequest;
 import ddd.api.response.VotesForUserByVotingIdResponse;
 import ddd.impl.constants.Roles;
+import ddd.impl.security.DddPrincipal;
 import ddd.impl.service.VoteService;
 
 @Path("/votes")
@@ -32,19 +33,17 @@ public class VoteServiceRest {
 	private VoteService voteService;
 	
 	@Context
-	private HttpHeaders headers;
-		
+	private SecurityContext securityContext;
+	
 	@POST
 	public Response addVotesForUser(CreateVoteRequest createVoteRequest) {		
-		String apiKey = headers.getHeaderString("apikey");
-		voteService.addVotesForUser(apiKey, createVoteRequest.getVotingId(), createVoteRequest.getVotes());
+		voteService.addVotesForUser(getApiKey(), createVoteRequest.getVotingId(), createVoteRequest.getVotes());
 		return Response.ok().build();
 	}
 	
 	@GET
 	public Response getVotesForUserByVotingId(@QueryParam(value = "votingId") Long votingId ) {
-		String apiKey = headers.getHeaderString("apikey");
-		List<VoteDto> votes = voteService.getVotesForUserByVotingId(apiKey, votingId);
+		List<VoteDto> votes = voteService.getVotesForUserByVotingId(getApiKey(), votingId);
 		VotesForUserByVotingIdResponse response = new VotesForUserByVotingIdResponse();
 		response.setVotes(votes);
 		response.setVotingId(votingId);
@@ -54,10 +53,14 @@ public class VoteServiceRest {
 	
 	@DELETE
 	public Response cancelVotingForVoting(@QueryParam(value = "votingId") Long votingId) {
-		String apiKey = headers.getHeaderString("apikey");	
-		voteService.removeVotesForVoting(apiKey, votingId);
+		voteService.removeVotesForVoting(getApiKey(), votingId);
 		return Response.ok().build();		
 	}
-	
+
+	private String getApiKey() {
+		DddPrincipal principal = (DddPrincipal) securityContext.getUserPrincipal();
+		String apiKey = principal.getApiKey();
+		return apiKey;
+	}
 
 }

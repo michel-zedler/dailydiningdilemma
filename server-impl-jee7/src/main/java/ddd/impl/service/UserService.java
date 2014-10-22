@@ -88,7 +88,7 @@ public class UserService {
 			return null;
 		}
 
-		return toModel(entity, null);
+		return toModel(entity, apiKey);
 	}
 
 	public boolean isApiKeyValid(String apiKey) {
