@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  ddd.controller('VotingDetailsCtrl', function ($scope, $interval, $location, $stateParams, VotingService, OptionService, VotingHelperService) {
+  ddd.controller('VotingDetailsCtrl', function ($scope, $interval, $location, $stateParams, VotingService, OptionService, VotingHelperService, PushService) {
     $scope.voting = {};
     $scope.options = [];
     $scope.votingId = $stateParams.votingId;
@@ -43,6 +43,17 @@
     };
 
     initChart();
+
+    PushService.notifyOnMessage(function(event) {
+      $scope.pieSegments.forEach(function (segment, index) {
+        segment.value = event.data[index].points;
+      });
+      //deep copy to get new object reference -> trigger angular watch expression -> update pie chart svg
+      $scope.pieSegments = angular.copy($scope.pieSegments);
+      if(!$scope.$$phase) { //when using mock we are already in apply scope, but when using true websocket this will not be the case
+        $scope.$apply();
+      }
+    });
 
     var updateCountdownLabelEverySecond = function() {
       $interval(function() {
