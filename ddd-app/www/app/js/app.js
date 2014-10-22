@@ -96,6 +96,16 @@ ddd.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
 
+    .state('app.options-edit', {
+      url: "/options-edit/:votingId",
+      views: {
+        'menuContent': {
+          templateUrl: "app/templates/options_edit.html",
+          controller: "OptionsEditCtrl"
+        }
+      }
+    })
+
     .state('app.vote', {
       url: "/vote/:votingId",
       views: {

@@ -39,7 +39,7 @@
                         <input type="range" name="points" ng-model="vote.points" min="0" max="100" ng-change="updateVote(vote.option.id)" style="width:100%" ng-show="vote.active">
                     </div>
                 </div>
-                <a class="item item-icon-right" href="#" ng-hide="vote.length > 6">
+                <a class="item item-icon-right" href="#" ng-hide="options.length > 6" ng-click="addOption()">
                     <i class="icon ion-plus"></i>
                     Add an option
                 </a>
