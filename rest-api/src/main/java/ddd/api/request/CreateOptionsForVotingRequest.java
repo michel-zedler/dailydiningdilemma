@@ -9,10 +9,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CreateOptionsForDecisionRequest {
+public class CreateOptionsForVotingRequest {
 		
 	@NotNull
-	private Long decisionId;
+	private Long votingId;
 	
 	@NotNull	
 	private List<CreateOptionRequest> options;	
@@ -23,14 +23,11 @@ public class CreateOptionsForDecisionRequest {
 	public void setOptions(List<CreateOptionRequest> options) {
 		this.options = options;
 	}
-	public Long getDecisionId() {
-		return decisionId;
+	public Long getVotingId() {
+		return votingId;
 	}
-	public void setDecisionId(Long decisionId) {
-		this.decisionId = decisionId;
+	public void setVotingId(Long votingId) {
+		this.votingId = votingId;
 	}
-	
-	
-	
 
 }

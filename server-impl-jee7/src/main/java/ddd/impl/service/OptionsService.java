@@ -7,9 +7,9 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import ddd.impl.dao.DecisionDao;
+import ddd.impl.dao.VotingDao;
 import ddd.impl.dao.OptionDao;
-import ddd.impl.entity.Decision;
+import ddd.impl.entity.Voting;
 import ddd.impl.entity.Option;
 import ddd.impl.model.OptionModel;
 
@@ -20,9 +20,9 @@ public class OptionsService {
 	private OptionDao optionDao;
 	
 	@Inject
-	private DecisionDao decisionDao;
+	private VotingDao votingDao;
 
-	public void saveOptionForDecision(Long decisionId, List<OptionModel> optionModels) {
+	public void saveOptionForVoting(Long votingId, List<OptionModel> optionModels) {
 		
 		for (OptionModel optionModel : optionModels) {
 			Option option = new Option();
@@ -35,9 +35,9 @@ public class OptionsService {
 			option.setLastUsed(new Date());
 			optionDao.persistOption(option);
 				
-			Decision decision = decisionDao.findById(decisionId);
+			Voting voting = votingDao.findById(votingId);
 			
-			optionDao.addOptionToDecision(decision, option);
+			optionDao.addOptionToVoting(voting, option);
 		}		
 		
 	}
@@ -46,8 +46,8 @@ public class OptionsService {
 		optionDao.deleteOption(id);		
 	}
 
-	public List<OptionModel> getOptionsforDecision(Long decisionId) {
-		List<Option> options = optionDao.getOptionsForDecision(decisionId);
+	public List<OptionModel> getOptionsForVoting(Long votingId) {
+		List<Option> options = optionDao.getOptionsForVoting(votingId);
 		List<OptionModel> optionModels = new ArrayList<OptionModel>();
 		for (Option option : options) {
 			OptionModel optionModel = new OptionModel();

@@ -1,6 +1,6 @@
 package ddd.impl.dao;
 
-import static ddd.impl.entity.QDecisionOptionMapping.decisionOptionMapping;
+import static ddd.impl.entity.QVotingOptionMapping.votingOptionMapping;
 import static ddd.impl.entity.QOption.option;
 
 import java.util.List;
@@ -12,8 +12,8 @@ import javax.persistence.PersistenceContext;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 
-import ddd.impl.entity.Decision;
-import ddd.impl.entity.DecisionOptionMapping;
+import ddd.impl.entity.Voting;
+import ddd.impl.entity.VotingOptionMapping;
 import ddd.impl.entity.Option;
 
 @ApplicationScoped
@@ -22,9 +22,9 @@ public class OptionDao {
 	@PersistenceContext
 	private EntityManager entityManager;
 	
-	public void addOptionToDecision(Decision decision, Option option) {
-		DecisionOptionMapping mapping = new DecisionOptionMapping();
-		mapping.setDecision(decision);
+	public void addOptionToVoting(Voting voting, Option option) {
+		VotingOptionMapping mapping = new VotingOptionMapping();
+		mapping.setVoting(voting);
 		mapping.setOption(option);
 		entityManager.persist(mapping);
 	}
@@ -34,17 +34,17 @@ public class OptionDao {
 	}
 	
 	public void deleteOption(Long id) {
-		new JPADeleteClause(entityManager, decisionOptionMapping).where(decisionOptionMapping.option.id.eq(id)).execute();
+		new JPADeleteClause(entityManager, votingOptionMapping).where(votingOptionMapping.option.id.eq(id)).execute();
 		new JPADeleteClause(entityManager, option).where(option.id.eq(id)).execute();	
 
 	}
 
-	public List<Option> getOptionsForDecision(Long decisionId) {
+	public List<Option> getOptionsForVoting(Long votingId) {
 		List<Option> options = new JPAQuery(entityManager)
-				.from(decisionOptionMapping)
-				.where(decisionOptionMapping.decision.id.eq(decisionId))
-				.orderBy(decisionOptionMapping.id.asc())
-				.list(decisionOptionMapping.option);
+				.from(votingOptionMapping)
+				.where(votingOptionMapping.voting.id.eq(votingId))
+				.orderBy(votingOptionMapping.id.asc())
+				.list(votingOptionMapping.option);
 		return options;
 	}
 	

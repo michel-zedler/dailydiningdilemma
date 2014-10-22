@@ -10,7 +10,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import ddd.impl.constants.Roles;
-import ddd.impl.service.DecisionService;
+import ddd.impl.service.VotingService;
 
 @Path("/admin")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -19,12 +19,12 @@ import ddd.impl.service.DecisionService;
 public class AdminServiceRest {
 
 	@Inject
-	private DecisionService decisionService;
+	private VotingService votingService;
 	
 	@DELETE
-	@Path("/decisions")
-	public Response truncateDecisions() {
-		decisionService.deleteAll();
+	@Path("/votings")
+	public Response truncateVotings() {
+		votingService.deleteAll();
 		return Response.ok().build();
 	}
 }

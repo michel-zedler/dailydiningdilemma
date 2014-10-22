@@ -19,47 +19,47 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import ddd.api.model.DecisionDto;
-import ddd.api.request.CreateDecisionRequest;
-import ddd.api.response.CreateDecisionResponse;
+import ddd.api.model.VotingDto;
+import ddd.api.request.CreateVotingRequest;
+import ddd.api.response.CreateVotingResponse;
 import ddd.impl.constants.Roles;
-import ddd.impl.criteria.DecisionCriteria;
-import ddd.impl.model.DecisionModel;
-import ddd.impl.service.DecisionService;
+import ddd.impl.criteria.VotingCriteria;
+import ddd.impl.model.VotingModel;
+import ddd.impl.service.VotingService;
 
-@Path("/decisions")
+@Path("/votings")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @RolesAllowed(Roles.USER)
-public class DecisionServiceRest {
+public class VotingServiceRest {
 
 	@Inject
 	private Validator validator;
 
 	@Inject
-	private DecisionService decisionService;
+	private VotingService votingService;
 
 	@Inject
 	private ValidationHelper validationHelper;
 
 	@POST
 	@Path("")
-	public Response createDecision(CreateDecisionRequest createDecisionRequest) {
-		Set<ConstraintViolation<CreateDecisionRequest>> violations = validator.validate(createDecisionRequest);
+	public Response createVoting(CreateVotingRequest createVotingRequest) {
+		Set<ConstraintViolation<CreateVotingRequest>> violations = validator.validate(createVotingRequest);
 
 		if (violations.isEmpty() == false) {
 			return validationHelper.buildValidationFailureResponse(violations);
 		}
 
-		DecisionModel model = new DecisionModel();
-		model.setTitle(createDecisionRequest.getTitle());
-		model.setDescription(createDecisionRequest.getDescription());
-		model.setVotingCloseDate(createDecisionRequest.getVotingCloseDate());
+		VotingModel model = new VotingModel();
+		model.setTitle(createVotingRequest.getTitle());
+		model.setDescription(createVotingRequest.getDescription());
+		model.setVotingCloseDate(createVotingRequest.getVotingCloseDate());
 
 		try {
-			decisionService.createNew(model);
+			votingService.createNew(model);
 
-			CreateDecisionResponse response = new CreateDecisionResponse();
+			CreateVotingResponse response = new CreateVotingResponse();
 			response.setId(model.getId());
 
 			return Response.ok().entity(response).build();
@@ -71,30 +71,30 @@ public class DecisionServiceRest {
 	@GET
 	@Path("")
 	public Response find(@QueryParam("open") Boolean open) {
-		DecisionCriteria criteria = new DecisionCriteria();
+		VotingCriteria criteria = new VotingCriteria();
 
 		criteria.setOpen(open);
 
-		List<DecisionModel> list = decisionService.findByCriteria(criteria);
+		List<VotingModel> list = votingService.findByCriteria(criteria);
 
-		List<DecisionDto> result = map(list);
+		List<VotingDto> result = map(list);
 
 		return Response.ok().entity(result).build();
 	}
 	
 	@GET
-	@Path("/{decisionId}")
-	public Response findDecisionById(@PathParam("decisionId") Long decisionId) {
-		DecisionModel decisionModel = decisionService.findById(decisionId);
+	@Path("/{votingId}")
+	public Response findVotingById(@PathParam("votingId") Long votingId) {
+		VotingModel votingModel = votingService.findById(votingId);
 
-		return Response.ok(decisionModel).build();
+		return Response.ok(votingModel).build();
 	}
 	
-	private List<DecisionDto> map(List<DecisionModel> list) {
-		List<DecisionDto> result = new ArrayList<DecisionDto>();
+	private List<VotingDto> map(List<VotingModel> list) {
+		List<VotingDto> result = new ArrayList<VotingDto>();
 
-		for (DecisionModel m : list) {
-			DecisionDto dto = new DecisionDto();
+		for (VotingModel m : list) {
+			VotingDto dto = new VotingDto();
 			dto.setId(m.getId());
 			dto.setTitle(m.getTitle());
 			dto.setDescription(m.getDescription());
@@ -109,7 +109,7 @@ public class DecisionServiceRest {
 		return result;
 	}
 	
-	private boolean determineIsOpen(DecisionModel model) {
+	private boolean determineIsOpen(VotingModel model) {
 		if (model.getActualCloseDate() == null) {
 			return true;
 		}

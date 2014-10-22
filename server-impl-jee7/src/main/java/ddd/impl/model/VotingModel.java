@@ -1,20 +1,20 @@
-package ddd.api.model;
+package ddd.impl.model;
 
 import java.util.Date;
 
-public class DecisionDto {
+public class VotingModel {
+
 	private Long id;
 
+
 	private Date votingCloseDate;
-	
-	private Date actualCloseDate;
-	
-	private Boolean isOpen;
 
 	private String title;
-
+	
 	private String description;
 	
+	private Date actualCloseDate;
+
 	public Long getId() {
 		return id;
 	}
@@ -53,13 +53,5 @@ public class DecisionDto {
 	
 	public void setActualCloseDate(Date actualCloseDate) {
 		this.actualCloseDate = actualCloseDate;
-	}
-	
-	public Boolean getIsOpen() {
-		return isOpen;
-	}
-	
-	public void setIsOpen(Boolean isOpen) {
-		this.isOpen = isOpen;
 	}
 }

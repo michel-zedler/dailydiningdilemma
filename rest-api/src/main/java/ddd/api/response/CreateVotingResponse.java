@@ -1,6 +1,6 @@
 package ddd.api.response;
 
-public class CreateDecisionResponse {
+public class CreateVotingResponse {
 
 	private Long id;
 	

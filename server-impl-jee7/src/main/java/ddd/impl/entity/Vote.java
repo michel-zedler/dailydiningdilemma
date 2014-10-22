@@ -20,8 +20,8 @@ public class Vote {
 	private Long id;
 	
 	@ManyToOne(optional=false)
-	@JoinColumn(name="decision_option_id")
-	private DecisionOptionMapping decisionOptionMapping;
+	@JoinColumn(name="voting_option_id")
+	private VotingOptionMapping votingOptionMapping;
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "user_id")
@@ -41,12 +41,12 @@ public class Vote {
 		this.id = id;
 	}
 
-	public DecisionOptionMapping getDecisionOptionMapping() {
-		return decisionOptionMapping;
+	public VotingOptionMapping getVotingOptionMapping() {
+		return votingOptionMapping;
 	}
 
-	public void setDecisionOptionMapping(DecisionOptionMapping decisionOptionMapping) {
-		this.decisionOptionMapping = decisionOptionMapping;
+	public void setVotingOptionMapping(VotingOptionMapping votingOptionMapping) {
+		this.votingOptionMapping = votingOptionMapping;
 	}
 
 	public UserEntity getUser() {

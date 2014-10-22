@@ -1,6 +1,6 @@
 package ddd.impl.criteria;
 
-public class DecisionCriteria {
+public class VotingCriteria {
 
 	private Boolean open;
 	

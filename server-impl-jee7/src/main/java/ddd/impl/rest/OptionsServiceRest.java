@@ -20,7 +20,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import ddd.api.request.CreateOptionRequest;
-import ddd.api.request.CreateOptionsForDecisionRequest;
+import ddd.api.request.CreateOptionsForVotingRequest;
 import ddd.impl.constants.Roles;
 import ddd.impl.model.OptionModel;
 import ddd.impl.service.OptionsService;
@@ -41,8 +41,8 @@ public class OptionsServiceRest {
 	private ValidationHelper validationHelper;
 	
 	@POST
-	public Response addOptionsToDecision(CreateOptionsForDecisionRequest createOptionsForDecisionRequest) {
-		Set<ConstraintViolation<CreateOptionsForDecisionRequest>> violations = validator.validate(createOptionsForDecisionRequest);
+	public Response addOptionsToVoting(CreateOptionsForVotingRequest createOptionsForVotingRequest) {
+		Set<ConstraintViolation<CreateOptionsForVotingRequest>> violations = validator.validate(createOptionsForVotingRequest);
 		
 		if (violations.isEmpty() == false) {
 			return validationHelper.buildValidationFailureResponse(violations);
@@ -50,7 +50,7 @@ public class OptionsServiceRest {
 		
 		List<OptionModel> optionModels = new ArrayList<OptionModel>();
 		
-		for (CreateOptionRequest option : createOptionsForDecisionRequest.getOptions()) {
+		for (CreateOptionRequest option : createOptionsForVotingRequest.getOptions()) {
 			OptionModel optionModel = new OptionModel();
 			optionModel.setName(option.getName());
 			optionModel.setCoordinates(option.getCoordinates());
@@ -61,7 +61,7 @@ public class OptionsServiceRest {
 		}
 		
 		
-		optionsService.saveOptionForDecision(createOptionsForDecisionRequest.getDecisionId(), optionModels);
+		optionsService.saveOptionForVoting(createOptionsForVotingRequest.getVotingId(), optionModels);
 		
 		return Response.ok().build();
 	}	
@@ -74,8 +74,8 @@ public class OptionsServiceRest {
 	}
 	
 	@GET
-	public Response getOptionsForDecision(@QueryParam(value="decisionId") Long decisionId) {
-		List<OptionModel> options = optionsService.getOptionsforDecision(decisionId);
+	public Response getOptionsForVoting(@QueryParam(value="votingId") Long votingId) {
+		List<OptionModel> options = optionsService.getOptionsForVoting(votingId);
 		return Response.ok(options).build();
 	}
 	

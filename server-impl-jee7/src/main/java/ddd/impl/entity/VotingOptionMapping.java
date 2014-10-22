@@ -9,16 +9,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="decision_option_mapping")
-public class DecisionOptionMapping {
+@Table(name="voting_option_mapping")
+public class VotingOptionMapping {
  
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@ManyToOne(optional=false)
-	@JoinColumn(name="decision_id")
-	private Decision decision;
+	@JoinColumn(name="voting_id")
+	private Voting voting;
 	
 	@ManyToOne(optional=false)
 	@JoinColumn(name="option_id")
@@ -32,12 +32,12 @@ public class DecisionOptionMapping {
 		this.id = id;
 	}
 
-	public Decision getDecision() {
-		return decision;
+	public Voting getVoting() {
+		return voting;
 	}
 
-	public void setDecision(Decision decision) {
-		this.decision = decision;
+	public void setVoting(Voting voting) {
+		this.voting = voting;
 	}
 
 	public Option getOption() {

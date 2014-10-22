@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
 
 import ddd.api.model.VoteDto;
 import ddd.api.request.CreateVoteRequest;
-import ddd.api.response.VotesForUserByDecisionIdResponse;
+import ddd.api.response.VotesForUserByVotingIdResponse;
 import ddd.impl.constants.Roles;
 import ddd.impl.service.VoteService;
 
@@ -37,25 +37,25 @@ public class VoteServiceRest {
 	@POST
 	public Response addVotesForUser(CreateVoteRequest createVoteRequest) {		
 		String apiKey = headers.getHeaderString("apikey");
-		voteService.addVotesForUser(apiKey,createVoteRequest.getDecisionId(),createVoteRequest.getVotes());
+		voteService.addVotesForUser(apiKey, createVoteRequest.getVotingId(), createVoteRequest.getVotes());
 		return Response.ok().build();
 	}
 	
 	@GET
-	public Response getVotesForUserByDecisionId(@QueryParam(value = "decisionId") Long decisionId ) {
+	public Response getVotesForUserByVotingId(@QueryParam(value = "votingId") Long votingId ) {
 		String apiKey = headers.getHeaderString("apikey");
-		List<VoteDto> votes = voteService.getVotesForUserByDecisionId(apiKey, decisionId);
-		VotesForUserByDecisionIdResponse response = new VotesForUserByDecisionIdResponse();
+		List<VoteDto> votes = voteService.getVotesForUserByVotingId(apiKey, votingId);
+		VotesForUserByVotingIdResponse response = new VotesForUserByVotingIdResponse();
 		response.setVotes(votes);
-		response.setDecisionId(decisionId);
+		response.setVotingId(votingId);
 		
 		return Response.ok(response).build();
 	}
 	
 	@DELETE
-	public Response cancelVotingForDecision(@QueryParam(value = "decisionId") Long decisionId) {
+	public Response cancelVotingForVoting(@QueryParam(value = "votingId") Long votingId) {
 		String apiKey = headers.getHeaderString("apikey");	
-		voteService.removeVotesForDecision(apiKey, decisionId);
+		voteService.removeVotesForVoting(apiKey, votingId);
 		return Response.ok().build();		
 	}
 	

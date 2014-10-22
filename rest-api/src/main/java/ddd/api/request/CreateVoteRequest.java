@@ -6,16 +6,16 @@ import ddd.api.model.VoteDto;
 
 public class CreateVoteRequest {
 	
-	private Long decisionId;
+	private Long votingId;
 	
 	private List<VoteDto> votes;
 
-	public Long getDecisionId() {
-		return decisionId;
+	public Long getVotingId() {
+		return votingId;
 	}
 
-	public void setDecisionId(Long decisionId) {
-		this.decisionId = decisionId;
+	public void setVotingId(Long votingId) {
+		this.votingId = votingId;
 	}
 
 	public List<VoteDto> getVotes() {

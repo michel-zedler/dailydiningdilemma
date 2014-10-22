@@ -4,17 +4,17 @@ import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import ddd.impl.dao.DecisionDao;
+import ddd.impl.dao.VotingDao;
 
 @Stateless
 public class SchedulerService {	
 	
 	@Inject
-	private DecisionDao decisionDao;
+	private VotingDao votingDao;
 	
 	@Schedule(second="0", minute="*", hour="*", persistent = false )
 	public void closeVotes() {		
-		decisionDao.closeElapsedDecisions();
+		votingDao.closeElapsedVotings();
 	}
 
 }
