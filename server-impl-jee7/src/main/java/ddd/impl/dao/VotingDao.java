@@ -1,9 +1,9 @@
 package ddd.impl.dao;
 
-import static ddd.impl.entity.QVoting.voting;
 import static ddd.impl.entity.QOption.option;
-import static ddd.impl.entity.QVotingOptionMapping.votingOptionMapping;
 import static ddd.impl.entity.QVote.vote;
+import static ddd.impl.entity.QVoting.voting;
+import static ddd.impl.entity.QVotingOptionMapping.votingOptionMapping;
 
 import java.util.Date;
 import java.util.List;
@@ -68,9 +68,12 @@ public class VotingDao {
 
 	public void closeElapsedVotings() {
 		new JPAUpdateClause(entityManager, voting)
-				.where(voting.votingCloseDate.before(new Date()))
-				.set(voting.actualClosingDate, new Date()).execute();
-		
+				.where(
+					voting.votingCloseDate.before(new Date()),
+					voting.actualClosingDate.isNull())
+				.set(
+					voting.actualClosingDate, new Date()
+				).execute();
 	}
 
 }
