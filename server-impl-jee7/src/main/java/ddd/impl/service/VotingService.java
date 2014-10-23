@@ -41,6 +41,10 @@ public class VotingService {
 		return result;
 	}
 	private VotingModel toModel(Voting entity) {
+		if (entity == null) {
+			return null;
+		}
+		
 		VotingModel model = new VotingModel();
 		
 		model.setId(entity.getId());
@@ -70,7 +74,9 @@ public class VotingService {
 
 	public VotingModel findById(Long votingId) {
 		Voting voting = votingDao.findById(votingId);
+		
 		VotingModel model = toModel(voting);
+
 		return model;
 	}
 	

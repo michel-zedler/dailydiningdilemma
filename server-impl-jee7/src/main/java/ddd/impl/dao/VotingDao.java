@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import org.apache.commons.lang3.BooleanUtils;
@@ -36,7 +37,7 @@ public class VotingDao {
 		} else if (BooleanUtils.isFalse(votingCriteria.getOpen())) {
 			builder.and(voting.actualClosingDate.isNotNull());
 		}
-		
+
 		JPAQuery query = new JPAQuery(entityManager);
 		query.from(voting);
 		query.where(builder);
@@ -52,14 +53,19 @@ public class VotingDao {
 
 	public Long getNumberOfParticipants(Long votingId) {
 		JPAQuery query = new JPAQuery(entityManager);
-		
+
 		query.from(vote);
 		query.where(vote.votingOptionMapping.voting.id.eq(votingId));
+
 		query.groupBy(vote.user);
-		
-		return query.count();
+
+		try {
+			return query.count();
+		} catch (NoResultException exception) {
+			return 0L;
+		}
 	}
-	
+
 	public void persist(Voting voting) {
 		entityManager.persist(voting);
 	}
@@ -79,10 +85,10 @@ public class VotingDao {
 	public void closeElapsedVotings() {
 		new JPAUpdateClause(entityManager, voting)
 				.where(
-					voting.votingCloseDate.before(new Date()),
-					voting.actualClosingDate.isNull())
+						voting.votingCloseDate.before(new Date()),
+						voting.actualClosingDate.isNull())
 				.set(
-					voting.actualClosingDate, new Date()
+						voting.actualClosingDate, new Date()
 				).execute();
 	}
 
