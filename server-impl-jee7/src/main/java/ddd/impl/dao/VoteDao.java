@@ -1,6 +1,7 @@
 package ddd.impl.dao;
 
 import static ddd.impl.entity.QVote.vote;
+import static ddd.impl.entity.QVotingOptionMapping.votingOptionMapping;
 
 import java.util.List;
 
@@ -8,6 +9,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 
@@ -36,5 +38,17 @@ public class VoteDao {
 						vote.votingOptionMapping.in(votingOptionMappings)))
 				.list(vote);
 	}
+	
+	public List<Vote> getVotesForVoting(Long votingId) {
+		JPASubQuery getOptionMappingsByVotingId = new JPASubQuery().from(votingOptionMapping).where(votingOptionMapping.voting.id.eq(votingId));
+		
+		JPAQuery getVotesForVoting = new JPAQuery(entityManager).from(vote)
+				.where(vote.votingOptionMapping.in(getOptionMappingsByVotingId
+						.list(votingOptionMapping)));
+
+		return getVotesForVoting.list(vote);
+	}
+	
+	
 
 }

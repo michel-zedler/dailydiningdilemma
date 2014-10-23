@@ -1,11 +1,14 @@
 package ddd.impl.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import ddd.api.model.VoteDto;
 
 public class VotingModel {
 
 	private Long id;
-
 
 	private Date votingCloseDate;
 
@@ -14,6 +17,8 @@ public class VotingModel {
 	private String description;
 	
 	private Date actualCloseDate;
+	
+	private List<VoteDto> currentVoteDistribution = new ArrayList<VoteDto>();	
 
 	public Long getId() {
 		return id;
@@ -54,4 +59,13 @@ public class VotingModel {
 	public void setActualCloseDate(Date actualCloseDate) {
 		this.actualCloseDate = actualCloseDate;
 	}
+
+	public List<VoteDto> getCurrentVoteDistribution() {
+		return currentVoteDistribution;
+	}
+
+	public void setCurrentVoteDistribution(List<VoteDto> currentVoteDistribution) {
+		this.currentVoteDistribution = currentVoteDistribution;
+	}	
+	
 }

@@ -84,8 +84,8 @@ public class VotingServiceRest {
 	
 	@GET
 	@Path("/{votingId}")
-	public Response findVotingById(@PathParam("votingId") Long votingId) {
-		VotingModel votingModel = votingService.findById(votingId);
+	public Response getVotingStatusById(@PathParam("votingId") Long votingId) {
+		VotingModel votingModel = votingService.getVotingsStatusForVoting(votingId);
 
 		return Response.ok(votingModel).build();
 	}
