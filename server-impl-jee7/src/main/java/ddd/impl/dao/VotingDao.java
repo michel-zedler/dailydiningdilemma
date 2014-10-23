@@ -57,10 +57,8 @@ public class VotingDao {
 		query.from(vote);
 		query.where(vote.votingOptionMapping.voting.id.eq(votingId));
 
-		query.groupBy(vote.user);
-
 		try {
-			return query.count();
+			return query.singleResult(vote.user.countDistinct());
 		} catch (NoResultException exception) {
 			return 0L;
 		}
