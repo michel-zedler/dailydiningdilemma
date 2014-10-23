@@ -62,6 +62,9 @@ public class VoteServiceRest {
 	@DELETE
 	public Response cancelVotingForVoting(@QueryParam(value = "votingId") Long votingId) {
 		voteService.removeVotesForVoting(getApiKey(), votingId);
+		
+		event.fire(new VotingChangedEvent(votingId));
+		
 		return Response.ok().build();		
 	}
 
