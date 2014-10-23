@@ -23,6 +23,13 @@
 		<querydsl.version>3.5.0</querydsl.version>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>oss.sonatype.org-snapshot</id>
+			<url>http://oss.sonatype.org/content/repositories/snapshots</url>
+		</repository>
+	</repositories>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -125,6 +132,11 @@
 			<artifactId>joda-time</artifactId>
 			<version>2.5</version>
 		</dependency>
+		<dependency>
+			<groupId>org.atmosphere</groupId>
+			<artifactId>atmosphere-runtime-native</artifactId>
+			<version>2.2.3</version>
+		</dependency>
 
 		<!-- Test -->
 		<dependency>
@@ -172,6 +184,7 @@
 			<version>7.0</version>
 			<scope>provided</scope>
 		</dependency>
+
 	</dependencies>
 
 </project>

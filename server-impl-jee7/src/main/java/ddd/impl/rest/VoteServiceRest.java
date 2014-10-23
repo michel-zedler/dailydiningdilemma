@@ -3,6 +3,7 @@ package ddd.impl.rest;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -20,6 +21,7 @@ import ddd.api.model.VoteDto;
 import ddd.api.request.CreateVoteRequest;
 import ddd.api.response.VotesForUserByVotingIdResponse;
 import ddd.impl.constants.Roles;
+import ddd.impl.event.VotingChangedEvent;
 import ddd.impl.security.DddPrincipal;
 import ddd.impl.service.VoteService;
 
@@ -35,9 +37,15 @@ public class VoteServiceRest {
 	@Context
 	private SecurityContext securityContext;
 	
+	@Inject
+	private Event<VotingChangedEvent> event;
+	
 	@POST
 	public Response addVotesForUser(CreateVoteRequest createVoteRequest) {		
 		voteService.addVotesForUser(getApiKey(), createVoteRequest.getVotingId(), createVoteRequest.getVotes());
+
+		event.fire(new VotingChangedEvent(createVoteRequest.getVotingId()));
+		
 		return Response.ok().build();
 	}
 	

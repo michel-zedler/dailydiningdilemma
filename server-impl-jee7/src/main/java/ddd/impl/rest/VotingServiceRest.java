@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.ws.rs.Consumes;
@@ -27,6 +28,7 @@ import ddd.impl.criteria.VotingCriteria;
 import ddd.impl.model.VotingModel;
 import ddd.impl.service.VotingService;
 
+@Singleton
 @Path("/votings")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -41,7 +43,7 @@ public class VotingServiceRest {
 
 	@Inject
 	private ValidationHelper validationHelper;
-
+	
 	@POST
 	@Path("")
 	public Response createVoting(CreateVotingRequest createVotingRequest) {
@@ -81,7 +83,7 @@ public class VotingServiceRest {
 
 		return Response.ok().entity(result).build();
 	}
-	
+
 	@GET
 	@Path("/{votingId}")
 	public Response getVotingStatusById(@PathParam("votingId") Long votingId) {
@@ -89,7 +91,7 @@ public class VotingServiceRest {
 
 		return Response.ok(votingModel).build();
 	}
-	
+
 	private List<VotingDto> map(List<VotingModel> list) {
 		List<VotingDto> result = new ArrayList<VotingDto>();
 
@@ -100,20 +102,20 @@ public class VotingServiceRest {
 			dto.setDescription(m.getDescription());
 			dto.setVotingCloseDate(m.getVotingCloseDate());
 			dto.setActualCloseDate(m.getActualCloseDate());
-			
+
 			dto.setIsOpen(determineIsOpen(m));
-			
+
 			result.add(dto);
 		}
 
 		return result;
 	}
-	
+
 	private boolean determineIsOpen(VotingModel model) {
 		if (model.getActualCloseDate() == null) {
 			return true;
 		}
-		
+
 		return false;
 	}
 

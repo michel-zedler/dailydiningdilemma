@@ -2,12 +2,16 @@ package ddd.api.request;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import ddd.api.model.VoteDto;
 
 public class CreateVoteRequest {
 	
+	@NotNull
 	private Long votingId;
 	
+	@NotNull
 	private List<VoteDto> votes;
 
 	public Long getVotingId() {
