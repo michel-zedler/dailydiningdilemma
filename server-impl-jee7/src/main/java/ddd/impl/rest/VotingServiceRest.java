@@ -23,6 +23,7 @@ import javax.ws.rs.core.Response.Status;
 import ddd.api.model.VotingDto;
 import ddd.api.request.CreateVotingRequest;
 import ddd.api.response.CreateVotingResponse;
+import ddd.api.response.VotingStatusResponse;
 import ddd.impl.constants.Roles;
 import ddd.impl.criteria.VotingCriteria;
 import ddd.impl.model.VotingModel;
@@ -57,7 +58,7 @@ public class VotingServiceRest {
 		model.setTitle(createVotingRequest.getTitle());
 		model.setDescription(createVotingRequest.getDescription());
 		model.setVotingCloseDate(createVotingRequest.getVotingCloseDate());
-
+		
 		try {
 			votingService.createNew(model);
 
@@ -87,28 +88,41 @@ public class VotingServiceRest {
 	@GET
 	@Path("/{votingId}")
 	public Response getVotingStatusById(@PathParam("votingId") Long votingId) {
-		VotingModel votingModel = votingService.getVotingsStatusForVoting(votingId);
-
-		return Response.ok(votingModel).build();
+		VotingModel votingModel = votingService.findById(votingId);
+		
+		if (votingModel == null) {
+			return Response.status(404).build();
+		}
+		
+		VotingStatusResponse response = new VotingStatusResponse();
+		response.setDetails(map(votingModel));
+		response.setCurrentVoteDistribution(votingService.getVotingDistribution(votingId));
+		response.setNumberOfParticipants(votingService.getNumberOfParticipants(votingId));
+		
+		return Response.ok(response).build();
 	}
 
 	private List<VotingDto> map(List<VotingModel> list) {
 		List<VotingDto> result = new ArrayList<VotingDto>();
 
 		for (VotingModel m : list) {
-			VotingDto dto = new VotingDto();
-			dto.setId(m.getId());
-			dto.setTitle(m.getTitle());
-			dto.setDescription(m.getDescription());
-			dto.setVotingCloseDate(m.getVotingCloseDate());
-			dto.setActualCloseDate(m.getActualCloseDate());
-
-			dto.setIsOpen(determineIsOpen(m));
-
-			result.add(dto);
+			result.add(map(m));
 		}
 
 		return result;
+	}
+	
+	private VotingDto map(VotingModel m) {
+		VotingDto dto = new VotingDto();
+		dto.setId(m.getId());
+		dto.setTitle(m.getTitle());
+		dto.setDescription(m.getDescription());
+		dto.setVotingCloseDate(m.getVotingCloseDate());
+		dto.setActualCloseDate(m.getActualCloseDate());
+
+		dto.setIsOpen(determineIsOpen(m));
+
+		return dto;
 	}
 
 	private boolean determineIsOpen(VotingModel model) {

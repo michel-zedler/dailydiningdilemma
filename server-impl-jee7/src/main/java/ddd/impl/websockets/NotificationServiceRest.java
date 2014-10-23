@@ -15,8 +15,8 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.slf4j.Logger;
 
+import ddd.api.response.VotingChangedUpdateResponse;
 import ddd.impl.event.VotingChangedEvent;
-import ddd.impl.model.VotingModel;
 import ddd.impl.rest.WebSocketListenerRegistry;
 import ddd.impl.service.VotingService;
 
@@ -36,7 +36,7 @@ public class NotificationServiceRest {
 	@OnOpen
 	public void onOpen(Session session) {
 		String idParam = session.getPathParameters().get("id");
-
+		
 		Long id = Long.valueOf(idParam);
 
 		synchronized (idParam.intern()) {
@@ -60,21 +60,23 @@ public class NotificationServiceRest {
 				registry.getVotingsRegistry().remove(id);
 			}
 		}
-
 	}
 
 	public void notify(@Observes VotingChangedEvent event) {
-		List<Session> sessions = registry.getVotingsRegistry().get(event.getVotingId());
+		Long votingId = event.getVotingId();
+		List<Session> sessions = registry.getVotingsRegistry().get(votingId);
 
 		if (sessions == null) {
 			return;
 		}
 		
-		VotingModel result = votingService.getVotingsStatusForVoting(event.getVotingId());
+		VotingChangedUpdateResponse response = new VotingChangedUpdateResponse();
+		response.setVotes(votingService.getVotingDistribution(votingId));
+		response.setNumberOfParticipants(votingService.getNumberOfParticipants(votingId));
 
 		for (Session s : sessions) {
 			if (s.isOpen()) {
-				send(s, result.getCurrentVoteDistribution());
+				send(s, response);
 			}
 		}
 	}

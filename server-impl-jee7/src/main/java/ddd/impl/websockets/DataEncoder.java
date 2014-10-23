@@ -1,7 +1,5 @@
 package ddd.impl.websockets;
 
-import java.util.List;
-
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
@@ -9,9 +7,9 @@ import javax.websocket.EndpointConfig;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ddd.api.model.VoteDto;
+import ddd.api.response.VotingChangedUpdateResponse;
 
-public class DataEncoder implements Encoder.Text<List<VoteDto>> {
+public class DataEncoder implements Encoder.Text<VotingChangedUpdateResponse> {
 
 	ObjectMapper mapper = new ObjectMapper();
 
@@ -24,7 +22,7 @@ public class DataEncoder implements Encoder.Text<List<VoteDto>> {
 	}
 
 	@Override
-	public String encode(List<VoteDto> object) throws EncodeException {
+	public String encode(VotingChangedUpdateResponse object) throws EncodeException {
 		try {
 			return mapper.writeValueAsString(object);
 		} catch (JsonProcessingException e) {

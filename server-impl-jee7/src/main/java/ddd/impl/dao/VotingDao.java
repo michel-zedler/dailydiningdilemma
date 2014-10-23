@@ -50,6 +50,16 @@ public class VotingDao {
 		return query.list(voting);
 	}
 
+	public Long getNumberOfParticipants(Long votingId) {
+		JPAQuery query = new JPAQuery(entityManager);
+		
+		query.from(vote);
+		query.where(vote.votingOptionMapping.voting.id.eq(votingId));
+		query.groupBy(vote.user);
+		
+		return query.count();
+	}
+	
 	public void persist(Voting voting) {
 		entityManager.persist(voting);
 	}

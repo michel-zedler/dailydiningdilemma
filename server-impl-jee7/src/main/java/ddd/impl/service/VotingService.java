@@ -68,16 +68,22 @@ public class VotingService {
 		votingDao.deleteAll();
 	}
 
-	public VotingModel getVotingsStatusForVoting(Long votingId) {
+	public VotingModel findById(Long votingId) {
 		Voting voting = votingDao.findById(votingId);
 		VotingModel model = toModel(voting);
-		List<Vote> votesForVoting = voteDao.getVotesForVoting(votingId);
-		aggregateVotesAndAddToModel(model.getCurrentVoteDistribution(), votesForVoting);
-		
 		return model;
 	}
+	
+	public List<VoteDto> getVotingDistribution(Long votingId) {
+		List<Vote> votesForVoting = voteDao.getVotesForVoting(votingId);
+		return aggregateVotesAndAddToModel(votesForVoting);
+	}
+	
+	public Long getNumberOfParticipants(Long votingId) {
+		return votingDao.getNumberOfParticipants(votingId);
+	}
 
-	private void aggregateVotesAndAddToModel(List<VoteDto> currentVoteDistribution, List<Vote> votesForVoting) {
+	private List<VoteDto> aggregateVotesAndAddToModel(List<Vote> votesForVoting) {
 		Map<Long, Long> aggregatedVotes = new TreeMap<Long,Long>();
 		for (Vote vote : votesForVoting) {			
 			Long optionId = vote.getVotingOptionMapping().getOption().getId();
@@ -89,11 +95,15 @@ public class VotingService {
 			aggregatedVotes.put(optionId, aggregatedValue);			
 		}
 		
+		
+		List<VoteDto> currentVoteDistribution = new ArrayList<VoteDto>();
 		for (Entry<Long,Long> entry : aggregatedVotes.entrySet()) {
 			VoteDto voteDto = new VoteDto();
 			voteDto.setOptionId(entry.getKey());
 			voteDto.setValue(entry.getValue());
 			currentVoteDistribution.add(voteDto);
 		}
+		
+		return currentVoteDistribution;
 	}
 }
