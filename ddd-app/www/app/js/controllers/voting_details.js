@@ -6,11 +6,13 @@
     $scope.options = [];
     $scope.votingId = $stateParams.votingId;
 
+    var _webSocket = new WebSocket('wss://tools.eckert-partner.it/dailydining-int/websocket/votings/' + $scope.votingId);
+
     $scope.pieSegments = [];
 
     $scope.pieSegmentLabel = function(){
       return function(d) {
-        return ''; //you may add labels here
+        return d.optionName; //you may add labels here
       };
     };
 
@@ -27,31 +29,47 @@
       };
     };
 
-    var initChart = function() {
-      var optionSegment1 = {
-        optionName: "Hello",
-        value: 80,
-        color: VotingHelperService.optionColor(0)
-      };
-      $scope.pieSegments.push(optionSegment1);
-      var optionSegment2 = {
-        optionName: "World",
-        value: 20,
-        color: VotingHelperService.optionColor(1)
-      };
-      $scope.pieSegments.push(optionSegment2);
+    var getOptionNameForId = function(id) {
+      for (var i = 0; i < $scope.options.length; i++) {
+        if ($scope.options[i].id === id) {
+          return $scope.options[i].name;
+        }
+      }
     };
 
-    initChart();
-
-    PushService.notifyOnMessage(function(event) {
-      $scope.pieSegments.forEach(function (segment, index) {
-        segment.value = event.data[index].points;
-      });
+    var redrawChart = function() {
       //deep copy to get new object reference -> trigger angular watch expression -> update pie chart svg
       $scope.pieSegments = angular.copy($scope.pieSegments);
+    }
+
+    var initChart = function(votes) {
+      votes.forEach(function(vote,index) {
+        var optionSegment = {
+          optionName: getOptionNameForId(vote.optionId),
+          value: vote.value,
+          color: VotingHelperService.optionColor(index)
+        };
+        $scope.pieSegments.push(optionSegment);
+        redrawChart();
+      });
+    };
+
+    _webSocket.onmessage = function(event) {
+      var data = angular.fromJson(event.data);
+      $scope.voting.numberOfParticipants = data.numberOfParticipants;
+      $scope.pieSegments.forEach(function (segment, index) {
+        segment.value = data.votes[index].value;
+      });
+      redrawChart();
       if(!$scope.$$phase) { //when using mock we are already in apply scope, but when using true websocket this will not be the case
         $scope.$apply();
+      }
+    };
+
+    $scope.$on('$destroy', function() {
+      if (_webSocket) {
+        _webSocket.onclose = function () {};
+        _webSocket.close();
       }
     });
 
@@ -62,13 +80,14 @@
     };
 
     VotingService.byId($scope.votingId, function(voting) {
-      VotingHelperService.updateCountdownLabel(voting);
-      $scope.voting = voting;
-      updateCountdownLabelEverySecond();
-    });
-
-    OptionService.byVotingId($scope.votingId, function(options) {
-      $scope.options = options;
+      $scope.voting = voting.details;
+      $scope.voting.numberOfParticipants = voting.numberOfParticipants;
+      VotingHelperService.updateCountdownLabel($scope.voting);
+      OptionService.byVotingId($scope.votingId, function(options) {
+        $scope.options = options;
+        initChart(voting.currentVoteDistribution);
+        updateCountdownLabelEverySecond();
+      });
     });
 
     $scope.voteFor = function() {

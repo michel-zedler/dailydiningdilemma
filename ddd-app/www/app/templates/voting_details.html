@@ -29,7 +29,7 @@
                 </div>
                 <div class="item item-text-wrap item-icon-left">
                     <i class="icon ion-person-stalker"></i>
-                    x participants
+                    {{ voting.numberOfParticipants === 0 ? 'No' : voting.numberOfParticipants}} participants
                 </div>
                 <div class="item">
                     <nvd3-pie-chart
@@ -41,6 +41,7 @@
                             y="pieSegmentValue()"
                             color="pieSegmentColor()"
                             noData=""
+                            showlegend="true"
                             showLabels="false"
                             margin="{left:0,top:0,bottom:0,right:0}">
                         <svg></svg>

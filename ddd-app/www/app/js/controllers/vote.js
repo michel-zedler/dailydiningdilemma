@@ -170,7 +170,7 @@
       $ionicBackdrop.retain();
 
       VotingService.byId($scope.votingId, function(voting) {
-        $scope.voting = voting;
+        $scope.voting = voting.details;
 
         OptionService.byVotingId($scope.votingId, function(options) {
 
