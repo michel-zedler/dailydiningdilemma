@@ -18,8 +18,7 @@
     };
 
     $scope.finish = function() {
-      // TODO: update instead of store?!
-      OptionService.store($scope.options, $scope.votingId, function() {
+      OptionService.update($scope.options, $scope.votingId, function() {
         $location.path('/app/voting-details/' + $scope.votingId);
       });
     };

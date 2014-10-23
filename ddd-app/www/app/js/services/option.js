@@ -22,6 +22,9 @@
         _options.getList({ votingId: votingId }).then(function(options) {
           cb(options);
         });
+      },
+      update: function(options, votingId, cb) {
+        cb();
       }
     }
   });
