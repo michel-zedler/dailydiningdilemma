@@ -14,8 +14,8 @@
 
         votes.forEach(function(vote) {
           data.votes.push({
-            optionId: vote.optionId,
-            value: vote.value
+            optionId: vote.option.id,
+            value: vote.points
           });
         });
 
