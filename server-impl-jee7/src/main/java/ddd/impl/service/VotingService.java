@@ -1,10 +1,10 @@
 package ddd.impl.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -78,7 +78,7 @@ public class VotingService {
 	}
 
 	private void aggregateVotesAndAddToModel(List<VoteDto> currentVoteDistribution, List<Vote> votesForVoting) {
-		Map<Long, Long> aggregatedVotes = new HashMap<Long,Long>();
+		Map<Long, Long> aggregatedVotes = new TreeMap<Long,Long>();
 		for (Vote vote : votesForVoting) {			
 			Long optionId = vote.getVotingOptionMapping().getOption().getId();
 			Long aggregatedValue = vote.getValue();

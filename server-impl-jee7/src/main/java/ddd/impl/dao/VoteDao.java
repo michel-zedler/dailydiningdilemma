@@ -13,8 +13,8 @@ import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 
-import ddd.impl.entity.VotingOptionMapping;
 import ddd.impl.entity.Vote;
+import ddd.impl.entity.VotingOptionMapping;
 
 @ApplicationScoped
 public class VoteDao {
