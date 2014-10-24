@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  ddd.controller('VotingDetailsCtrl', function ($scope, $interval, $location, $stateParams, VotingService, OptionService, VotingHelperService, PushService) {
+  ddd.controller('VotingDetailsCtrl', function ($scope, $interval, $location, $stateParams, VotingService, OptionService, VotingHelperService) {
     $scope.voting = {};
     $scope.options = [];
     $scope.votingId = $stateParams.votingId;
