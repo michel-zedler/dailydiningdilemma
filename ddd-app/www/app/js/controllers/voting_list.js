@@ -21,6 +21,7 @@
     }, 1000);
 
     $scope.detailsFor = function(votingId) {
+      $interval.cancel(updateCountdownLabelEverySecond);
       $location.path('/app/voting-details/' + votingId);
     };
   });

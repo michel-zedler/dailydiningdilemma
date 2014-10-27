@@ -17,6 +17,12 @@
         VotingService.byId(votingId, function(voting) {
           cb(voting.options);
         });
+      },
+      update: function(options, votingId, cb) {
+        VotingService.byId(votingId, function(voting) {
+          voting.options = options;
+          cb();
+        })
       }
     }
   });
