@@ -12,11 +12,7 @@
 
         <form name="votingForm" novalidate>
 
-            <div class="list">
-                <a class="item item-icon-right" ng-click="voteFor(voting.id)">
-                    <i class="icon ion-speakerphone"></i>
-                    {{isParticipant? 'Update your vote!': 'Vote!'}}
-                </a>
+            <div class="list">                
                 <div class="item item-text-wrap item-icon-left">
                     <i class="icon ion-information"></i>
                     {{ voting.description }}
@@ -27,8 +23,12 @@
                 </div>
                 <div class="item item-text-wrap item-icon-left">
                     <i class="icon ion-person-stalker"></i>
-                    {{ voting.numberOfParticipants === 0 ? 'No' : voting.numberOfParticipants}} participants
+                    {{ participantsLabel() }}
                 </div>
+                <a class="item item-icon-right" ng-click="voteFor(voting.id)">
+                    <i class="icon ion-speakerphone"></i>
+                    {{ isParticipant? 'Update your vote!': 'Vote!' }}
+                </a>
                 <div class="item">
                     <nvd3-pie-chart
                             data="pieSegments"

@@ -5,7 +5,7 @@
     </ion-nav-buttons>
 
     <ion-nav-buttons side="right">
-        <a class="button button-icon icon ion-close-round" ng-href="#/app/votings"></a>
+        <a class="button button-icon icon ion-close-round" ng-href="#/app/voting-details/{{votingId}}"></a>
     </ion-nav-buttons>
 
     <ion-content has-header="true" padding="true">
@@ -49,7 +49,7 @@
                 </a>
                 <a class="item item-icon-right" ng-click="revokeVote()" ng-hide="!isParticipant">
                     <i class="icon ion-android-hand"></i>
-                    Revoke and un-commit
+                    Revoke your vote
                 </a>
             </div>
 

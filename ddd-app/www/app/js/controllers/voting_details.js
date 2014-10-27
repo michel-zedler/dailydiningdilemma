@@ -30,6 +30,10 @@
       };
     };
 
+    $scope.participantsLabel = function() {
+      return VotingHelperService.buildParticipantsLabel($scope.isParticipant, $scope.voting.numberOfParticipants);
+    };
+
     var getOptionNameForId = function(id) {
       for (var i = 0; i < $scope.options.length; i++) {
         if ($scope.options[i].id === id) {

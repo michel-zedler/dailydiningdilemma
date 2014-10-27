@@ -206,6 +206,8 @@
           initVote(options);
 
           VoteService.latest($scope.votingId, function (latestVote) {
+            $scope.isParticipant = (latestVote.votes.length > 0);
+
             latestVote.votes.forEach(function (latestVoteItem) {
               $scope.votes.forEach(function (vote) {
                 if (latestVoteItem.optionId === vote.option.id) {
@@ -213,12 +215,11 @@
                 }
               });
             });
-            $scope.isParticipant = (latestVote.votes.length > 0);
+                        
             initChart();
 
             $ionicBackdrop.release();
-          })
-
+          });
         });
       });
     })();

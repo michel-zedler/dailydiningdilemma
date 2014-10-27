@@ -16,6 +16,19 @@
       },
       optionColor: function(index) {
         return COLORS[index];
+      },
+      buildParticipantsLabel: function (isParticipant, numParticipants) {
+        var res = '';
+        if (numParticipants === 0) {          
+          res += 'No';
+        } else {
+          if (isParticipant) {
+            res += 'You + ' + (numParticipants - 1);
+          } else {
+            res += numParticipants;
+          }
+        }
+        return res + " participants";
       }
     };
   });
