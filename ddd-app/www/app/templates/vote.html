@@ -39,15 +39,15 @@
                         <input type="range" name="points" ng-model="vote.points" min="0" max="100" ng-change="updateVote(vote.option.id)" style="width:100%" ng-show="vote.active">
                     </div>
                 </div>
-                <a class="item item-icon-right" ng-hide="options.length > 6" ng-click="addOption()">
+                <a class="item item-divider item-icon-right" ng-hide="options.length > 6" ng-click="addOption()">
                     <i class="icon ion-plus"></i>
                     Add an option
                 </a>
-                <a class="item item-icon-right" ng-click="submitVote()">
+                <a class="item item-divider item-icon-right" ng-click="submitVote()">
                     <i class="icon ion-speakerphone"></i>
                     Vote and commit
                 </a>
-                <a class="item item-icon-right" ng-click="revokeVote()" ng-hide="!isParticipant">
+                <a class="item item-divider item-icon-right" ng-click="revokeVote()" ng-hide="!isParticipant">
                     <i class="icon ion-android-hand"></i>
                     Revoke your vote
                 </a>
