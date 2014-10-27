@@ -19,7 +19,7 @@
 
     $scope.finish = function() {
       OptionService.update($scope.options, $scope.votingId, function() {
-        $location.path('/app/voting-details/' + $scope.votingId);
+        $location.path('/app/vote/' + $scope.votingId);
       });
     };
 
