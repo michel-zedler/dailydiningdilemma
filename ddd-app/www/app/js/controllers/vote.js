@@ -10,6 +10,7 @@
     $scope.votes = [];
     $scope.pieSegments = [];
     $scope.isParticipant = false;
+    $scope.isValid = false;
 
     $scope.addOption = function () {
       $location.path('/app/options-edit/' + $scope.votingId);
@@ -98,7 +99,7 @@
 
       //update vacant points segment
       $scope.pieSegments[$scope.pieSegments.length - 1].value = TOTAL - pointsSpentInTotal;
-
+      $scope.isValid = (TOTAL === pointsSpentInTotal);
       redrawChart();
       labelDonut(pointsSpentInTotal);
     }
