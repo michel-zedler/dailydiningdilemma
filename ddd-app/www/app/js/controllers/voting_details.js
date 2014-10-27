@@ -43,6 +43,7 @@
     }
 
     var initChart = function(votes) {
+      $scope.pieSegments = [];
       votes.forEach(function(vote,index) {
         var optionSegment = {
           optionName: getOptionNameForId(vote.optionId),
@@ -54,13 +55,32 @@
       });
     };
 
+    var detectNewOption = function(data) {
+      var newOptionFound = false;
+      data.votes.forEach(function(vote) {
+        var existingFound = false;
+        $scope.options.forEach(function(option) {
+          if (option.id === vote.optionId) {
+            existingFound = true;
+          }
+        });
+        if(!existingFound) {
+          newOptionFound = true;
+        }
+      });
+      return newOptionFound;
+    };
+
     _webSocket.onmessage = function(event) {
       var data = angular.fromJson(event.data);
-      $scope.voting.numberOfParticipants = data.numberOfParticipants;
-      $scope.pieSegments.forEach(function (segment, index) {
-        segment.value = data.votes[index].value;
-      });
-      redrawChart();
+      $scope.voting.numberOfParticipants = data.numberOfParticipants;      
+      if (detectNewOption(data)) {
+        // FIXME reload options could be avoided by delivering all option details through websocket
+        OptionService.byVotingId($scope.votingId, function(options) {
+          $scope.options = options;
+        });
+      }
+      initChart(data.votes);
       if(!$scope.$$phase) { //when using mock we are already in apply scope, but when using true websocket this will not be the case
         $scope.$apply();
       }
