@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  ddd.controller('VotingDetailsCtrl', function ($scope, $interval, $location, $stateParams, VotingService, OptionService, VotingHelperService) {
+  ddd.controller('VotingDetailsCtrl', function ($scope, $interval, $location, $stateParams, VotingService, OptionService, VoteService, VotingHelperService) {
     $scope.voting = {};
     $scope.options = [];
     $scope.votingId = $stateParams.votingId;
@@ -9,6 +9,7 @@
     var _webSocket = new WebSocket('wss://tools.eckert-partner.it/dailydining-int/websocket/votings/' + $scope.votingId);
 
     $scope.pieSegments = [];
+    $scope.isParticipant = false;
 
     $scope.pieSegmentLabel = function(){
       return function(d) {
@@ -107,6 +108,9 @@
         $scope.options = options;
         initChart(voting.currentVoteDistribution);
         updateCountdownLabelEverySecond();
+      });
+      VoteService.latest($scope.votingId, function (latestVote) {
+        $scope.isParticipant = (latestVote.votes.length > 0);
       });
     });
 

@@ -45,7 +45,11 @@
                 </a>
                 <a class="item item-icon-right" ng-click="submitVote()">
                     <i class="icon ion-speakerphone"></i>
-                    Submit your vote
+                    Vote and commit
+                </a>
+                <a class="item item-icon-right" ng-click="revokeVote()" ng-hide="!isParticipant">
+                    <i class="icon ion-android-hand"></i>
+                    Revoke and un-commit
                 </a>
             </div>
 

@@ -13,12 +13,10 @@
         <form name="votingForm" novalidate>
 
             <div class="list">
-
                 <a class="item item-icon-right" ng-click="voteFor(voting.id)">
                     <i class="icon ion-speakerphone"></i>
-                    Enter/Update your vote
+                    {{isParticipant? 'Update your vote!': 'Vote!'}}
                 </a>
-
                 <div class="item item-text-wrap item-icon-left">
                     <i class="icon ion-information"></i>
                     {{ voting.description }}

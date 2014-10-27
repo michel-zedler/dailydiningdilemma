@@ -30,6 +30,10 @@
         _votes.customGET("", {"votingId": votingId}).then(function (latestVote) {
           cb(latestVote);
         });
+      },
+      revoke: function(votingId, cb) {
+        _votes.customDELETE("", {"votingId": votingId});
+        cb();
       }
     }
   });

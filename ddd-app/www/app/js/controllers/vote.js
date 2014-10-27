@@ -9,6 +9,7 @@
     $scope.voting = {};
     $scope.votes = [];
     $scope.pieSegments = [];
+    $scope.isParticipant = false;
 
     $scope.addOption = function () {
       $location.path('/app/options-edit/' + $scope.votingId);
@@ -20,6 +21,14 @@
       }
       $ionicBackdrop.retain();
       VoteService.store($scope.votes, $scope.votingId, function () {
+        $ionicBackdrop.release();
+        $location.path('/app/voting-details/' + $scope.votingId);
+      });
+    };
+
+    $scope.revokeVote = function() {
+      $ionicBackdrop.retain();
+      VoteService.revoke($scope.votingId, function () {
         $ionicBackdrop.release();
         $location.path('/app/voting-details/' + $scope.votingId);
       });
@@ -204,7 +213,7 @@
                 }
               });
             });
-
+            $scope.isParticipant = (latestVote.votes.length > 0);
             initChart();
 
             $ionicBackdrop.release();
