@@ -1,8 +1,16 @@
-var ddd = angular.module('ddd', ['ionic', 'firebase', 'restangular', 'nvd3ChartDirectives']);
+var ddd = angular.module('ddd', ['ionic', 'firebase', 'restangular', 'nvd3ChartDirectives', 'LocalStorageModule']);
 
-ddd.run(function ($rootScope, $state, $ionicPlatform, $window, GlobalDataService, Restangular, $http) {
+ddd.run(function ($rootScope, $state, $ionicPlatform, $ionicBackdrop, $window, GlobalDataService, Restangular, $http, $location, AuthService) {
 
     Restangular.setBaseUrl("https://tools.eckert-partner.it/dailydining-int/api/rest/");
+
+    Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
+      if(response.status === 403) {
+        AuthService.logout();
+        $location.path('/app/login');
+        $ionicBackdrop.release(); //TODO now isn't this ugly?
+      }
+    });
 
     $ionicPlatform.ready(function () {
       if (window.StatusBar) {
@@ -120,7 +128,7 @@ ddd.config(function ($stateProvider, $urlRouterProvider) {
     });
 
   // fallback route
-  $urlRouterProvider.otherwise('/app/votings');
+  $urlRouterProvider.otherwise('/app/login');
 
 });
 

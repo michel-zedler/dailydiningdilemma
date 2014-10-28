@@ -5,22 +5,31 @@
 
     var handleLoginResult = function (err) {
       $ionicBackdrop.release();
-
       if (err) {
         alert('Login failed: ' + err);
       } else {
         $location.path('/app/votings');
+        //note that we handle server side expiry of apikey (reauthenticated or not) in Restangular ErrorInterceptor for error code 403
       }
     };
 
-    $scope.facebookLogin = function () {
+    var login = function(provider) {
       $ionicBackdrop.retain();
-      AuthService.loginFacebook(handleLoginResult);
+      AuthService.tryReAuthentication(function(success) {
+        if (success) {          
+          handleLoginResult();
+        } else {
+          AuthService.login(provider, handleLoginResult);
+        }
+      });
+    }
+
+    $scope.facebookLogin = function () {
+      login('facebook');
     };
 
     $scope.googleLogin = function () {
-      $ionicBackdrop.retain();
-      AuthService.loginGoogle(handleLoginResult);
+      login('google');
     }
   });
 
