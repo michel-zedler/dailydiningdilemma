@@ -1,6 +1,6 @@
 var ddd = angular.module('ddd', ['ionic', 'firebase', 'restangular', 'nvd3ChartDirectives']);
 
-ddd.run(function ($rootScope, $state, $ionicPlatform, $window, GlobalDataService, Restangular) {
+ddd.run(function ($rootScope, $state, $ionicPlatform, $window, GlobalDataService, Restangular, $http) {
 
     Restangular.setBaseUrl("https://tools.eckert-partner.it/dailydining-int/api/rest/");
 
@@ -22,6 +22,9 @@ ddd.run(function ($rootScope, $state, $ionicPlatform, $window, GlobalDataService
     $rootScope.$on('OAuthException', function () {
       $state.go('app.login');
     });
+
+    //globally configure content-type application/json for DELETE requests
+    $http.defaults.headers.delete = {"Content-Type": "application/json;charset=utf-8"};   
 
   }
 );
